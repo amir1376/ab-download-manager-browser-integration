@@ -1,0 +1,110 @@
+{
+  "selection_popup_download_selected": {
+    "message": "Download Selected"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "No links detected"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Please first select a section"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Download with AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Download selected links with AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM Quick Settings"
+  },
+  "option_ui_title": {
+    "message": "AB Download Manager Extension"
+  },
+  "connection_connected": {
+    "message": "Connected"
+  },
+  "connection_not_connected": {
+    "message": "Not Connected"
+  },
+  "connection_checking": {
+    "message": "Checking"
+  },
+  "config_auto_capture_links": {
+    "message": "Auto Capture Links"
+  },
+  "config_auto_capture_links_description": {
+    "message": "When you click on link on your browser the link will automatically captured for download by the App"
+  },
+  "config_auto_capture_links_file_extensions_reset_to_default": {
+    "message": "Reset to default"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Enter each file extension that you want to be captured then press enter"
+  },
+  "config_show_popups": {
+    "message": "Show Popups"
+  },
+  "config_show_popups_description": {
+    "message": "Show popup on selections which have links"
+  },
+  "config_port": {
+    "message": "Port"
+  },
+  "config_port_description": {
+    "message": "Make sure this port and the value in app are the same otherwise this extension not works properly"
+  },
+  "config_port_connection_success": {
+    "message": "Success\nPort ($port$) Is connected",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Failure\nPort ($port$) not connected",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Send Cookies"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Note: DON”T Check this if you are in a non trustable environment"
+  },
+  "browser_action_more_settings": {
+    "message": "More Settings"
+  },
+  "connection_error_api_error": {
+    "message": "There is a problem with app api, Make sure to update both app and extension to latest version"
+  },
+  "connection_error_network_error": {
+    "message": "Can't connect to Application, Please make sure app is installed and running and also the Browser Integration is turned On in the app settings, in the app"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "test": {
+    "message": "Test"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "In order to this extension work properly,Make sure AB Download Manager is installed if it doesn't..."
+  },
+  "download_abdm_app": {
+    "message": "Download The App"
+  },
+  "project_website": {
+    "message": "Project Website"
+  },
+  "support_by_rating": {
+    "message": "If you like this work, Don't forget to support me by your comments/ratings and also share it with your friends"
+  },
+  "project_source_code": {
+    "message": "Project Source Code"
+  }
+}
