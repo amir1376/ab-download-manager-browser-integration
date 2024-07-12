@@ -1,4 +1,3 @@
-import ManifestV3 = chrome.runtime.ManifestV3;
 import {
     getBackgroundScript,
     getBaseManifest,
@@ -6,11 +5,12 @@ import {
     getCommonPermissions,
     getHostPermissions
 } from "./shared";
-import ManifestV2 = chrome.runtime.ManifestV2;
+import ManifestV3 = chrome.runtime.ManifestV3;
+// import ManifestV2 = chrome.runtime.ManifestV2;
 
-export function getManifestForChrome(): ManifestV2 {
-    /*return {
-        // as fara as I know manifest version 3 does not allow request blocking
+export function getManifestForChrome(): ManifestV3 {
+    return {
+        // as far as I know manifest version 3 does not allow request blocking
         manifest_version: 3,
         ...getBaseManifest(),
         background: {
@@ -19,8 +19,8 @@ export function getManifestForChrome(): ManifestV2 {
         action: getBrowserActionInfo(),
         host_permissions: getHostPermissions(),
         permissions: getCommonPermissions(),
-    }*/
-    return {
+    }
+    /*return {
         manifest_version: 2,
         ...getBaseManifest(),
         background: {
@@ -31,5 +31,5 @@ export function getManifestForChrome(): ManifestV2 {
             ...getHostPermissions(),
             ...getCommonPermissions(),
         ],
-    }
+    }*/
 }

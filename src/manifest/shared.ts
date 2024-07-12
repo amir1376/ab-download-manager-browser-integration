@@ -51,7 +51,6 @@ export function getCommonPermissions():ManifestPermissions[]{
         "webRequest",
         "cookies",
         "storage",
-        "webRequestBlocking",
         "tabs",
         "downloads",
     ]

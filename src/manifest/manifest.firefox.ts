@@ -23,6 +23,8 @@ export function getManifestForFirefox(): ManifestV2 {
         permissions: [
             ...getHostPermissions(),
             ...getCommonPermissions(),
+            // only in firefox as it supports mv2
+            "webRequestBlocking",
         ],
     }
 }
