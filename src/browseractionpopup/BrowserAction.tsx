@@ -110,7 +110,7 @@ const BrowserActionUi: React.FC<{
     vm: BrowserActionViewModel
 }> = observer((props) => {
     const vm = useViewModel(() => props.vm)
-    return <div data-theme="dark" className="m-auto">
+    return <div data-theme="dark" className="m-auto w-max">
         <Header canReachable={vm.canReachable}/>
         <div className="bg-base-200 shadow">
             <AutoCaptureSection enabled={vm.autoCaptureLinks} toggle={(v) => vm.setAutoCaptureLinks(v)}/>
