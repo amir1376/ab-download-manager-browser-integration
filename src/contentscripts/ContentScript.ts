@@ -7,17 +7,19 @@ import {run} from "~/utils/ScopeFunctions";
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {onMessage,sendMessage} from "webext-bridge/content-script"
 import browser from "webextension-polyfill";
+import Constants from "~/utils/Constants";
+import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 const showPopupDelayed = debounce(500)
 
 async function checkAndReportLinks() {
     const selection = window.getSelection();
     if (selection == null) {
-        alert(browser.i18n.getMessage("popup_alert_nothing_selected"))
+        alert(createAlertStringForMyExtension(browser.i18n.getMessage("popup_alert_nothing_selected")))
         return
     }
     let downloadItems = getLinksFromSelection(selection)
     if (downloadItems.length == 0) {
-        alert(browser.i18n.getMessage("popup_alert_no_link_detected"))
+        alert(createAlertStringForMyExtension(browser.i18n.getMessage("popup_alert_no_link_detected")))
         return
     }
     if (Configs.getLatestConfig().sendHeaders) {
@@ -73,7 +75,7 @@ run(async () => {
         console.log(...msg.data)
     })
     onMessage("show_alert",(msg)=>{
-        alert(msg.data)
+        alert(createAlertStringForMyExtension(msg.data))
     })
     onMessage("check_selected_text_for_links",(msg)=>{
         checkAndReportLinks()
