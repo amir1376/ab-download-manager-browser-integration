@@ -24,7 +24,6 @@ async function checkAndReportLinks() {
     }
     if (Configs.getLatestConfig().sendHeaders) {
         const headersOfLinks = await sendMessage("get_headers",downloadItems.map(i=>i.link))
-        console.log(headersOfLinks)
         downloadItems = downloadItems.map((value, index) => {
             return {
                 ...value,
