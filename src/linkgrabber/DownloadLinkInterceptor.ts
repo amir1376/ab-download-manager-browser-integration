@@ -8,6 +8,7 @@ import {run} from "~/utils/ScopeFunctions";
 import browser  from "webextension-polyfill";
 import type {WebRequest} from "webextension-polyfill";
 import {getFileNameFromHeader} from "~/utils/ExtractFileNameFromHeader";
+import {isChrome} from "~/utils/ExtensionInfo";
 // import OnHeadersReceivedOptions = WebRequest.OnHeadersReceivedOptions;
 
 
@@ -184,7 +185,14 @@ export abstract class DownloadLinkInterceptor {
                 this.setPendingRequest(details.requestId, details)
             },
             filter,
-            ["requestHeaders"],
+            run(()=>{
+                const extra:WebRequest.OnSendHeadersOptions[] = ["requestHeaders"]
+                if (isChrome()){
+                    // chrome does not give us all headers unless we ask it
+                    extra.push("extraHeaders")
+                }
+                return extra
+            })
         )
         browser.webRequest.onErrorOccurred.addListener(
             (details) => {
