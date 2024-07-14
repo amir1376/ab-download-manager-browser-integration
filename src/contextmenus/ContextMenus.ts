@@ -8,7 +8,8 @@ const optionIds = Object.freeze({
     downloadSelectedWithAbDm: "download-selected-with-ab-dm",
 })
 
-function createOptions() {
+async function createOptions() {
+    await browser.contextMenus.removeAll()
     browser.contextMenus.create({
         id: optionIds.downloadSelectedWithAbDm,
         title: browser.i18n.getMessage("context_menu_download_selected_links_with_abdm"),
@@ -70,6 +71,6 @@ function createOnCLickHandlers() {
 }
 
 export async function initializeOptions() {
-    createOptions()
+    await createOptions()
     createOnCLickHandlers()
 }

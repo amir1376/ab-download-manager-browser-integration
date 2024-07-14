@@ -15,6 +15,8 @@ export class Manifest3DownloadLinkInterceptor extends DownloadLinkInterceptor {
                 if (!getLatestConfig().autoCaptureLinks) {
                     return;
                 }
+                // response should last for a few seconds so here I can detect them
+                // otherwise app will capture download and chrome also download it too
                 const response = Object.values(this.responses).find(rq => {
                     return rq.url === downloadItem.finalUrl
                 })

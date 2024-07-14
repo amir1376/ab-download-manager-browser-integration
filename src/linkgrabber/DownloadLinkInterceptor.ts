@@ -24,7 +24,7 @@ export abstract class DownloadLinkInterceptor {
     removePendingRequest(id: string) {
         delete this.pendingRequests[id]
     }
-    
+
     protected readonly newTabs: Record<number, string> = {}
     protected addItemToNewTabs(tabId: number, link: string) {
         this.newTabs[tabId] = link
@@ -208,6 +208,7 @@ export abstract class DownloadLinkInterceptor {
         )
         browser.webRequest.onHeadersReceived.addListener(
             async (details) => {
+                let shouldRemoveResponseInFinallyImmediately: boolean = true
                 try {
                     const result = this.shouldHandleRequest(details);
                     this.responses[details.requestId] = details
@@ -221,6 +222,12 @@ export abstract class DownloadLinkInterceptor {
                     const downloadRequestItem = this.createItemFromWebRequest(request)
                     const requestAccepted = await this.requestAddDownload(downloadRequestItem);
                     if (requestAccepted) {
+                        if (!this.canBlockResponse()){
+                            // in chrome, we must cancel download using downloads api
+                            // so, we must let this response be available a little
+                            // then removing it
+                            shouldRemoveResponseInFinallyImmediately = false
+                        }
                         await this.onDownloadSendToAppSuccess(request)
                         // if (!isBrowserHonorRequestBlocking()){
                         //     delete cancelledBrowserDownloads[details.requestId]
@@ -235,7 +242,17 @@ export abstract class DownloadLinkInterceptor {
                     }
                     return this.passResponse()
                 }finally {
-                    delete this.responses[details.requestId]
+                    if (shouldRemoveResponseInFinallyImmediately){
+                        // we not accept this url or does not need to delay its removal
+                        delete this.responses[details.requestId]
+                    }else {
+                        // we buy some time for this response
+                        // to cancel browser download in somewhere else
+                        // I think 5 sec is enough
+                        setTimeout(()=>{
+                            delete this.responses[details.requestId]
+                        },5_000)
+                    }
                 }
             },
             filter,

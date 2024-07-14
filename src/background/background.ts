@@ -5,6 +5,9 @@ import {redirectDownloadLinksToMe} from "~/linkgrabber/LinkGrabber";
 import * as Configs from "~/configs/Config";
 import {onMessage} from "webext-bridge/background";
 import {addDownload, getHeadersForUrls} from "~/background/actions";
+import {Disposable} from "~/utils/disposable";
+import {keepListeningToEvents} from "~/utils/extension-api";
+import {IS_MV3} from "~/utils/ManifestUtil";
 
 function receiveMessageFromContentScripts() {
     onMessage("add_download",async (msg)=>{
@@ -22,7 +25,11 @@ function receiveMessageFromContentScripts() {
 }
 
 run(async () => {
+    const disposable= new Disposable()
     try {
+        if (IS_MV3){
+            disposable.add(keepListeningToEvents())
+        }
         await Configs.boot()
         await initializeOptions()
         redirectDownloadLinksToMe()
@@ -30,8 +37,7 @@ run(async () => {
         console.log("ab dm extension loaded successfully")
     } catch (e) {
         console.log("extension loading fail", e)
+        // dispose resources if we can't serve the user well
+        disposable.dispose()
     }
 })
-
-
-
