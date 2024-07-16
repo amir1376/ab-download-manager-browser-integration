@@ -21,3 +21,18 @@ npm run pack:chrome
 ```
 
 the output zip file will be placed under the `./dist/<browser_name>.zip` which contains the extension
+
+
+## Repositories And Source Code
+
+There are multiple repositories related to the **AB Download Manager** project
+
+| Repository                                                                                                 | Description                                                                   |
+|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [Main Application](https://github.com/amir1376/ab-download-manager)                                        | Contains the  **Application** that runs on your  **device**                   |
+| [Browser Integration](https://github.com/amir1376/ab-download-manager-browser-integration)  (You are here) | Contains the **Browser Extension** to be installed on your  **browser**       |
+| [Website](https://github.com/amir1376/ab-download-manager-website)                                         | Contains the **AB Download Manager** [website](https://abdownloadmanager.com) |
+
+I spent a lot of time to create this project.
+
+If you like my work, Please consider giving it a ⭐ Thanks ❤️
