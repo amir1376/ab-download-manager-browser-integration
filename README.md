@@ -14,6 +14,9 @@ In order to use this extension you need to [install](https://abdownloadmanager.c
 In order to build this extension locally
 > I am developing this on `Windows` using `npm`, but it should have same result on other build environments
 ```bash
+# setup dependencies
+npm i
+
 # for firefox
 npm run pack:firefox
 # for chrome
