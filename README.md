@@ -8,13 +8,14 @@ In order to use this extension you need to [install](https://abdownloadmanager.c
 ### This extension does the fallowing
 
 - Add a `Download With AB DM` in browser's Context menu
-- Automatically captures download links when a users want to download a file from their browser
+- Automatically captures download links when users want to download file from their browser
+- Show a popup on `Link Selection` to capture and send Download Links to the app
 
 ## How To Build
 In order to build this extension locally
 > I am developing this on `Windows` using `npm`, but it should have same result on other build environments
 ```bash
-# setup dependencies
+# install dependencies
 npm i
 
 # for firefox
