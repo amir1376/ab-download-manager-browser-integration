@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "displayName": "AB Download Manager Browser Integration",
   "author": "AmirHossein Abdolmotallebi",
-  "description": "Browser Integration for AB Download Manager",
+  "description": "Download files with AB Download Manager app",
   "repository": "https://github.com/amir1376/ab-download-manager-browser-integration",
   "homepage": "https://abdownloadmanager.com",
   "private": true,
