@@ -1,42 +1,39 @@
-import {PositionInPage} from "~/utils/MouseUtil";
+import { PositionInPage } from "~/utils/MouseUtil";
 import browser from "webextension-polyfill";
-import {isFirefox} from "~/utils/ExtensionInfo";
+import { isFirefox } from "~/utils/ExtensionInfo";
 
-const AB_DM_POPUP_CLASSNAME = "ab_dm_popup_class"
-let showingPopup = false
+const AB_DM_POPUP_CLASSNAME = "ab_dm_popup_class";
+let showingPopup = false;
 
-let onClickListener = () => {
-}
+let onClickListener = () => {};
 
 export function setOnPopupClicked(listener: () => void) {
-    onClickListener = listener
+    onClickListener = listener;
 }
 export function showAddDownloadPopupUi(position: PositionInPage) {
-    if (showingPopup){
-        closeAddDownloadPopupUi()
+    if (showingPopup) {
+        closeAddDownloadPopupUi();
     }
     const el = createUi(
         position,
-        ()=>{
+        () => {
             try {
-                onClickListener()
-            }finally {
-                closeAddDownloadPopupUi()
+                onClickListener();
+            } finally {
+                closeAddDownloadPopupUi();
             }
         },
-        closeAddDownloadPopupUi,
+        closeAddDownloadPopupUi
     );
-    showingPopup = true
+    showingPopup = true;
 }
 
 export function closeAddDownloadPopupUi() {
-    document.removeEventListener("mousedown",closeAddDownloadPopupUi)
-    document.body
-        .querySelectorAll(`.${AB_DM_POPUP_CLASSNAME}`)
-        .forEach((el) => {
-            el.remove()
-        })
-    showingPopup = false
+    document.removeEventListener("mousedown", closeAddDownloadPopupUi);
+    document.body.querySelectorAll(`.${AB_DM_POPUP_CLASSNAME}`).forEach((el) => {
+        el.remove();
+    });
+    showingPopup = false;
 }
 
 function createUi(position: PositionInPage, onAction: () => void, onCancel: () => void) {
@@ -44,7 +41,7 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
 
     // Create shadow root
     const shadowRoot = el.attachShadow({ mode: "open" });
-    const downloadSelectedText = browser.i18n.getMessage("selection_popup_download_selected")
+    const downloadSelectedText = browser.i18n.getMessage("selection_popup_download_selected");
     const popupString = `
 <style>
     .abdm {
@@ -58,6 +55,7 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
         border-radius: 999px;
         border: rgba(255,255,255,25%) solid 1px;
         overflow: hidden;
+        user-select: none;
         box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
     }
     .abdm * {
@@ -73,7 +71,7 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     }
     .abdm .download-btn {
         display: flex;
-        flex-direction: row;
+        flex-shrink: 0;
         align-items: center;
         padding-left: 4px;
         padding-right: 8px;
@@ -125,10 +123,13 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     shadowRoot.innerHTML = popupString;
 
     el.classList.add(AB_DM_POPUP_CLASSNAME);
+
     el.style.position = "absolute";
-    const offsetX = position.x;
-    const offsetY = position.y;
     document.body.append(el);
+
+    const elWidth = el.getBoundingClientRect().width;
+    const offsetX = position.x + elWidth >= window.innerWidth ? window.innerWidth - elWidth : position.x;
+    const offsetY = position.y;
 
     shadowRoot.querySelector(".download-btn")?.addEventListener("mousedown", (event) => {
         event.stopPropagation();
@@ -139,8 +140,8 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
         event.stopPropagation();
         onCancel();
     });
-    // should we need to increase this value?
-    el.style.zIndex = "999"
+
+    el.style.zIndex = "9999";
     el.style.top = offsetY + "px";
     el.style.left = offsetX + "px";
 
