@@ -9,7 +9,7 @@ In order to use this extension you need to [install](https://abdownloadmanager.c
 
 - Add a `Download With AB DM` in browser's Context menu
 - Automatically captures download links when users want to download file from their browser
-- Show a popup on `Link Selection` to capture and send Download Links to the app
+- Show a `Download Selected` popup when user select some section of page that contains links
 
 ## How To Build
 In order to build this extension locally
