@@ -5,18 +5,19 @@ import {inRange} from "~/utils/NumberUtils";
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {addDownload} from "~/background/actions";
 import {run} from "~/utils/ScopeFunctions";
-import browser  from "webextension-polyfill";
+import browser from "webextension-polyfill";
 import type {WebRequest} from "webextension-polyfill";
 import {getFileNameFromHeader} from "~/utils/ExtractFileNameFromHeader";
 import {isChrome} from "~/utils/ExtensionInfo";
+
 // import OnHeadersReceivedOptions = WebRequest.OnHeadersReceivedOptions;
 
 
 export abstract class DownloadLinkInterceptor {
     protected readonly pendingRequests: Record<string, WebRequest.OnSendHeadersDetailsType | undefined> = {}
-    protected readonly responses:Record<string, WebRequest.OnHeadersReceivedDetailsType> = {}
+    protected readonly responses: Record<string, WebRequest.OnHeadersReceivedDetailsType> = {}
 
-    
+
     protected setPendingRequest(id: string, requestHeaders: WebRequest.OnSendHeadersDetailsType) {
         this.pendingRequests[id] = requestHeaders
     }
@@ -26,6 +27,7 @@ export abstract class DownloadLinkInterceptor {
     }
 
     protected readonly newTabs: Record<number, string> = {}
+
     protected addItemToNewTabs(tabId: number, link: string) {
         this.newTabs[tabId] = link
     }
@@ -86,10 +88,10 @@ export abstract class DownloadLinkInterceptor {
     }
 
     protected shouldHandleRequest(details: WebRequest.OnHeadersReceivedDetailsType) {
-        if (details.type !== "main_frame") {
+        if (!(details.type === "main_frame" || details.type === "sub_frame")) {
             return false
         }
-        if (details.method!=="GET"){
+        if (details.method !== "GET") {
             // we only handle GET method
             return false
         }
@@ -161,9 +163,10 @@ export abstract class DownloadLinkInterceptor {
             await browser.tabs.remove(tabId)
         }
     }
+
     // end of helper functions
-    
-    redirectDownloadsToExtension(){
+
+    redirectDownloadsToExtension() {
         const filter: WebRequest.RequestFilter = {
             urls: ["*://*/*"],
         }
@@ -185,9 +188,9 @@ export abstract class DownloadLinkInterceptor {
                 this.setPendingRequest(details.requestId, details)
             },
             filter,
-            run(()=>{
-                const extra:WebRequest.OnSendHeadersOptions[] = ["requestHeaders"]
-                if (isChrome()){
+            run(() => {
+                const extra: WebRequest.OnSendHeadersOptions[] = ["requestHeaders"]
+                if (isChrome()) {
                     // chrome does not give us all headers unless we ask it
                     extra.push("extraHeaders")
                 }
@@ -222,7 +225,7 @@ export abstract class DownloadLinkInterceptor {
                     const downloadRequestItem = this.createItemFromWebRequest(request)
                     const requestAccepted = await this.requestAddDownload(downloadRequestItem);
                     if (requestAccepted) {
-                        if (!this.canBlockResponse()){
+                        if (!this.canBlockResponse()) {
                             // in chrome, we must cancel download using downloads api
                             // so, we must let this response be available a little
                             // then removing it
@@ -234,31 +237,31 @@ export abstract class DownloadLinkInterceptor {
                         // }
                         //cancel browser request
                         return this.cancelResponse()
-                    }else {
+                    } else {
                         await this.onDownloadSendToAppFailed(request)
                         // if (!isBrowserHonorRequestBlocking()){
                         //     startDownloadUsingNativeBrowser(request)
                         // }
                     }
                     return this.passResponse()
-                }finally {
-                    if (shouldRemoveResponseInFinallyImmediately){
+                } finally {
+                    if (shouldRemoveResponseInFinallyImmediately) {
                         // we not accept this url or does not need to delay its removal
                         delete this.responses[details.requestId]
-                    }else {
+                    } else {
                         // we buy some time for this response
                         // to cancel browser download in somewhere else
                         // I think 5 sec is enough
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             delete this.responses[details.requestId]
-                        },5_000)
+                        }, 5_000)
                     }
                 }
             },
             filter,
-            run(()=>{
-                const extra:WebRequest.OnHeadersReceivedOptions[] = ["responseHeaders"]
-                if (this.canBlockResponse()){
+            run(() => {
+                const extra: WebRequest.OnHeadersReceivedOptions[] = ["responseHeaders"]
+                if (this.canBlockResponse()) {
                     extra.push("blocking")
                 }
                 return extra
@@ -266,15 +269,17 @@ export abstract class DownloadLinkInterceptor {
         )
     }
 
-    async onDownloadSendToAppSuccess(request: WebRequest.OnSendHeadersDetailsType){
+    async onDownloadSendToAppSuccess(request: WebRequest.OnSendHeadersDetailsType) {
         await this.closeIfItWasNewTab(request)
     }
 
-    async onDownloadSendToAppFailed(request: WebRequest.OnSendHeadersDetailsType){
+    async onDownloadSendToAppFailed(request: WebRequest.OnSendHeadersDetailsType) {
         // nothing
     }
 
-    abstract passResponse():any
-    abstract cancelResponse():any
-    abstract canBlockResponse():boolean
+    abstract passResponse(): any
+
+    abstract cancelResponse(): any
+
+    abstract canBlockResponse(): boolean
 }
