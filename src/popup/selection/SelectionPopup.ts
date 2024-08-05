@@ -128,7 +128,8 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     document.body.append(el);
 
     const elWidth = el.getBoundingClientRect().width;
-    const offsetX = position.x + elWidth >= window.innerWidth ? window.innerWidth - elWidth : position.x;
+    const offsetX =
+        position.x + elWidth >= window.innerWidth ? window.innerWidth - (elWidth + getScrollbarWidth()) : position.x;
     const offsetY = position.y;
 
     shadowRoot.querySelector(".download-btn")?.addEventListener("mousedown", (event) => {
@@ -146,4 +147,22 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     el.style.left = offsetX + "px";
 
     return el;
+}
+
+function getScrollbarWidth() {
+    const outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.overflow = "scroll";
+    // @ts-ignore
+    outer.style.msOverflowStyle = "scrollbar";
+    document.body.appendChild(outer);
+
+    const inner = document.createElement("div");
+    outer.appendChild(inner);
+
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+    outer.parentNode?.removeChild(outer);
+
+    return scrollbarWidth;
 }
