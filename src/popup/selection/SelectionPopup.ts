@@ -1,6 +1,5 @@
 import { PositionInPage } from "~/utils/MouseUtil";
 import browser from "webextension-polyfill";
-import { isFirefox } from "~/utils/ExtensionInfo";
 
 const AB_DM_POPUP_CLASSNAME = "ab_dm_popup_class";
 let showingPopup = false;
@@ -128,7 +127,8 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     document.body.append(el);
 
     const elWidth = el.getBoundingClientRect().width;
-    const offsetX = position.x + elWidth >= window.innerWidth ? window.innerWidth - elWidth : position.x;
+    const offsetX =
+        position.x + elWidth >= window.innerWidth ? window.innerWidth - (elWidth + getScrollbarWidth()) : position.x;
     const offsetY = position.y;
 
     shadowRoot.querySelector(".download-btn")?.addEventListener("mousedown", (event) => {
@@ -146,4 +146,8 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
     el.style.left = offsetX + "px";
 
     return el;
+}
+
+function getScrollbarWidth() {
+    return window.innerWidth - document.body.clientWidth;
 }
