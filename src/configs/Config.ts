@@ -43,7 +43,7 @@ export const defaultConfig: Config = {
     sendHeaders: true,
     port: Constants.defaultPort,
     registeredFileTypes: [
-        "zip", "rar", "7z", "iso", "tar", "gzip",
+        "zip", "rar", "7z", "iso", "tar", "gz",
         "exe", "msi", "deb", "jar", "apk", "bin",
         "mp3","aac",
         "pdf",
