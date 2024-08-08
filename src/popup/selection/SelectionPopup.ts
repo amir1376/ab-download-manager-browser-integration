@@ -1,6 +1,5 @@
 import { PositionInPage } from "~/utils/MouseUtil";
 import browser from "webextension-polyfill";
-import { isFirefox } from "~/utils/ExtensionInfo";
 
 const AB_DM_POPUP_CLASSNAME = "ab_dm_popup_class";
 let showingPopup = false;
@@ -150,19 +149,5 @@ function createUi(position: PositionInPage, onAction: () => void, onCancel: () =
 }
 
 function getScrollbarWidth() {
-    const outer = document.createElement("div");
-    outer.style.visibility = "hidden";
-    outer.style.overflow = "scroll";
-    // @ts-ignore
-    outer.style.msOverflowStyle = "scrollbar";
-    document.body.appendChild(outer);
-
-    const inner = document.createElement("div");
-    outer.appendChild(inner);
-
-    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
-
-    outer.parentNode?.removeChild(outer);
-
-    return scrollbarWidth;
+    return window.innerWidth - document.body.clientWidth;
 }
