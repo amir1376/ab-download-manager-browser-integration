@@ -47,7 +47,8 @@ export const defaultConfig: Config = {
         "exe", "msi", "deb", "jar", "apk", "bin",
         "mp3","aac",
         "pdf",
-        "mp4", "3gp" ,"avi", "mkv", "wav", "mpeg"
+        "mp4", "3gp" ,"avi", "mkv", "wav", "mpeg",
+        "srt",
     ],
     allowPassDownloadIfAppNotRespond: true,
     closeNewTabIfItWasCaptured:true,
