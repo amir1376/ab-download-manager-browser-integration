@@ -15,8 +15,10 @@
     "watch:chrome": "cross-env EXTENSION_TARGET=chrome vite build --watch --mode development --minify false",
     "watch:firefox": "cross-env EXTENSION_TARGET=firefox vite build --watch --mode development --minify false",
     "dev": "vite",
+    "pack:src": "git archive HEAD -o ./dist/src.zip",
     "pack:firefox": "npm run build:firefox && web-ext build --source-dir ./dist/firefox --artifacts-dir ./dist --filename firefox.zip",
     "pack:chrome": "npm run build:chrome && web-ext build --source-dir ./dist/chrome --artifacts-dir ./dist --filename chrome.zip",
+    "pack": "npm run pack:chrome && npm run pack:firefox && npm run pack:src",
     "serve:firefox": "web-ext run --firefox-profile default-release --start-url \"about:debugging#/runtime/this-firefox\"  --source-dir ./dist/firefox --devtools",
     "serve:chrome": "web-ext run -t chromium --start-url \"https://example.com\" --source-dir ./dist/chrome"
   },
