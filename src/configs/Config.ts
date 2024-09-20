@@ -51,6 +51,7 @@ export const defaultConfig: Config = {
         "mp4", "3gp", "avi", "mkv", "wav", "mpeg",
         "srt",
     ],
+    blacklistedUrls: [],
     allowPassDownloadIfAppNotRespond: true,
     closeNewTabIfItWasCaptured: true,
     silentAddDownload: false,
@@ -81,6 +82,7 @@ export interface Config {
     closeNewTabIfItWasCaptured: boolean
     silentAddDownload: boolean
     silentStartDownload: boolean
+    blacklistedUrls: string[]
 }
 
 export const MIN_ALLOWED_PORT = 1024

@@ -44,6 +44,7 @@
     "classnames": "^2.5.1",
     "is-network-error": "^1.0.0",
     "lodash": "^4.17.21",
+    "match-url-wildcard": "^0.0.5",
     "mobx": "^6.12.0",
     "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",

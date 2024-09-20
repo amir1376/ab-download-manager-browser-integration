@@ -9,6 +9,7 @@ import browser from "webextension-polyfill";
 import type {WebRequest} from "webextension-polyfill";
 import {getFileNameFromHeader} from "~/utils/ExtractFileNameFromHeader";
 import {isChrome} from "~/utils/ExtensionInfo";
+import urlMatch from "match-url-wildcard"
 
 // import OnHeadersReceivedOptions = WebRequest.OnHeadersReceivedOptions;
 
@@ -37,6 +38,15 @@ export abstract class DownloadLinkInterceptor {
     }
 
     //utils
+
+    protected isBlacklist(details: WebRequest.OnHeadersReceivedDetailsType) {
+        const blackList = Configs.getLatestConfig().blacklistedUrls
+        if (blackList.length == 0) {
+            return false
+        }
+        const requestedUrl = details.originUrl || details.url
+        return urlMatch(requestedUrl, blackList)
+    }
 
     protected isWebPageComponents(details: WebRequest.OnHeadersReceivedDetailsType) {
         const contentType = details.responseHeaders?.find((header) => {
@@ -107,6 +117,9 @@ export abstract class DownloadLinkInterceptor {
         }
         if (this.isWebPageComponents(details)) {
             // console.log("capture_error","is Web component")
+            return false
+        }
+        if (this.isBlacklist(details)) {
             return false
         }
         let fileName = this.getFileFromHeaders(details.responseHeaders)

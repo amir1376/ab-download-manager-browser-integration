@@ -35,11 +35,14 @@
   "config_auto_capture_links_description": {
     "message": "When you click on link on your browser the link will automatically captured for download by the App"
   },
-  "config_auto_capture_links_file_extensions_reset_to_default": {
+  "reset_to_default": {
     "message": "Reset to default"
   },
   "config_auto_capture_links_file_extensions_description": {
     "message": "Enter each file extension that you want to be captured then press enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Enter URLs you don't want to be captured (one per line, wildcards (*) supported)"
   },
   "config_silent_add_download": {
     "message": "Add Downloads Silently"

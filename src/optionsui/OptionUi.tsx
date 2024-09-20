@@ -15,6 +15,7 @@ import {arrayEquals} from "~/utils/ArrayUtils";
 import browser from "webextension-polyfill";
 import Constants from "~/utils/Constants";
 import classNames from "classnames";
+import {isBlank} from "~/utils/StringUtils";
 
 class ToolsViewModelEvent {
 }
@@ -69,6 +70,9 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     registeredFileTypes!: string[]
 
     @observable
+    blacklistedUrls!: string[]
+
+    @observable
     allowPassDownloadIfAppNotRespond!: boolean
 
     @observable
@@ -80,6 +84,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setRegisteredFileTypes(types: string[]) {
         Configs.setConfigItem("registeredFileTypes", [...new Set(types)])
+    }
+
+    setBlacklistedUrls(blacklistedUrls: string[]) {
+        Configs.setConfigItem("blacklistedUrls", [...new Set(blacklistedUrls)])
     }
 
     setPopupEnabled(value: boolean) {
@@ -201,7 +209,10 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 toggle={(v) => vm.setAutoCaptureLinks(v)}
                 fileTypes={vm.registeredFileTypes}
                 defaultFileTypes={defaultConfig.registeredFileTypes}
+                blacklistedUrls={vm.blacklistedUrls}
+                defaultBlacklistedUrls={defaultConfig.blacklistedUrls}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
+                setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -336,11 +347,31 @@ function AutoCaptureSection(
         fileTypes: string[]
         setFileTypes: (fileTypes: string[]) => void,
         defaultFileTypes: string[],
+
+        blacklistedUrls: string[]
+        setBlacklistedUrls: (urls: string[]) => void,
+        defaultBlacklistedUrls: string[],
     }
 ) {
-    const canBeReset = useMemo(() => {
+    const canBeResetTypes = useMemo(() => {
         return !arrayEquals(props.defaultFileTypes, props.fileTypes)
     }, [props.fileTypes])
+    const canBeResetBlacklistedUrls = useMemo(() => {
+        return !arrayEquals(props.defaultBlacklistedUrls, props.blacklistedUrls)
+    }, [props.blacklistedUrls])
+
+    const [urlsString,setUrlsString] = useState<string>("")
+    useEffect(() => {
+        props.setBlacklistedUrls(
+            urlsString
+                .split("\n")
+                .filter(l=> !isBlank(l))
+        )
+    }, [urlsString]);
+    useEffect(() => {
+        setUrlsString(props.blacklistedUrls.join("\n"))
+    }, [canBeResetBlacklistedUrls]);
+
     return <OptionItem
         title={
             <div>{browser.i18n.getMessage("config_auto_capture_links")}</div>
@@ -358,16 +389,37 @@ function AutoCaptureSection(
                     setItems={props.setFileTypes}
                 />
                 {
-                    canBeReset && (
+                    canBeResetTypes && (
                         <div
                             onClick={() => props.setFileTypes(props.defaultFileTypes)}
                             className="link">
-                            {browser.i18n.getMessage("config_auto_capture_links_file_extensions_reset_to_default")}
+                            {browser.i18n.getMessage("reset_to_default")}
                         </div>
                     )
                 }
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")}</div>
+                <div className="mt-3"/>
+                <div>Ignored Url patterns</div>
+                <div className="mt-2"/>
+                <textarea
+                    className="textarea"
+                    value={urlsString}
+                    onChange={(event)=>{
+                        setUrlsString(event.target.value)
+                    }}
+                />
+                {
+                    canBeResetBlacklistedUrls && (
+                        <div
+                            onClick={() => props.setBlacklistedUrls(props.defaultBlacklistedUrls)}
+                            className="link">
+                            {browser.i18n.getMessage("reset_to_default")}
+                        </div>
+                    )
+                }
+                <div className="mt-2"/>
+                <div>{browser.i18n.getMessage("config_blacklisted_urls_description")}</div>
             </div>
         }
     />
