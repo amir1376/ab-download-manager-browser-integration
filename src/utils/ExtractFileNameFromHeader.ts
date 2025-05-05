@@ -1,3 +1,5 @@
+import {EmailMimeWordDecoder} from "~/utils/EmailMimeWordDecoder";
+
 const utf8FilenameRegex = /filename\*=UTF-8''([\w%\-\.]+)(?:; ?|$)/i;
 const asciiFilenameRegex = /^filename=(["']?)(.*?[^\\])\1(?:; ?|$)/i;
 
@@ -15,7 +17,12 @@ export function getFileNameFromHeader(disposition: string): string | null {
         const partialDisposition = disposition.slice(filenameStart);
         const asciiCheckResult = asciiFilenameRegex.exec(partialDisposition);
         if (asciiCheckResult != null && asciiCheckResult[2]) {
-            return decodeURIComponent(asciiCheckResult[2]);
+            let fileNameValue = asciiCheckResult[2];
+
+            // for mail servers
+            fileNameValue = EmailMimeWordDecoder.decode(fileNameValue)
+
+            return decodeURIComponent(fileNameValue);
         }
     }
     return null;
