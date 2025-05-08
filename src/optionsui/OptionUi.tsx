@@ -14,6 +14,7 @@ import Multiselect from "~/optionsui/Multiselect";
 import {arrayEquals} from "~/utils/ArrayUtils";
 import browser from "webextension-polyfill";
 import Constants from "~/utils/Constants";
+import classNames from "classnames";
 
 class ToolsViewModelEvent {
 }
@@ -53,6 +54,12 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     popupEnabled!: boolean
     @observable
     autoCaptureLinks!: boolean
+
+    @observable
+    silentAddDownload!: boolean
+    @observable
+    silentStartDownload!: boolean
+
     @observable
     port!: number
     @observable
@@ -77,6 +84,14 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setPopupEnabled(value: boolean) {
         Configs.setConfigItem("popupEnabled", value)
+    }
+
+    setSilentAddDownload(value: boolean) {
+        Configs.setConfigItem("silentAddDownload", value)
+    }
+
+    setSilentStartDownload(value: boolean) {
+        Configs.setConfigItem("silentStartDownload", value)
     }
 
     setPort(value: number) {
@@ -134,7 +149,7 @@ const App: React.FC<{
     });
     return <div data-theme="dark" className="w-96 m-auto">
         <Header/>
-        <SettingsSection vm = {vm}/>
+        <SettingsSection vm={vm}/>
         <Footer/>
     </div>
 })
@@ -145,6 +160,7 @@ function Header() {
         <span>{browser.i18n.getMessage("option_ui_title")}</span>
     </div>
 }
+
 function Footer() {
     return <div className="p-4 flex flex-col justify-center items-center space-y-4">
         <span className="">
@@ -163,8 +179,10 @@ function Footer() {
         </div>
         <Divider/>
         <div className="flex flex-row flex-wrap space-x-4">
-            <a target="_blank" className="link link-primary" href={Constants.website}>{browser.i18n.getMessage("project_website")}</a>
-            <a target="_blank" className="link link-primary" href={Constants.repository}>{browser.i18n.getMessage("project_source_code")}</a>
+            <a target="_blank" className="link link-primary"
+               href={Constants.website}>{browser.i18n.getMessage("project_website")}</a>
+            <a target="_blank" className="link link-primary"
+               href={Constants.repository}>{browser.i18n.getMessage("project_source_code")}</a>
         </div>
     </div>
 }
@@ -179,14 +197,21 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
 
         <div className="p-4 bg-base-200 shadow">
             <AutoCaptureSection
-                enabled={vm.autoCaptureLinks}
+                value={vm.autoCaptureLinks}
                 toggle={(v) => vm.setAutoCaptureLinks(v)}
                 fileTypes={vm.registeredFileTypes}
                 defaultFileTypes={defaultConfig.registeredFileTypes}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
             />
             <Divider/>
-            <ShowPopupSection enabled={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
+            <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
+            <Divider/>
+            <SilentDownloadSection
+                silentAddEnabled={vm.silentAddDownload}
+                setSilentAddEnabled={(v) => vm.setSilentAddDownload(v)}
+                silentStartEnabled={vm.silentStartDownload}
+                setSilentStartEnabled={(v) => vm.setSilentStartDownload(v)}
+            />
             <Divider/>
             <PortSection
                 port={vm.port}
@@ -198,6 +223,7 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
         </div>
     </div>
 })
+
 function Divider() {
     return <div className="w-full bg-base-content/20 h-px my-4"/>
 }
@@ -207,23 +233,34 @@ function OptionItem(
         title: ReactNode,
         toggle: ReactNode,
         description: ReactNode,
+        enabled?: boolean,
+        className?: string,
     }
 ) {
-    return <div className="flex flex-col space-y-4">
-        <div className="flex flex-row items-center">
-            {props.title}
-            <div className="flex-grow"></div>
-            {props.toggle}
-        </div>
-        <div className="opacity-80">
-            {props.description}
+    const enabled = props.enabled ?? true
+    const className = props.className ?? ""
+    return <div className={className}>
+        <div className={
+            classNames(
+                "flex flex-col space-y-4",
+                enabled ? "" : "cursor-not-allowed opacity-50",
+            )
+        }>
+            <div className="flex flex-row items-center">
+                {props.title}
+                <div className="flex-grow"></div>
+                {props.toggle}
+            </div>
+            <div className="opacity-80">
+                {props.description}
+            </div>
         </div>
     </div>
 }
 
 function ShowPopupSection(
     props: {
-        enabled: boolean,
+        value: boolean,
         toggle: (v: boolean) => void
     }
 ) {
@@ -232,7 +269,7 @@ function ShowPopupSection(
             <div>{browser.i18n.getMessage("config_show_popups")}</div>
         }
         toggle={
-            <input checked={props.enabled} onChange={event => props.toggle(event.target.checked)} type="checkbox"
+            <input checked={props.value} onChange={event => props.toggle(event.target.checked)} type="checkbox"
                    className="checkbox"/>
         }
         description={
@@ -241,9 +278,60 @@ function ShowPopupSection(
     />
 }
 
+function SilentDownloadSection(
+    props: {
+        silentAddEnabled: boolean,
+        silentStartEnabled: boolean,
+        setSilentAddEnabled: (v: boolean) => void,
+        setSilentStartEnabled: (v: boolean) => void,
+    }
+) {
+    return <div>
+        <OptionItem
+            title={
+                <div>{browser.i18n.getMessage("config_silent_add_download")}</div>
+            }
+            toggle={
+                <input checked={props.silentAddEnabled}
+                       onChange={event => props.setSilentAddEnabled(event.target.checked)} type="checkbox"
+                       className="checkbox"/>
+            }
+            description={
+                <div>{browser.i18n.getMessage("config_silent_add_download_description")}</div>
+            }
+        />
+        <OptionItem
+            className="px-4 pt-4"
+            enabled={props.silentAddEnabled}
+            title={
+                <div>{browser.i18n.getMessage("config_silent_start_download")}</div>
+            }
+            toggle={
+                <input
+                    checked={props.silentStartEnabled}
+                    onChange={event => {
+                        if (!props.silentAddEnabled) {
+                            return
+                        }
+                        props.setSilentStartEnabled(event.target.checked)
+                    }}
+                    type="checkbox"
+                    className={classNames(
+                        "checkbox",
+                        !props.silentAddEnabled && "input-disabled"
+                    )}
+                />
+            }
+            description={
+                <div>{browser.i18n.getMessage("config_silent_start_download_description")}</div>
+            }
+        />
+    </div>
+}
+
 function AutoCaptureSection(
     props: {
-        enabled: boolean,
+        value: boolean,
         toggle: (v: boolean) => void,
         fileTypes: string[]
         setFileTypes: (fileTypes: string[]) => void,
@@ -258,7 +346,7 @@ function AutoCaptureSection(
             <div>{browser.i18n.getMessage("config_auto_capture_links")}</div>
         }
         toggle={
-            <input checked={props.enabled} onChange={event => props.toggle(event.target.checked)} type="checkbox"
+            <input checked={props.value} onChange={event => props.toggle(event.target.checked)} type="checkbox"
                    className="checkbox"/>
         }
         description={

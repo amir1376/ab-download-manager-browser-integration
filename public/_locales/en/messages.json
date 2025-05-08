@@ -41,6 +41,18 @@
   "config_auto_capture_links_file_extensions_description": {
     "message": "Enter each file extension that you want to be captured then press enter"
   },
+  "config_silent_add_download": {
+    "message": "Add Download Silently"
+  },
+  "config_silent_add_download_description": {
+    "message": "Automatically add captured downloads to the download list without showing the \"Add Download\" window"
+  },
+  "config_silent_start_download": {
+    "message": "Start Download Silently"
+  },
+  "config_silent_start_download_description": {
+    "message": "Automatically start captured downloads without showing the \"Add Download\" window"
+  },
   "config_show_popups": {
     "message": "Show Popups"
   },

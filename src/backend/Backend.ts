@@ -2,6 +2,7 @@ import {BackendApi, createBackendApi} from "~/backend/BackendApi";
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config"
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
+import {DownloadRequestOptions, isDownloadRequestOptionsNecessary} from "~/interfaces/DownloadRequestOptions";
 
 let api :BackendApi|null= null
 
@@ -21,11 +22,18 @@ Configs.onChanged.addEventListener((event)=>{
 })
 
 export async function addDownload(
-    downloadRequestItems: DownloadRequestItem[]
+    downloadRequestItems: DownloadRequestItem[],
+    downloadRequestOptions: DownloadRequestOptions,
 ) {
-
     const api = await getApi();
-    return await api.addDownload(downloadRequestItems)
+    if (isDownloadRequestOptionsNecessary(downloadRequestOptions)) {
+        return await api.addDownload({
+            items: downloadRequestItems,
+            options: downloadRequestOptions,
+        })
+    } else {
+        return await api.addDownloadLegacy(downloadRequestItems)
+    }
 }
 
 export async function ping(port:number|null = null) {

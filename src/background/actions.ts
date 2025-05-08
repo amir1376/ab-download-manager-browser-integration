@@ -3,10 +3,20 @@ import * as backend from "~/backend/Backend";
 import {ApiError, NetworkError} from "~/backend/ApiError";
 import * as DialogUtils from "~/utils/DialogUtil";
 import browser from "webextension-polyfill";
+import {defaultDownloadRequestOptions, DownloadRequestOptions} from "~/interfaces/DownloadRequestOptions";
+import {getLatestConfig} from "~/configs/Config";
 
-export async function addDownload(data: DownloadRequestItem[]) {
+export async function addDownload(
+    data: DownloadRequestItem[],
+) {
+    const config = getLatestConfig()
+    const options: DownloadRequestOptions = {...defaultDownloadRequestOptions}
+    if (config.silentAddDownload) {
+        options.silentAdd = true
+        options.silentStart = config.silentStartDownload
+    }
     return !!(await usingBackend(async () => {
-        return await backend.addDownload(data)
+        return await backend.addDownload(data, options)
     }))
 }
 

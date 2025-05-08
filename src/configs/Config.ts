@@ -46,16 +46,18 @@ export const defaultConfig: Config = {
     registeredFileTypes: [
         "zip", "rar", "7z", "iso", "tar", "gz",
         "exe", "msi", "deb", "jar", "apk", "bin",
-        "mp3","aac",
+        "mp3", "aac",
         "pdf",
-        "mp4", "3gp" ,"avi", "mkv", "wav", "mpeg",
+        "mp4", "3gp", "avi", "mkv", "wav", "mpeg",
         "srt",
     ],
     allowPassDownloadIfAppNotRespond: true,
-    closeNewTabIfItWasCaptured:true,
+    closeNewTabIfItWasCaptured: true,
+    silentAddDownload: false,
+    silentStartDownload: false,
 }
 
-export const configKeys:ReadonlyArray<keyof Config>=Object.keys(defaultConfig) as any
+export const configKeys: ReadonlyArray<keyof Config> = Object.keys(defaultConfig) as any
 
 
 export async function getConfigsFromStorageOrDefault(): Promise<Config> {
@@ -77,6 +79,8 @@ export interface Config {
     registeredFileTypes: string[]
     allowPassDownloadIfAppNotRespond: boolean
     closeNewTabIfItWasCaptured: boolean
+    silentAddDownload: boolean
+    silentStartDownload: boolean
 }
 
 export const MIN_ALLOWED_PORT = 1024

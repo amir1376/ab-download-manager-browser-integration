@@ -1,6 +1,7 @@
 import isNetworkError from "is-network-error";
 import {ApiError, NetworkError} from "~/backend/ApiError";
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
+import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
 
 export function createBackendApi(
     port:number,
@@ -42,9 +43,13 @@ export class BackendApi {
         return response
     }
 
-
-    async addDownload(items: DownloadRequestItem[]) {
+    // TODO deprecated! remove this after a while!
+    async addDownloadLegacy(items: DownloadRequestItem[]) {
         return this.request("add", items)
+    }
+
+    async addDownload(request: AddDownloadRequest) {
+        return this.request("add", request)
     }
 
     async ping() {
