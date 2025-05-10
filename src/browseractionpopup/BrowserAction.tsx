@@ -28,6 +28,7 @@ class BrowserActionViewModel extends BaseViewModel {
         Configs.onChanged.addEventListener((config) => {
             this.autoCaptureLinks = config.autoCaptureLinks
             this.popupEnabled = config.popupEnabled
+            this.silentAddDownload = config.silentAddDownload
         })
         run(async () => {
             this.setCanReachable(await backend.ping())
@@ -38,6 +39,8 @@ class BrowserActionViewModel extends BaseViewModel {
     popupEnabled!: boolean
     @observable
     autoCaptureLinks!: boolean
+    @observable
+    silentAddDownload!: boolean
 
     @observable
     canReachable: boolean | null = null
@@ -53,6 +56,10 @@ class BrowserActionViewModel extends BaseViewModel {
 
     setPopupEnabled(value: boolean) {
         Configs.setConfigItem("popupEnabled", value)
+    }
+
+    setSilentAddDownload(value: boolean) {
+        Configs.setConfigItem("silentAddDownload", value)
     }
 
 }
@@ -115,6 +122,7 @@ const BrowserActionUi: React.FC<{
         <div className="bg-base-200 shadow">
             <AutoCaptureSection enabled={vm.autoCaptureLinks} toggle={(v) => vm.setAutoCaptureLinks(v)}/>
             <EnableSection enabled={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
+            <SilentAddDownload enabled={vm.silentAddDownload} toggle={(v) => vm.setSilentAddDownload(v)}/>
             <MoreSettings/>
         </div>
     </div>
@@ -150,6 +158,28 @@ function EnableSection(
     return <OptionItem
         left={
             <div>{browser.i18n.getMessage("config_show_popups")}</div>
+        }
+        onClick={
+            () => props.toggle(!props.enabled)
+        }
+        right={
+            <input
+                checked={props.enabled}
+                type="checkbox"
+                className="checkbox"/>
+        }
+    />
+}
+
+function SilentAddDownload(
+    props: {
+        enabled: boolean,
+        toggle: (v: boolean) => void
+    }
+) {
+    return <OptionItem
+        left={
+            <div>{browser.i18n.getMessage("config_silent_add_download")}</div>
         }
         onClick={
             () => props.toggle(!props.enabled)

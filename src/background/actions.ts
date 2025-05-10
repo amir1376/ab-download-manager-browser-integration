@@ -5,6 +5,7 @@ import * as DialogUtils from "~/utils/DialogUtil";
 import browser from "webextension-polyfill";
 import {defaultDownloadRequestOptions, DownloadRequestOptions} from "~/interfaces/DownloadRequestOptions";
 import {getLatestConfig} from "~/configs/Config";
+import {run} from "~/utils/ScopeFunctions";
 
 export async function addDownload(
     data: DownloadRequestItem[],
@@ -15,35 +16,51 @@ export async function addDownload(
         options.silentAdd = true
         options.silentStart = config.silentStartDownload
     }
-    return !!(await usingBackend(async () => {
+    const response = !!await usingBackend(async () => {
         return await backend.addDownload(data, options)
-    }))
+    });
+    if (response && config.silentAddDownload && data.length == 1) {
+        run(() => {
+            try {
+                browser.notifications?.create({
+                    type: "basic",
+                    title: browser.i18n.getMessage("abdm_notification_title"),
+                    message: browser.i18n.getMessage("abdm_notification_download_captured_silently")
+                })
+            } catch (e) {
+                console.log("can't send notifications")
+            }
+        })
+    }
+    return response
 }
 
-export async function getHeadersForUrls(urls:string[]){
+export async function getHeadersForUrls(urls: string[]) {
     return Promise.all(urls.map(async url => {
         return await getHeadersForUrl(url)
     }));
 }
+
 export async function getHeadersForUrl(
     url: string,
 ): Promise<DownloadRequestHeaders | null> {
     try {
-        let headers:DownloadRequestHeaders={}
+        let headers: DownloadRequestHeaders = {}
         const cookie = (await browser.cookies.getAll({
             url: url,
         })).map((cookie) => {
             return `${cookie.name}=${cookie.value}`
         }).join("; ")
-        headers["Cookie"]=cookie
-        headers["Host"]=new URL(url).host
-        headers["User-Agent"]=navigator.userAgent
+        headers["Cookie"] = cookie
+        headers["Host"] = new URL(url).host
+        headers["User-Agent"] = navigator.userAgent
         return headers
     } catch (e) {
         console.log(e)
         return null
     }
 }
+
 async function usingBackend<T>(block: () => T) {
     try {
         return await block()

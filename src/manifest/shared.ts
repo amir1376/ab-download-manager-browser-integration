@@ -53,5 +53,6 @@ export function getCommonPermissions():ManifestPermissions[]{
         "storage",
         "tabs",
         "downloads",
+        "notifications",
     ]
 }

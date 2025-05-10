@@ -42,7 +42,7 @@
     "message": "Enter each file extension that you want to be captured then press enter"
   },
   "config_silent_add_download": {
-    "message": "Add Download Silently"
+    "message": "Add Downloads Silently"
   },
   "config_silent_add_download_description": {
     "message": "Automatically add captured downloads to the download list without showing the \"Add Download\" window"
@@ -118,5 +118,11 @@
   },
   "project_source_code": {
     "message": "Project Source Code"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Download captured silently"
   }
 }
