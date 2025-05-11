@@ -24,6 +24,7 @@ export async function addDownload(
             try {
                 browser.notifications?.create({
                     type: "basic",
+                    iconUrl: browser.runtime.getURL("icons/icon-128.png"),
                     title: browser.i18n.getMessage("abdm_notification_title"),
                     message: browser.i18n.getMessage("abdm_notification_download_captured_silently")
                 })
