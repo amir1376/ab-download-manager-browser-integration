@@ -1,1 +1,128 @@
-
+{
+  "selection_popup_download_selected": {
+    "message": "Kijelöltek letöltése"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Nem észlelhető hivatkozás"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Először jelöljön ki egy részt"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Letöltés az AB DM-mel"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Töltse le a kiválasztott linkeket az AB DM segítségével"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM Gyors beállítások"
+  },
+  "option_ui_title": {
+    "message": "AB letöltéskezelő bővítmény"
+  },
+  "connection_connected": {
+    "message": "Csatlakoztatva"
+  },
+  "connection_not_connected": {
+    "message": "Nincs csatlakoztatva"
+  },
+  "connection_checking": {
+    "message": "Ellenőrzés"
+  },
+  "config_auto_capture_links": {
+    "message": "Linkek automatikus lekérése"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Amikor rákattint a linkre a böngészőjében, a hivatkozást automatikusan lekéri az alkalmazás letöltése céljából"
+  },
+  "config_auto_capture_links_file_extensions_reset_to_default": {
+    "message": "Visszaállítás az alapértelmezettre"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Írja be az összes letölteni kívánt fájlkiterjesztést, majd nyomja meg az enter billentyűt"
+  },
+  "config_silent_add_download": {
+    "message": "Letöltések hozzáadása csendesen"
+  },
+  "config_silent_add_download_description": {
+    "message": "A lekért hivatkozások automatikus hozzáadása a letöltési listához a \"Letöltés hozzáadása\" ablak megjelenítése nélkül"
+  },
+  "config_silent_start_download": {
+    "message": "Indítsa el a letöltést csendesen"
+  },
+  "config_silent_start_download_description": {
+    "message": "A lekért hivatkozások automatikus indítása a \"Letöltés hozzáadása\" ablak megjelenítése nélkül"
+  },
+  "config_show_popups": {
+    "message": "Előugró ablakok megjelenítése"
+  },
+  "config_show_popups_description": {
+    "message": "Előugró ablak megjelenítése a linkeket tartalmazó kijelöléseknél"
+  },
+  "config_port": {
+    "message": "Port"
+  },
+  "config_port_description": {
+    "message": "Győződjön meg arról, hogy ez a port és az alkalmazás értéke megegyezik, különben ez a bővítmény nem működik megfelelően"
+  },
+  "config_port_connection_success": {
+    "message": "Sikerült\nPort ($port$) csatlakoztatva van",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Sikertelen\nPort ($port$) nincs csatlakoztatva",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Cookie-k küldése"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Megjegyzés: NE Jelölje be ezt, ha nem megbízható környezetben tartózkodik"
+  },
+  "browser_action_more_settings": {
+    "message": "További beállítások"
+  },
+  "connection_error_api_error": {
+    "message": "Probléma van az alkalmazás API-val, Ügyeljen arra, hogy az alkalmazást és a bővítményt is frissítse a legújabb verzióra"
+  },
+  "connection_error_network_error": {
+    "message": "Nem lehet csatlakozni az alkalmazáshoz, Győződjön meg arról, hogy az alkalmazás telepítve van és fut, és a böngészőintegráció be van kapcsolva az alkalmazás beállításaiban"
+  },
+  "settings": {
+    "message": "Beállítások"
+  },
+  "test": {
+    "message": "Teszt"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Annak érdekében, hogy ez a bővítmény megfelelően működjön, győződjön meg arról, hogy az AB Download Manager telepítve van, ha nem..."
+  },
+  "download_abdm_app": {
+    "message": "Töltse le az alkalmazást"
+  },
+  "project_website": {
+    "message": "A projekt honlapja"
+  },
+  "support_by_rating": {
+    "message": "Ha tetszik ez a munka, ne felejts el támogatni hozzászólásaiddal/értékeléseiddel, és oszd meg barátaiddal is"
+  },
+  "project_source_code": {
+    "message": "Projekt forráskódja"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Letöltés csendesen módban"
+  }
+}
