@@ -49,7 +49,6 @@
     "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-select": "^5.8.0",
     "webext-bridge": "^6.0.1",
     "webextension-polyfill": "^0.12.0"
   }

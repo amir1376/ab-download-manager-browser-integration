@@ -10,12 +10,12 @@ import {constraintIn} from "~/utils/NumberUtils";
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
 import {sendMessage} from "webext-bridge/options"
 import {Config, configKeys, defaultConfig} from "~/configs/Config";
-import Multiselect from "~/optionsui/Multiselect";
 import {arrayEquals} from "~/utils/ArrayUtils";
 import browser from "webextension-polyfill";
 import Constants from "~/utils/Constants";
 import classNames from "classnames";
 import {isBlank} from "~/utils/StringUtils";
+import AutoGrowingTextarea from "~/optionsui/AutoGrowingTextarea";
 
 class ToolsViewModelEvent {
 }
@@ -353,14 +353,25 @@ function AutoCaptureSection(
         defaultBlacklistedUrls: string[],
     }
 ) {
+    const [fileTypesString, setFileTypesString] = useState<string>("")
     const canBeResetTypes = useMemo(() => {
         return !arrayEquals(props.defaultFileTypes, props.fileTypes)
     }, [props.fileTypes])
+    useEffect(() => {
+        props.setFileTypes(
+            fileTypesString
+                .split(" ")
+                .filter(l => !isBlank(l))
+        )
+    }, [fileTypesString]);
+    useEffect(() => {
+        setFileTypesString(props.fileTypes.join(" "))
+    }, [canBeResetTypes]);
+
+    const [urlsString, setUrlsString] = useState<string>("")
     const canBeResetBlacklistedUrls = useMemo(() => {
         return !arrayEquals(props.defaultBlacklistedUrls, props.blacklistedUrls)
     }, [props.blacklistedUrls])
-
-    const [urlsString,setUrlsString] = useState<string>("")
     useEffect(() => {
         props.setBlacklistedUrls(
             urlsString
@@ -384,9 +395,12 @@ function AutoCaptureSection(
             <div className="flex flex-col">
                 <div>{browser.i18n.getMessage("config_auto_capture_links_description")}</div>
                 <div className="mt-2"/>
-                <Multiselect
-                    items={props.fileTypes}
-                    setItems={props.setFileTypes}
+                <AutoGrowingTextarea
+                    className="textarea"
+                    value={fileTypesString}
+                    onChange={(event) => {
+                        setFileTypesString(event.target.value)
+                    }}
                 />
                 {
                     canBeResetTypes && (
@@ -402,7 +416,7 @@ function AutoCaptureSection(
                 <div className="mt-3"/>
                 <div>Ignored Url patterns</div>
                 <div className="mt-2"/>
-                <textarea
+                <AutoGrowingTextarea
                     className="textarea"
                     value={urlsString}
                     onChange={(event)=>{
