@@ -24,8 +24,9 @@ function createPopup() {
     wrapper.style.gap = "2px"
     wrapper.style.direction = "ltr"
 
-    wrapper.innerHTML = `
-    <style>
+    // Create style element using textContent to avoid CSP violation
+    const styleEl = document.createElement("style")
+    styleEl.textContent = `
       .abdm-extension * {
         font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         box-sizing: border-box;
@@ -104,7 +105,11 @@ function createPopup() {
         font-size: 0.8rem;
         opacity: 0.7;
       }
-    </style>
+    `
+    wrapper.appendChild(styleEl)
+
+    // Create HTML content without inline style
+    const contentHTML = `
     <div class="abdm-media-header">
       <div class="appIcon">
         <svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -129,7 +134,13 @@ function createPopup() {
       </div>
     </div>
     <div class="abdm-media-list"></div>
-  `
+    `
+    
+    const contentContainer = document.createElement("div")
+    contentContainer.innerHTML = contentHTML
+    while (contentContainer.firstChild) {
+        wrapper.appendChild(contentContainer.firstChild)
+    }
 
     const header = wrapper.querySelector<HTMLDivElement>(".abdm-media-header")!
     const listContainer = wrapper.querySelector<HTMLDivElement>(".abdm-media-list")!
