@@ -56,6 +56,8 @@ export const defaultConfig: Config = {
     closeNewTabIfItWasCaptured: true,
     silentAddDownload: false,
     silentStartDownload: false,
+    // 0 means no minimum (capture all sizes)
+    captureFileSizeLimitMb: 0,
 }
 
 export const configKeys: ReadonlyArray<keyof Config> = Object.keys(defaultConfig) as any
@@ -83,6 +85,8 @@ export interface Config {
     silentAddDownload: boolean
     silentStartDownload: boolean
     blacklistedUrls: string[]
+    // minimum file size to capture in megabytes. 0 = no minimum (capture all sizes)
+    captureFileSizeLimitMb: number
 }
 
 export const MIN_ALLOWED_PORT = 1024

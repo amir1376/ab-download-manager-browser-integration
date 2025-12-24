@@ -12,7 +12,7 @@ import {InterceptedMediaResult,} from "~/linkgrabber/LinkGrabberResponse";
 
 import {OnMediaInterceptedFromRequestListener} from "~/media/OnMediaInterceptedFromRequestListener";
 import {MEDIA_BLACKLIST_URLS} from "~/media/MediaBlackList";
-import {getContentType} from "~/utils/HeaderUtils";
+import {getContentType, getContentLength} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
 
 type TabInfo = {
@@ -162,6 +162,19 @@ export abstract class DownloadLinkInterceptor {
         if (fileName == null) {
             // console.log("capture_error","filename isNull")
             return false
+        }
+        // enforce capture minimum size (skip files smaller than configured MB)
+        try {
+            const minMb = Configs.getLatestConfig().captureFileSizeLimitMb || 0
+            if (minMb > 0) {
+                const length = getContentLength(responseHeaders)
+                if (length !== null && length < minMb * 1024 * 1024) {
+                    // file too small, skip capturing
+                    return false
+                }
+            }
+        } catch (e) {
+            // ignore and continue if config not available
         }
         const ext = getFileExtension(fileName)
         if (!this.isInRegisteredFileFormats(ext)) {
@@ -446,6 +459,19 @@ export abstract class DownloadLinkInterceptor {
     private checkForDirectMedia(details: WebRequest.OnCompletedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
         if (!this.shouldProcessMedia(details)) {
             return
+        }
+        // respect capture minimum size for media (skip media smaller than configured MB)
+        try {
+            const minMb = Configs.getLatestConfig().captureFileSizeLimitMb || 0
+            if (minMb > 0) {
+                const responseHeaders = getHeaders(details.responseHeaders)
+                const length = getContentLength(responseHeaders)
+                if (length !== null && length < minMb * 1024 * 1024) {
+                    return
+                }
+            }
+        } catch (e) {
+            // ignore and continue
         }
         const isMedia = this.isDirectMedia(
             details.url,

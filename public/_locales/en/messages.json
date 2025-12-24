@@ -130,5 +130,11 @@
   },
   "download_media_title": {
     "message": "Download With ABDM"
+  },
+  "config_capture_file_size_limit_mb": {
+    "message": "Capture file size limit (MB)"
+  },
+  "config_capture_file_size_limit_mb_description": {
+    "message": "Only capture files with size greater than or equal to this value in megabytes. Set 0 to capture all sizes."
   }
 }

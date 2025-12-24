@@ -78,6 +78,9 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     @observable
     closeNewTabIfItWasCaptured!: boolean
 
+    @observable
+    captureFileSizeLimitMb!: number
+
     setAutoCaptureLinks(value: boolean) {
         Configs.setConfigItem("autoCaptureLinks", value)
     }
@@ -88,6 +91,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setBlacklistedUrls(blacklistedUrls: string[]) {
         Configs.setConfigItem("blacklistedUrls", [...new Set(blacklistedUrls)])
+    }
+
+    setCaptureFileSizeLimitMb(value: number) {
+        Configs.setConfigItem("captureFileSizeLimitMb", value)
     }
 
     setPopupEnabled(value: boolean) {
@@ -213,6 +220,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 defaultBlacklistedUrls={defaultConfig.blacklistedUrls}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
                 setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
+                captureFileSizeLimitMb={vm.captureFileSizeLimitMb}
+                setCaptureFileSizeLimitMb={(v) => vm.setCaptureFileSizeLimitMb(v)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -351,6 +360,8 @@ function AutoCaptureSection(
         blacklistedUrls: string[]
         setBlacklistedUrls: (urls: string[]) => void,
         defaultBlacklistedUrls: string[],
+        captureFileSizeLimitMb: number,
+        setCaptureFileSizeLimitMb: (n: number) => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>("")
@@ -432,6 +443,18 @@ function AutoCaptureSection(
                         </div>
                     )
                 }
+                <div className="mt-3"/>
+                <div className="flex items-center space-x-2">
+                    <label className="w-52">{browser.i18n.getMessage("config_capture_file_size_limit_mb")}</label>
+                    <input
+                        type="number"
+                        min={0}
+                        value={props.captureFileSizeLimitMb}
+                        onChange={(e) => props.setCaptureFileSizeLimitMb(Number(e.target.value || 0))}
+                        className="input w-32"
+                    />
+                    <span className="text-sm text-muted">MB (0 = capture all sizes)</span>
+                </div>
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_blacklisted_urls_description")}</div>
             </div>
