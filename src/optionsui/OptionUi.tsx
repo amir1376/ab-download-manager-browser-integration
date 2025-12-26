@@ -79,7 +79,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     closeNewTabIfItWasCaptured!: boolean
 
     @observable
-    captureFileSizeLimitMb!: number
+    captureFileSizeMinimumKb!: number
 
     setAutoCaptureLinks(value: boolean) {
         Configs.setConfigItem("autoCaptureLinks", value)
@@ -93,8 +93,8 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
         Configs.setConfigItem("blacklistedUrls", [...new Set(blacklistedUrls)])
     }
 
-    setCaptureFileSizeLimitMb(value: number) {
-        Configs.setConfigItem("captureFileSizeLimitMb", value)
+    setCaptureFileSizeMinimumKb(value: number) {
+        Configs.setConfigItem("captureFileSizeMinimumKb", value)
     }
 
     setPopupEnabled(value: boolean) {
@@ -220,8 +220,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 defaultBlacklistedUrls={defaultConfig.blacklistedUrls}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
                 setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
-                captureFileSizeLimitMb={vm.captureFileSizeLimitMb}
-                setCaptureFileSizeLimitMb={(v) => vm.setCaptureFileSizeLimitMb(v)}
+                captureFileSizeMinimumKb={vm.captureFileSizeMinimumKb}
+                setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
             />
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
@@ -360,8 +360,8 @@ function AutoCaptureSection(
         blacklistedUrls: string[]
         setBlacklistedUrls: (urls: string[]) => void,
         defaultBlacklistedUrls: string[],
-        captureFileSizeLimitMb: number,
-        setCaptureFileSizeLimitMb: (n: number) => void,
+        captureFileSizeMinimumKb: number,
+        setCaptureFileSizeMinimumKb: (n: number) => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>("")
@@ -444,16 +444,32 @@ function AutoCaptureSection(
                     )
                 }
                 <div className="mt-3"/>
-                <div className="flex items-center space-x-2">
-                    <label className="w-52">{browser.i18n.getMessage("config_capture_file_size_limit_mb")}</label>
-                    <input
-                        type="number"
-                        min={0}
-                        value={props.captureFileSizeLimitMb}
-                        onChange={(e) => props.setCaptureFileSizeLimitMb(Number(e.target.value || 0))}
-                        className="input w-32"
-                    />
-                    <span className="text-sm text-muted">MB (0 = capture all sizes)</span>
+                <div className="flex flex-col space-y-2">
+                    <label>{browser.i18n.getMessage("config_capture_file_size_limit_kb")}</label>
+                    <div className="flex items-center space-x-2">
+                        <select
+                            value={props.captureFileSizeMinimumKb}
+                            onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value))}
+                            className="select select-sm flex-1"
+                        >
+                            <option value={0}>Custom / No limit</option>
+                            <option value={102400}>100 MB</option>
+                            <option value={512000}>500 MB</option>
+                            <option value={1048576}>1 GB</option>
+                        </select>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <label className="text-sm">Custom value:</label>
+                        <input
+                            type="number"
+                            min={0}
+                            placeholder="Enter KB"
+                            value={props.captureFileSizeMinimumKb}
+                            onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value || 0))}
+                            className="input input-sm w-40"
+                        />
+                        <span className="text-xs text-muted">KB</span>
+                    </div>
                 </div>
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_blacklisted_urls_description")}</div>

@@ -108,6 +108,21 @@ export abstract class DownloadLinkInterceptor {
         return true
     }
 
+    private doWeAcceptThisFileSize(contentLength: number | null): boolean {
+        if (contentLength === null) {
+            // no Content-Length header, accept it
+            return true
+        }
+        const minKb = Configs.getLatestConfig().captureFileSizeMinimumKb || 0
+        if (minKb > 0) {
+            // skip files smaller than the minimum size
+            if (contentLength < minKb * 1024) {
+                return false
+            }
+        }
+        return true
+    }
+
     protected shouldHandleRequestForDirectDownload(details: WebRequest.OnHeadersReceivedDetailsType): string | false {
         if (!(
             details.type === "main_frame"
@@ -141,6 +156,11 @@ export abstract class DownloadLinkInterceptor {
         if (downloadPage && this.isInConfigBlacklist(downloadPage)) {
             return false
         }
+        // check file size minimum requirement
+        const contentLength = getContentLength(responseHeaders)
+        if (!this.doWeAcceptThisFileSize(contentLength)) {
+            return false
+        }
 
         return this.isDirectDownloadContent(details, responseHeaders)
     }
@@ -162,19 +182,6 @@ export abstract class DownloadLinkInterceptor {
         if (fileName == null) {
             // console.log("capture_error","filename isNull")
             return false
-        }
-        // enforce capture minimum size (skip files smaller than configured MB)
-        try {
-            const minMb = Configs.getLatestConfig().captureFileSizeLimitMb || 0
-            if (minMb > 0) {
-                const length = getContentLength(responseHeaders)
-                if (length !== null && length < minMb * 1024 * 1024) {
-                    // file too small, skip capturing
-                    return false
-                }
-            }
-        } catch (e) {
-            // ignore and continue if config not available
         }
         const ext = getFileExtension(fileName)
         if (!this.isInRegisteredFileFormats(ext)) {
@@ -453,25 +460,17 @@ export abstract class DownloadLinkInterceptor {
                 return false
             }
         }
+        // check file size minimum requirement
+        const contentLength = getContentLength(getHeaders(details.responseHeaders))
+        if (!this.doWeAcceptThisFileSize(contentLength)) {
+            return false
+        }
         return true
     }
 
     private checkForDirectMedia(details: WebRequest.OnCompletedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
         if (!this.shouldProcessMedia(details)) {
             return
-        }
-        // respect capture minimum size for media (skip media smaller than configured MB)
-        try {
-            const minMb = Configs.getLatestConfig().captureFileSizeLimitMb || 0
-            if (minMb > 0) {
-                const responseHeaders = getHeaders(details.responseHeaders)
-                const length = getContentLength(responseHeaders)
-                if (length !== null && length < minMb * 1024 * 1024) {
-                    return
-                }
-            }
-        } catch (e) {
-            // ignore and continue
         }
         const isMedia = this.isDirectMedia(
             details.url,
