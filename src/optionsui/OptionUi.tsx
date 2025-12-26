@@ -443,6 +443,8 @@ function AutoCaptureSection(
                         </div>
                     )
                 }
+                <div className="mt-2"/>
+                <div>{browser.i18n.getMessage("config_blacklisted_urls_description")}</div>
                 <div className="mt-3"/>
                 <div className="flex flex-col space-y-2">
                     <label>{browser.i18n.getMessage("config_capture_file_size_limit_kb")}</label>
@@ -471,8 +473,6 @@ function AutoCaptureSection(
                         <span className="text-xs text-muted">KB</span>
                     </div>
                 </div>
-                <div className="mt-2"/>
-                <div>{browser.i18n.getMessage("config_blacklisted_urls_description")}</div>
             </div>
         }
     />
