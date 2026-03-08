@@ -90,7 +90,7 @@
     "message": "Send Cookies"
   },
   "config_send_cookies_descrption": {
-    "message": "Note: DON”T Check this if you are in a non trustable environment"
+    "message": "Note: DON'T Check this if you are in a non trustable environment"
   },
   "browser_action_more_settings": {
     "message": "More Settings"
