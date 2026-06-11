@@ -55,6 +55,10 @@ run(async () => {
 
     document.addEventListener("selectionchange", () => {
         lastSelectionConsumed = true
+        const selection = window.getSelection();
+        if (!selection || selection.type !== "Range") {
+            selectionPopup.closeAddDownloadPopupUi();
+        }
     })
     document.addEventListener("mouseup", () => {
         showPopupDelayed(() => {
