@@ -294,7 +294,7 @@ export abstract class DownloadLinkInterceptor {
             },
             filter,
         )
-        browser.webRequest.onCompleted.addListener(
+        browser.webRequest.onResponseStarted.addListener(
             (details) => {
                 const request = this.pendingRequests[details.requestId]
                 if (!request) {
@@ -310,7 +310,7 @@ export abstract class DownloadLinkInterceptor {
                 "responseHeaders"
             ],
         )
-        browser.webRequest.onCompleted.addListener(
+        browser.webRequest.onResponseStarted.addListener(
             (details) => {
                 const request = this.pendingRequests[details.requestId]
                 if (!request) {
@@ -423,7 +423,7 @@ export abstract class DownloadLinkInterceptor {
         this.onMediaDetectedListener = onMediaDetectedListener
     }
 
-    private checkForHLS(details: WebRequest.OnCompletedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
+    private checkForHLS(details: WebRequest.OnResponseStartedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
         if (!this.shouldProcessMedia(details)) {
             return
         }
@@ -440,7 +440,7 @@ export abstract class DownloadLinkInterceptor {
         }
     }
 
-    private shouldProcessMedia(details: WebRequest.OnCompletedDetailsType) {
+    private shouldProcessMedia(details: WebRequest.OnResponseStartedDetailsType | WebRequest.OnCompletedDetailsType) {
         if (!Configs.getLatestConfig().popupEnabled) {
             return false
         }
@@ -468,7 +468,7 @@ export abstract class DownloadLinkInterceptor {
         return true
     }
 
-    private checkForDirectMedia(details: WebRequest.OnCompletedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
+    private checkForDirectMedia(details: WebRequest.OnResponseStartedDetailsType, request: WebRequest.OnSendHeadersDetailsType) {
         if (!this.shouldProcessMedia(details)) {
             return
         }
