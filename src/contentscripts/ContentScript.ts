@@ -62,6 +62,10 @@ run(async () => {
         }
     })
 
+    document.addEventListener("mousedown", () => {
+        showPopupDelayed.cancel()
+    })
+
     let holdingKey = ""
     document.addEventListener("keydown", (e) => {
         holdingKey = e.key
