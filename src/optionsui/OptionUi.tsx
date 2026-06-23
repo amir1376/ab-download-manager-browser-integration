@@ -70,6 +70,9 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     registeredFileTypes!: string[]
 
     @observable
+    fileExtensionFilterMode!: "allowlist" | "denylist"
+
+    @observable
     blacklistedUrls!: string[]
 
     @observable
@@ -90,6 +93,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setRegisteredFileTypes(types: string[]) {
         Configs.setConfigItem("registeredFileTypes", [...new Set(types)])
+    }
+
+    setFileExtensionFilterMode(mode: "allowlist" | "denylist") {
+        Configs.setConfigItem("fileExtensionFilterMode", mode)
     }
 
     setBlacklistedUrls(blacklistedUrls: string[]) {
@@ -227,6 +234,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 defaultBlacklistedUrls={defaultConfig.blacklistedUrls}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
                 setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
+                fileExtensionFilterMode={vm.fileExtensionFilterMode}
+                setFileExtensionFilterMode={(m) => vm.setFileExtensionFilterMode(m)}
                 captureFileSizeMinimumKb={vm.captureFileSizeMinimumKb}
                 setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
                 bypassShortcut={vm.bypassShortcut}
@@ -373,6 +382,8 @@ function AutoCaptureSection(
         setCaptureFileSizeMinimumKb: (n: number) => void,
         bypassShortcut: string,
         setBypassShortcut: (s: string) => void,
+        fileExtensionFilterMode: "allowlist" | "denylist",
+        setFileExtensionFilterMode: (m: "allowlist" | "denylist") => void,
     }
 ) {
     const [fileTypesString, setFileTypesString] = useState<string>("")
@@ -417,6 +428,21 @@ function AutoCaptureSection(
             <div className="flex flex-col">
                 <div>{browser.i18n.getMessage("config_auto_capture_links_description")}</div>
                 <div className="mt-2"/>
+                <div className="flex flex-row items-center space-x-2 mb-2">
+                    <button
+                        className={classNames("btn btn-xs", props.fileExtensionFilterMode === "denylist" ? "btn-warning" : "btn-outline")}
+                        title={props.fileExtensionFilterMode === "allowlist"
+                            ? "Switch to denylist: capture all extensions EXCEPT those listed"
+                            : "Switch to allowlist: capture ONLY listed extensions"}
+                        onClick={() =>
+                            props.setFileExtensionFilterMode(
+                                props.fileExtensionFilterMode === "allowlist" ? "denylist" : "allowlist"
+                            )
+                        }
+                    >
+                        {props.fileExtensionFilterMode === "allowlist" ? "⇄ Invert" : "⇄ Inverted (active)"}
+                    </button>
+                </div>
                 <AutoGrowingTextarea
                     className="textarea"
                     value={fileTypesString}
@@ -434,7 +460,10 @@ function AutoCaptureSection(
                     )
                 }
                 <div className="mt-2"/>
-                <div>{browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")}</div>
+                <div>{props.fileExtensionFilterMode === "allowlist"
+                    ? browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")
+                    : browser.i18n.getMessage("config_auto_capture_links_file_extensions_denylist_description")
+                }</div>
                 <div className="mt-3"/>
                 <div>Ignored Url patterns</div>
                 <div className="mt-2"/>

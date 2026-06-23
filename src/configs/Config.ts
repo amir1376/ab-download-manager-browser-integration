@@ -59,6 +59,7 @@ export const defaultConfig: Config = {
     // 0 means no minimum (capture all sizes)
     captureFileSizeMinimumKb: 0,
     bypassShortcut: "Delete",
+    fileExtensionFilterMode: "allowlist",
 }
 
 export const configKeys: ReadonlyArray<keyof Config> = Object.keys(defaultConfig) as any
@@ -89,6 +90,7 @@ export interface Config {
     // minimum file size to capture in kilobytes. 0 = no minimum (capture all sizes)
     captureFileSizeMinimumKb: number
     bypassShortcut: string,
+    fileExtensionFilterMode: "allowlist" | "denylist",
 }
 
 export const MIN_ALLOWED_PORT = 1024

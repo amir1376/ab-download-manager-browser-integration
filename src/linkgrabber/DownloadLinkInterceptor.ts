@@ -121,11 +121,15 @@ export abstract class DownloadLinkInterceptor {
     }
 
     protected isInRegisteredFileFormats(fileExtension: string) {
+        const config = Configs.getLatestConfig()
         const extension = fileExtension.toLowerCase()
-        if (!Configs.getLatestConfig().registeredFileTypes.includes(extension)) {
-            return false
+        const listed = config.registeredFileTypes.includes(extension)
+        if (config.fileExtensionFilterMode === "denylist") {
+            // Invert mode: capture everything EXCEPT the listed extensions
+            return !listed
         }
-        return true
+        // Default allowlist mode: capture only listed extensions
+        return listed
     }
 
     private doWeAcceptThisFileSize(contentLength: number | null): boolean {

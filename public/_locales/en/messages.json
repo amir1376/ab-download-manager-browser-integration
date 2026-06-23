@@ -1,146 +1,149 @@
 {
-  "selection_popup_download_selected": {
-    "message": "Download selected"
-  },
-  "popup_alert_no_link_detected": {
-    "message": "No links detected"
-  },
-  "popup_alert_nothing_selected": {
-    "message": "Please first make a selection"
-  },
-  "context_menu_download_with_abdm": {
-    "message": "Download with AB DM"
-  },
-  "context_menu_download_selected_links_with_abdm": {
-    "message": "Download selected links with AB DM"
-  },
-  "browser_action_popup_title": {
-    "message": "AB DM Quick Settings"
-  },
-  "option_ui_title": {
-    "message": "AB Download Manager Extension"
-  },
-  "connection_connected": {
-    "message": "Connected"
-  },
-  "connection_not_connected": {
-    "message": "Not Connected"
-  },
-  "connection_checking": {
-    "message": "Checking"
-  },
-  "config_auto_capture_links": {
-    "message": "Auto Capture Links"
-  },
-  "config_auto_capture_links_description": {
-    "message": "When you click on a link in your browser it will automatically be captured for download by the app"
-  },
-  "reset_to_default": {
-    "message": "Reset to default"
-  },
-  "config_auto_capture_links_file_extensions_description": {
-    "message": "Enter each file extension that you want to be captured then press enter"
-  },
-  "config_blacklisted_urls_description": {
-    "message": "Enter URLs you don't want to be captured (one per line, wildcards (*) supported)"
-  },
-  "config_silent_add_download": {
-    "message": "Add downloads silently"
-  },
-  "config_silent_add_download_description": {
-    "message": "Automatically add captured downloads to the download list without showing the \"Add Download\" window"
-  },
-  "config_silent_start_download": {
-    "message": "Start download silently"
-  },
-  "config_silent_start_download_description": {
-    "message": "Automatically start captured downloads without showing the \"Add Download\" window"
-  },
-  "config_show_popups": {
-    "message": "Show popups"
-  },
-  "config_show_popups_description": {
-    "message": "Show popup on selections which have links"
-  },
-  "config_port": {
-    "message": "Port"
-  },
-  "config_port_description": {
-    "message": "Make sure this port and the value in the app are the same otherwise this extension will not work properly"
-  },
-  "config_port_connection_success": {
-    "message": "Success\nPort ($port$) Is connected",
-    "placeholders": {
-      "port": {
-        "content": "$1",
-        "example": "15151"
-      }
+    "selection_popup_download_selected": {
+        "message": "Download selected"
+    },
+    "popup_alert_no_link_detected": {
+        "message": "No links detected"
+    },
+    "popup_alert_nothing_selected": {
+        "message": "Please first make a selection"
+    },
+    "context_menu_download_with_abdm": {
+        "message": "Download with AB DM"
+    },
+    "context_menu_download_selected_links_with_abdm": {
+        "message": "Download selected links with AB DM"
+    },
+    "browser_action_popup_title": {
+        "message": "AB DM Quick Settings"
+    },
+    "option_ui_title": {
+        "message": "AB Download Manager Extension"
+    },
+    "connection_connected": {
+        "message": "Connected"
+    },
+    "connection_not_connected": {
+        "message": "Not Connected"
+    },
+    "connection_checking": {
+        "message": "Checking"
+    },
+    "config_auto_capture_links": {
+        "message": "Auto Capture Links"
+    },
+    "config_auto_capture_links_description": {
+        "message": "When you click on a link in your browser it will automatically be captured for download by the app"
+    },
+    "reset_to_default": {
+        "message": "Reset to default"
+    },
+    "config_auto_capture_links_file_extensions_description": {
+        "message": "Enter each file extension that you want to be captured then press enter"
+    },
+    "config_blacklisted_urls_description": {
+        "message": "Enter URLs you don't want to be captured (one per line, wildcards (*) supported)"
+    },
+    "config_silent_add_download": {
+        "message": "Add downloads silently"
+    },
+    "config_silent_add_download_description": {
+        "message": "Automatically add captured downloads to the download list without showing the \"Add Download\" window"
+    },
+    "config_silent_start_download": {
+        "message": "Start download silently"
+    },
+    "config_silent_start_download_description": {
+        "message": "Automatically start captured downloads without showing the \"Add Download\" window"
+    },
+    "config_show_popups": {
+        "message": "Show popups"
+    },
+    "config_show_popups_description": {
+        "message": "Show popup on selections which have links"
+    },
+    "config_port": {
+        "message": "Port"
+    },
+    "config_port_description": {
+        "message": "Make sure this port and the value in the app are the same otherwise this extension will not work properly"
+    },
+    "config_port_connection_success": {
+        "message": "Success\nPort ($port$) Is connected",
+        "placeholders": {
+            "port": {
+                "content": "$1",
+                "example": "15151"
+            }
+        }
+    },
+    "config_port_connection_fail": {
+        "message": "Failure\nPort ($port$) not connected",
+        "placeholders": {
+            "port": {
+                "content": "$1",
+                "example": "15151"
+            }
+        }
+    },
+    "config_send_cookies": {
+        "message": "Send Cookies"
+    },
+    "config_send_cookies_descrption": {
+        "message": "Note: DON'T check this if you are in a non-trusted environment"
+    },
+    "browser_action_more_settings": {
+        "message": "More settings"
+    },
+    "connection_error_api_error": {
+        "message": "There is a problem with the app api, make sure to update both the app and extension to the latest version"
+    },
+    "connection_error_network_error": {
+        "message": "Can't connect to the application, please make sure the app is installed and running. Also ensure the Browser Integration feature is turned On in the application settings"
+    },
+    "settings": {
+        "message": "Settings"
+    },
+    "test": {
+        "message": "Test"
+    },
+    "note_about_app_must_be_installed_first": {
+        "message": "In order for this extension to work properly, make sure AB Download Manager is installed, if it doesn't..."
+    },
+    "download_abdm_app": {
+        "message": "Download The App"
+    },
+    "project_website": {
+        "message": "Project Website"
+    },
+    "support_by_rating": {
+        "message": "If you like this work, don't forget to support me by your comments/ratings and also share it with your friends"
+    },
+    "project_source_code": {
+        "message": "Project Source Code"
+    },
+    "abdm_notification_title": {
+        "message": "AB Download Manager"
+    },
+    "abdm_notification_download_captured_silently": {
+        "message": "Download captured silently"
+    },
+    "download_media_title": {
+        "message": "Download With ABDM"
+    },
+    "config_capture_file_size_limit_kb": {
+        "message": "Capture file size minimum (KB)"
+    },
+    "config_capture_file_size_limit_kb_description": {
+        "message": "Only capture files with size greater than or equal to this value in kilobytes. Set 0 to capture all sizes."
+    },
+    "config_bypass_shortcut": {
+        "message": "Bypass Shortcut"
+    },
+    "config_bypass_shortcut_description": {
+        "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
+    },
+    "config_auto_capture_links_file_extensions_denylist_description": {
+        "message": "Enter each file extension that you want NOT to be captured then press enter"
     }
-  },
-  "config_port_connection_fail": {
-    "message": "Failure\nPort ($port$) not connected",
-    "placeholders": {
-      "port": {
-        "content": "$1",
-        "example": "15151"
-      }
-    }
-  },
-  "config_send_cookies": {
-    "message": "Send Cookies"
-  },
-  "config_send_cookies_descrption": {
-    "message": "Note: DON'T check this if you are in a non-trusted environment"
-  },
-  "browser_action_more_settings": {
-    "message": "More settings"
-  },
-  "connection_error_api_error": {
-    "message": "There is a problem with the app api, make sure to update both the app and extension to the latest version"
-  },
-  "connection_error_network_error": {
-    "message": "Can't connect to the application, please make sure the app is installed and running. Also ensure the Browser Integration feature is turned On in the application settings"
-  },
-  "settings": {
-    "message": "Settings"
-  },
-  "test": {
-    "message": "Test"
-  },
-  "note_about_app_must_be_installed_first": {
-    "message": "In order for this extension to work properly, make sure AB Download Manager is installed, if it doesn't..."
-  },
-  "download_abdm_app": {
-    "message": "Download The App"
-  },
-  "project_website": {
-    "message": "Project Website"
-  },
-  "support_by_rating": {
-    "message": "If you like this work, don't forget to support me by your comments/ratings and also share it with your friends"
-  },
-  "project_source_code": {
-    "message": "Project Source Code"
-  },
-  "abdm_notification_title": {
-    "message": "AB Download Manager"
-  },
-  "abdm_notification_download_captured_silently": {
-    "message": "Download captured silently"
-  },
-  "download_media_title": {
-    "message": "Download With ABDM"
-  },
-  "config_capture_file_size_limit_kb": {
-    "message": "Capture file size minimum (KB)"
-  },
-  "config_capture_file_size_limit_kb_description": {
-    "message": "Only capture files with size greater than or equal to this value in kilobytes. Set 0 to capture all sizes."
-  },
-  "config_bypass_shortcut": {
-    "message": "Bypass Shortcut"
-  },
-  "config_bypass_shortcut_description": {
-    "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
-  }
 }
