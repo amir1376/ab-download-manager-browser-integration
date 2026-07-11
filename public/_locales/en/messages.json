@@ -1,4 +1,13 @@
 {
+  "extension_name": {
+    "message": "AB Download Manager Browser Integration"
+  },
+  "extension_description": {
+    "message": "Download files with AB Download Manager app"
+  },
+  "browser_action_default_title": {
+    "message": "AB Download Manager"
+  },
   "selection_popup_download_selected": {
     "message": "Download selected"
   },
@@ -142,5 +151,20 @@
   },
   "config_bypass_shortcut_description": {
     "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
+  },
+  "unnamed_media": {
+    "message": "Unnamed media"
+  },
+  "ignored_url_patterns": {
+    "message": "Ignored Url patterns"
+  },
+  "custom_no_limit": {
+    "message": "Custom / No limit"
+  },
+  "custom_value": {
+    "message": "Custom value:"
+  },
+  "enter_kb_placeholder": {
+    "message": "Enter KB"
   }
 }

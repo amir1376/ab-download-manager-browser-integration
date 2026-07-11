@@ -203,7 +203,7 @@ export function updatePopup(items: DownloadableMedia[]) {
         const el = document.createElement("div")
         el.className = "abdm-media-item"
 
-        const title = item.displayName ?? "Unnamed media"
+        const title = item.displayName ?? browser.i18n.getMessage("unnamed_media")
         const details = [
             item.duration,
             item.size,

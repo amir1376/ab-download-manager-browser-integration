@@ -6,8 +6,8 @@ export function getBaseManifest() {
     const icon96="icons/icon-96.png"
     const icon128="icons/icon-128.png"
     return {
-        name: pkg.displayName,
-        description: pkg.description,
+        name: "__MSG_extension_name__",
+        description: "__MSG_extension_description__",
         version: pkg.version,
         homepage_url:pkg.homepage,
         author: pkg.author,
@@ -33,7 +33,7 @@ export function getBaseManifest() {
 
 export function getBrowserActionInfo(){
     return  {
-        default_title: "AB Download Manager",
+        default_title: "__MSG_browser_action_default_title__",
         default_popup: "src/browseractionpopup/browser-action.html"
     }
 }

@@ -1,0 +1,170 @@
+{
+  "extension_name": {
+    "message": "AB Download Manager 浏览器集成"
+  },
+  "extension_description": {
+    "message": "使用 AB Download Manager 应用程序下载文件"
+  },
+  "browser_action_default_title": {
+    "message": "AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "下载所选"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "未检测到链接"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "请先选择内容"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "使用 AB DM 下载"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "使用 AB DM 下载所选链接"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM 快速设置"
+  },
+  "option_ui_title": {
+    "message": "AB Download Manager 扩展"
+  },
+  "connection_connected": {
+    "message": "已连接"
+  },
+  "connection_not_connected": {
+    "message": "未连接"
+  },
+  "connection_checking": {
+    "message": "检查中"
+  },
+  "config_auto_capture_links": {
+    "message": "自动捕获链接"
+  },
+  "config_auto_capture_links_description": {
+    "message": "当您在浏览器中点击链接时，将自动捕获并由应用程序进行下载"
+  },
+  "reset_to_default": {
+    "message": "恢复默认"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "输入要捕获的每个文件扩展名，然后按回车键"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "输入您不想被捕获的 URL（每行一个，支持通配符 *）"
+  },
+  "config_silent_add_download": {
+    "message": "静默添加下载"
+  },
+  "config_silent_add_download_description": {
+    "message": "自动将捕获的下载添加到下载列表，而不显示“添加下载”窗口"
+  },
+  "config_silent_start_download": {
+    "message": "静默开始下载"
+  },
+  "config_silent_start_download_description": {
+    "message": "自动开始捕获的下载，而不显示“添加下载”窗口"
+  },
+  "config_show_popups": {
+    "message": "显示弹窗"
+  },
+  "config_show_popups_description": {
+    "message": "在包含链接的选区上显示弹窗"
+  },
+  "config_port": {
+    "message": "端口"
+  },
+  "config_port_description": {
+    "message": "请确保此端口与应用程序中的值相同，否则此扩展将无法正常工作"
+  },
+  "config_port_connection_success": {
+    "message": "成功\n端口 ($port$) 已连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "失败\n端口 ($port$) 未连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "发送 Cookies"
+  },
+  "config_send_cookies_descrption": {
+    "message": "注意：在不可信环境中请勿勾选此项"
+  },
+  "browser_action_more_settings": {
+    "message": "更多设置"
+  },
+  "connection_error_api_error": {
+    "message": "应用程序 API 出现问题，请确保将应用程序和扩展都更新到最新版本"
+  },
+  "connection_error_network_error": {
+    "message": "无法连接到应用程序，请确保已安装并运行应用程序。同时请确保在应用程序设置中开启了浏览器集成功能"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "test": {
+    "message": "测试"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "为使此扩展正常工作，请确保已安装 AB Download Manager，如果没有..."
+  },
+  "download_abdm_app": {
+    "message": "下载应用程序"
+  },
+  "project_website": {
+    "message": "项目网站"
+  },
+  "support_by_rating": {
+    "message": "如果您喜欢这个作品，请不要忘记通过评论/评分来支持我，并分享给您的朋友"
+  },
+  "project_source_code": {
+    "message": "项目源代码"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "下载已静默捕获"
+  },
+  "download_media_title": {
+    "message": "使用 ABDM 下载"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "捕获文件大小下限 (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "仅捕获大小大于或等于此值（千字节）的文件。设为 0 可捕获所有大小。"
+  },
+  "config_bypass_shortcut": {
+    "message": "绕过快捷键"
+  },
+  "config_bypass_shortcut_description": {
+    "message": "当启用下载链接自动捕获时，按住快捷键并点击下载链接将使用浏览器内置下载方式。"
+  },
+  "unnamed_media": {
+    "message": "未命名媒体"
+  },
+  "ignored_url_patterns": {
+    "message": "忽略的 URL 模式"
+  },
+  "custom_no_limit": {
+    "message": "自定义 / 无限制"
+  },
+  "custom_value": {
+    "message": "自定义值："
+  },
+  "enter_kb_placeholder": {
+    "message": "输入 KB"
+  }
+}

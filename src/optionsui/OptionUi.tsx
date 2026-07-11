@@ -436,7 +436,7 @@ function AutoCaptureSection(
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")}</div>
                 <div className="mt-3"/>
-                <div>Ignored Url patterns</div>
+                <div>{browser.i18n.getMessage("ignored_url_patterns")}</div>
                 <div className="mt-2"/>
                 <AutoGrowingTextarea
                     className="textarea"
@@ -465,18 +465,18 @@ function AutoCaptureSection(
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value))}
                             className="select select-sm flex-1"
                         >
-                            <option value={0}>Custom / No limit</option>
+                            <option value={0}>{browser.i18n.getMessage("custom_no_limit")}</option>
                             <option value={102400}>100 MB</option>
                             <option value={512000}>500 MB</option>
                             <option value={1048576}>1 GB</option>
                         </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="text-sm">Custom value:</label>
+                        <label className="text-sm">{browser.i18n.getMessage("custom_value")}</label>
                         <input
                             type="number"
                             min={0}
-                            placeholder="Enter KB"
+                            placeholder={browser.i18n.getMessage("enter_kb_placeholder")}
                             value={props.captureFileSizeMinimumKb}
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value || 0))}
                             className="input input-sm w-40"
