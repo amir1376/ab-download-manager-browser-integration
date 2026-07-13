@@ -1,0 +1,146 @@
+{
+  "selection_popup_download_selected": {
+    "message": "Download selecionado"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Nenhum link detectado"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Por favor, primeiro faça uma seleção"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Baixar com AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Baixar links selecionados com AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Configurações rápidas do AB DM"
+  },
+  "option_ui_title": {
+    "message": "Extensão do AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Conectado"
+  },
+  "connection_not_connected": {
+    "message": "Não conectado"
+  },
+  "connection_checking": {
+    "message": "Verificando"
+  },
+  "config_auto_capture_links": {
+    "message": "Captura automática de links"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Quando você clicar em um link no navegador, ele será automaticamente capturado para download pelo aplicativo"
+  },
+  "reset_to_default": {
+    "message": "Restaurar padrão"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Digite cada extensão de arquivo que você deseja capturar e pressione Enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Digite as URLs que você não deseja capturar (uma por linha, curingas (*) suportados)"
+  },
+  "config_silent_add_download": {
+    "message": "Adicionar downloads silenciosamente"
+  },
+  "config_silent_add_download_description": {
+    "message": "Adicionar automaticamente os downloads capturados à lista de downloads sem exibir a janela \"Adicionar Download\""
+  },
+  "config_silent_start_download": {
+    "message": "Iniciar download silenciosamente"
+  },
+  "config_silent_start_download_description": {
+    "message": "Iniciar automaticamente os downloads capturados sem exibir a janela \"Adicionar Download\""
+  },
+  "config_show_popups": {
+    "message": "Mostrar pop-ups"
+  },
+  "config_show_popups_description": {
+    "message": "Mostrar pop-up em seleções que contenham links"
+  },
+  "config_port": {
+    "message": "Porta"
+  },
+  "config_port_description": {
+    "message": "Certifique-se de que esta porta e o valor no aplicativo sejam os mesmos, caso contrário esta extensão não funcionará corretamente"
+  },
+  "config_port_connection_success": {
+    "message": "Sucesso\nPorta ($port$) conectada",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Falha\nPorta ($port$) não conectada",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Enviar cookies"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Observação: NÃO marque isto se você estiver em um ambiente não confiável"
+  },
+  "browser_action_more_settings": {
+    "message": "Mais configurações"
+  },
+  "connection_error_api_error": {
+    "message": "Há um problema com a API do aplicativo. Certifique-se de atualizar tanto o aplicativo quanto a extensão para a versão mais recente"
+  },
+  "connection_error_network_error": {
+    "message": "Não foi possível conectar ao aplicativo. Verifique se o aplicativo está instalado e em execução. Também garanta que o recurso de integração com navegador esteja ativado nas configurações do aplicativo"
+  },
+  "settings": {
+    "message": "Configurações"
+  },
+  "test": {
+    "message": "Teste"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Para que esta extensão funcione corretamente, certifique-se de que o AB Download Manager esteja instalado; caso não esteja..."
+  },
+  "download_abdm_app": {
+    "message": "Baixar o aplicativo"
+  },
+  "project_website": {
+    "message": "Site do projeto"
+  },
+  "support_by_rating": {
+    "message": "Se você gostou deste trabalho, não se esqueça de me apoiar com seus comentários/avaliações e também compartilhar com seus amigos"
+  },
+  "project_source_code": {
+    "message": "Código-fonte do projeto"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Download capturado silenciosamente"
+  },
+  "download_media_title": {
+    "message": "Baixar com ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Tamanho mínimo do arquivo para captura (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Capturar apenas arquivos com tamanho maior ou igual a este valor em kilobytes. Defina 0 para capturar todos os tamanhos."
+  },
+  "config_bypass_shortcut": {
+    "message": "Atalho de bypass"
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Quando a captura automática de links de download está ativada, manter a tecla de atalho pressionada e clicar no link de download usa o método interno de download do navegador."
+  }
+}
