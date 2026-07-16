@@ -421,7 +421,7 @@ function AutoCaptureSection(
                     className="textarea"
                     value={fileTypesString}
                     onChange={(event) => {
-                        setFileTypesString(event.target.value)
+                        setFileTypesString(event.target.value.toLowerCase())
                     }}
                 />
                 {
