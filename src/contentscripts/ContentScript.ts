@@ -11,6 +11,7 @@ import browser from "webextension-polyfill";
 import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 import {addDownloads} from "~/contentscripts/AddDownloads";
 import {sendMessage} from "webext-bridge/options";
+import {DefinedCommands} from "~/message/Commands";
 
 const showPopupDelayed = debounce(500)
 
@@ -91,7 +92,7 @@ run(async () => {
         run(async () => {
             try {
                 await sendMessage(
-                    'set_holding_key',
+                    DefinedCommands.SET_HOLDING_KEY,
                     HoldingKeyTracker.getHoldingKey(),
                     "background"
                 )
@@ -103,16 +104,16 @@ run(async () => {
         })
     })
 
-    onMessage("show_log", (msg) => {
+    onMessage(DefinedCommands.SHOW_LOG, (msg) => {
         console.log(...msg.data)
     })
-    onMessage("show_alert", (msg) => {
+    onMessage(DefinedCommands.SHOW_ALERT, (msg) => {
         alert(createAlertStringForMyExtension(msg.data))
     })
-    onMessage("check_selected_text_for_links", (msg) => {
+    onMessage(DefinedCommands.CHECK_SELECTED_TEXT_FOR_LINKS, (msg) => {
         checkAndReportLinks()
     })
-    onMessage("downloadable_media_detected", (msg) => {
+    onMessage(DefinedCommands.DOWNLOADABLE_MEDIA_DETECTED, (msg) => {
         MediaPopup.updatePopup(msg.data)
     })
 }).catch(e => {

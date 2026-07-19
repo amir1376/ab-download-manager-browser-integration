@@ -3,6 +3,7 @@ import * as  Configs from "~/configs/Config"
 import {DownloadRequestItem,DownloadRequestHeaders} from "~/interfaces/DownloadRequestItem";
 import {sendMessage} from "webext-bridge/background"
 import {addDownload, getHeadersForUrl} from "~/background/actions";
+import {DefinedCommands} from "~/message/Commands";
 const optionIds = Object.freeze({
     downloadWithAbDm: "download-with-ab-dm",
     downloadSelectedWithAbDm: "download-selected-with-ab-dm",
@@ -59,7 +60,7 @@ function createOnCLickHandlers() {
                     break
                 }
                 await sendMessage(
-                    "check_selected_text_for_links",
+                    DefinedCommands.CHECK_SELECTED_TEXT_FOR_LINKS,
                     null,
                     {
                         tabId:tabId,

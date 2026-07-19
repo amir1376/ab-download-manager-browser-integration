@@ -1,6 +1,6 @@
 import {DownloadRequestHeaders, DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import * as backend from "~/backend/Backend";
-import {ApiError, NetworkError} from "~/backend/ApiError";
+import {AppApiError, NetworkError} from "~/backend/BackendError";
 import * as DialogUtils from "~/utils/DialogUtil";
 import browser from "webextension-polyfill";
 import {defaultDownloadRequestOptions, DownloadRequestOptions} from "~/interfaces/DownloadRequestOptions";
@@ -66,17 +66,18 @@ async function usingBackend<T>(block: () => T) {
     try {
         return await block()
     } catch (e) {
-        if (e instanceof ApiError) {
-            DialogUtils.showAlertInCurrentTab(
-                browser.i18n.getMessage("connection_error_api_error")
+        if (e instanceof AppApiError) {
+            const friendlyNote = browser.i18n.getMessage("connection_error_api_error")
+            const loggableReason = e.toLoggableString()
+            await DialogUtils.showAlertInCurrentTab(
+                `${friendlyNote}\n${loggableReason}`
             )
         } else if (e instanceof NetworkError) {
-            DialogUtils.showAlertInCurrentTab(
+            await DialogUtils.showAlertInCurrentTab(
                 browser.i18n.getMessage("connection_error_network_error")
             )
-        } else {
-            console.log("unknown error", e)
         }
+        console.log("Error when using backend api", e)
     }
 }
 

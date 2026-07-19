@@ -9,21 +9,29 @@ import {Disposable} from "~/utils/disposable";
 import {keepListeningToEvents} from "~/utils/extension-api";
 import {IS_MV3} from "~/utils/ManifestUtil";
 import {setHoldingKey} from "~/background/BackgroundSharedState";
+import * as Backend from "~/backend/Backend";
+import {DefinedCommands} from "~/message/Commands";
 
 function receiveMessageFromContentScripts() {
-    onMessage("add_download",async (msg)=>{
+    onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
         return await addDownload(msg.data)
     })
-    onMessage("test_port",async (msg)=>{
-        return await backend.ping(msg.data)
+    onMessage(DefinedCommands.TEST_HTTP_PORT, async (msg) => {
+        return await backend.httpPing(msg.data)
     })
-    onMessage("show_log",(msg)=>{
+    onMessage(DefinedCommands.TEST_NATIVE_MESSAGING, async (msg) => {
+        return await backend.nativeMessagingPing()
+    })
+    onMessage(DefinedCommands.IS_APP_REACHABLE, async (msg) => {
+        return await backend.isAppReachable()
+    })
+    onMessage(DefinedCommands.SHOW_LOG, (msg) => {
         console.log(...msg.data)
     })
-    onMessage("get_headers",async (msg)=>{
+    onMessage(DefinedCommands.GET_HEADERS, async (msg) => {
         return await getHeadersForUrls(msg.data)
     })
-    onMessage("set_holding_key", async (msg) => {
+    onMessage(DefinedCommands.SET_HOLDING_KEY, async (msg) => {
         setHoldingKey(msg.data)
     })
 }
@@ -35,6 +43,7 @@ run(async () => {
             disposable.add(keepListeningToEvents())
         }
         await Configs.boot()
+        await Backend.boot()
         await initializeOptions()
         redirectDownloadLinksToMe()
         receiveMessageFromContentScripts()

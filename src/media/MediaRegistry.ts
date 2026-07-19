@@ -4,6 +4,7 @@ import {OnMediaInterceptedFromRequestListener} from "~/media/OnMediaInterceptedF
 import {DownloadableMedia, MediaOnTab} from "~/media/MediaOnTab";
 import {sendMessage} from "webext-bridge/background";
 import * as HLSUtils from "~/media/HLSUtils"
+import {DefinedCommands} from "~/message/Commands";
 
 export class MediaRegistry implements OnMediaInterceptedFromRequestListener {
     private readonly tabsMap: Record<number, MediaOnTab | undefined> = {}
@@ -70,7 +71,7 @@ async function onDownloadableMediaProcessed(
     downloadableMedia: DownloadableMedia[],
 ) {
     await sendMessage(
-        "downloadable_media_detected",
+        DefinedCommands.DOWNLOADABLE_MEDIA_DETECTED,
         downloadableMedia,
         {
             tabId: tabId,

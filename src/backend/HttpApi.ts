@@ -1,17 +1,18 @@
 import isNetworkError from "is-network-error";
-import {ApiError, NetworkError} from "~/backend/ApiError";
-import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
+import {HttpApiError, NetworkError} from "~/backend/BackendError";
 import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
+import {IAppApi} from "~/backend/IAppApi";
 
-export function createBackendApi(
-    port:number,
-    basePath:string="",
-){
-    return new BackendApi(
+export function createHttpApiClient(
+    port: number,
+    basePath: string = "",
+) {
+    return new HttpApi(
         `http://localhost:${port}/${basePath}`
     )
 }
-export class BackendApi {
+
+export class HttpApi implements IAppApi {
     constructor(private apiUrl: string) {
     }
 
@@ -19,40 +20,38 @@ export class BackendApi {
         path: string,
         payload: any,
     ) {
-        const timeout=2000
-        const controller=new AbortController()
-        const id=setTimeout(()=>controller.abort(),timeout)
+        const timeout = 500
+        const controller = new AbortController()
+        const id = setTimeout(() => controller.abort(), timeout)
         let response: Response
         try {
             response = await fetch(this.apiUrl + path, {
                 method: "POST",
                 body: JSON.stringify(payload),
-                signal:controller.signal
+                signal: controller.signal
             })
-            clearTimeout(id)
         } catch (e) {
             if (isNetworkError(e) || controller.signal.aborted) {
                 throw new NetworkError()
             } else {
                 throw e
             }
+        } finally {
+            clearTimeout(id)
         }
         if (!response.ok) {
-            throw new ApiError(response)
+            throw new HttpApiError(response)
         }
         return response
     }
 
-    // TODO deprecated! remove this after a while!
-    async addDownloadLegacy(items: DownloadRequestItem[]) {
-        return this.request("add", items)
-    }
-
     async addDownload(request: AddDownloadRequest) {
-        return this.request("add", request)
+        await this.request("add", request)
+        return true
     }
 
-    async ping() {
-        return this.request("ping", null)
+    async ping(): Promise<boolean> {
+        await this.request("ping", null)
+        return true
     }
 }

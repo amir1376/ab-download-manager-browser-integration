@@ -6,16 +6,18 @@ import {makeObservable, observable} from "mobx";
 import {observer} from "mobx-react-lite"
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config";
+import {Config, configKeys, defaultConfig} from "~/configs/Config";
 import {constraintIn} from "~/utils/NumberUtils";
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
 import {sendMessage} from "webext-bridge/options"
-import {Config, configKeys, defaultConfig} from "~/configs/Config";
 import {arrayEquals} from "~/utils/ArrayUtils";
 import browser from "webextension-polyfill";
 import Constants from "~/utils/Constants";
 import classNames from "classnames";
 import {isBlank} from "~/utils/StringUtils";
 import AutoGrowingTextarea from "~/optionsui/AutoGrowingTextarea";
+import {DefinedCommands} from "~/message/Commands";
+import {Nullable, WithSetters} from "~/utils/Types";
 
 class ToolsViewModelEvent {
 }
@@ -24,13 +26,19 @@ class PortTestResult extends ToolsViewModelEvent {
     constructor(
         public port: number,
         public isSuccess: boolean,
-        public message: string | null = null
+        public message: Nullable<string> = null
     ) {
         super();
     }
 }
 
-class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements Configs.Config {
+type ConfigsWithSomeSetters = Omit<WithSetters<Configs.Config>,
+    | "setAllowPassDownloadIfAppNotRespond"
+    | "setCloseNewTabIfItWasCaptured"
+    | "setBypassShortcut"
+>
+
+class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements ConfigsWithSomeSetters {
     constructor(initialStates: Configs.Config) {
         super();
         makeObservable(this)
@@ -49,6 +57,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
                 this.setConfigItem(k, config[k])
             })
         })
+        this.testNativeMessaging()
     }
 
     @observable
@@ -100,7 +109,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
         Configs.setConfigItem("captureFileSizeMinimumKb", value)
     }
 
-    setShortCut(value: string){
+    setShortCut(value: string) {
         Configs.setConfigItem("bypassShortcut", value)
     }
 
@@ -124,10 +133,24 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
         Configs.setConfigItem("sendHeaders", value)
     }
 
-    testPort() {
+    @observable
+    nativeMessagingAvailable: boolean | null = null
+
+    testNativeMessaging() {
+        run(async () => {
+            const result = await sendMessage(DefinedCommands.TEST_NATIVE_MESSAGING, undefined, "background")
+            if (typeof result === "boolean") {
+                this.nativeMessagingAvailable = result
+            } else {
+                console.log("there is no valid result for ping")
+            }
+        })
+    }
+
+    testHttpPort() {
         run(async () => {
             const port = this.port
-            const result = await sendMessage("test_port", port, "background")
+            const result = await sendMessage(DefinedCommands.TEST_HTTP_PORT, port, "background")
             if (typeof result === "boolean") {
                 this.onEvent(new PortTestResult(
                     port, result
@@ -242,10 +265,14 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 setSilentStartEnabled={(v) => vm.setSilentStartDownload(v)}
             />
             <Divider/>
+            <NativeMessagingSection
+                isNativeMessagingAvailable={vm.nativeMessagingAvailable}
+            />
+            <Divider/>
             <PortSection
                 port={vm.port}
                 setPort={(p) => vm.setPort(p)}
-                onRequestTestPort={() => vm.testPort()}
+                onRequestTestPort={() => vm.testHttpPort()}
             />
             <Divider/>
             <SendCookiesSection enabled={vm.sendHeaders} toggle={(v) => vm.setSendHeaders(v)}/>
@@ -400,7 +427,7 @@ function AutoCaptureSection(
         props.setBlacklistedUrls(
             urlsString
                 .split("\n")
-                .filter(l=> !isBlank(l))
+                .filter(l => !isBlank(l))
         )
     }, [urlsString]);
     useEffect(() => {
@@ -443,7 +470,7 @@ function AutoCaptureSection(
                 <AutoGrowingTextarea
                     className="textarea"
                     value={urlsString}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                         setUrlsString(event.target.value)
                     }}
                 />
@@ -553,6 +580,38 @@ function PortSection(
             </div>
         }
     />
+}
+
+function NativeMessagingSection(
+    props: {
+        isNativeMessagingAvailable: boolean | null
+    }
+) {
+    let reachableContent
+    if (props.isNativeMessagingAvailable === true) {
+        reachableContent = <div className="text-success font-bold">
+            {browser.i18n.getMessage("config_native_messaging_host_reachable")}
+        </div>
+    }
+    if (props.isNativeMessagingAvailable === false) {
+        reachableContent = <div className="text-warning font-bold">
+            {browser.i18n.getMessage("config_native_messaging_host_not_reachable")}
+        </div>
+    }
+
+    return <div>
+        <OptionItem
+            title={
+                <div>{browser.i18n.getMessage("config_native_messaging_host")}</div>
+            }
+            toggle={reachableContent}
+            description={
+                <div>
+                    {browser.i18n.getMessage("config_native_messaging_host_description")}
+                </div>
+            }
+        />
+    </div>
 }
 
 function SendCookiesSection(

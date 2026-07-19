@@ -54,5 +54,6 @@ export function getCommonPermissions():ManifestPermissions[]{
         "tabs",
         "downloads",
         "notifications",
+        "nativeMessaging",
     ]
 }

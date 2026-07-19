@@ -1,10 +1,11 @@
 import {DownloadRequestHeaders, DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {sendMessage} from "webext-bridge/options";
 import * as Configs from "~/configs/Config"
+import {DefinedCommands} from "~/message/Commands";
 
 export async function addDownloads(downloadItems: Array<DownloadRequestItem>) {
     if (Configs.getLatestConfig().sendHeaders) {
-        const headersOfLinks = await sendMessage("get_headers", downloadItems.map(i => i.link))
+        const headersOfLinks = await sendMessage(DefinedCommands.GET_HEADERS, downloadItems.map(i => i.link))
         downloadItems = downloadItems.map((value, index) => {
             // some download items might have headers so we use them instead
             return {
@@ -20,5 +21,5 @@ export async function addDownloads(downloadItems: Array<DownloadRequestItem>) {
             } as DownloadRequestItem
         })
     }
-    await sendMessage("add_download", downloadItems, "background")
+    await sendMessage(DefinedCommands.ADD_DOWNLOAD, downloadItems, "background")
 }

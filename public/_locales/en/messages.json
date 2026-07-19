@@ -62,6 +62,18 @@
   "config_show_popups_description": {
     "message": "Show popup on selections which have links"
   },
+  "config_native_messaging_host": {
+    "message": "Native Messaging"
+  },
+  "config_native_messaging_host_description": {
+    "message": "When the extension intercepts a new download, it will automatically launch the app even if its not already running."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Host Is Reachable"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Host Is Not Reachable"
+  },
   "config_port": {
     "message": "Port"
   },

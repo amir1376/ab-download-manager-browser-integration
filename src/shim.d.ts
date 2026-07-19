@@ -11,7 +11,9 @@ declare module "webext-bridge" {
         show_alert: string;
         show_log:string[];
         check_selected_text_for_links:null;
-        test_port:ProtocolWithReturn<number,boolean>;
+        test_http_port: ProtocolWithReturn<number, boolean>;
+        test_native_messaging: ProtocolWithReturn<undefined, boolean>;
+        is_app_reachable: ProtocolWithReturn<undefined, boolean>;
         get_headers:ProtocolWithReturn<string[],(DownloadRequestHeaders | null)[]>;
         set_holding_key: string;
     }

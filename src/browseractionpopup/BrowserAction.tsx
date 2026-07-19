@@ -7,8 +7,9 @@ import {observer} from "mobx-react-lite"
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config";
 import browser from "webextension-polyfill";
-import * as backend from "~/backend/Backend"
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
+import {sendMessage} from "webext-bridge/popup";
+import {DefinedCommands} from "~/message/Commands";
 
 class BrowserActionViewModel extends BaseViewModel {
     private readonly keys: string[]
@@ -31,7 +32,12 @@ class BrowserActionViewModel extends BaseViewModel {
             this.silentAddDownload = config.silentAddDownload
         })
         run(async () => {
-            this.setCanReachable(await backend.ping())
+            const isAppReachable = await sendMessage(
+                DefinedCommands.IS_APP_REACHABLE,
+                undefined,
+                "background",
+            )
+            this.setCanReachable(isAppReachable)
         })
     }
 
@@ -84,23 +90,22 @@ function Header(
     }
 ) {
     const reachable = props.canReachable
-    let status =run(()=>{
-        const commonStyles="text-sm "
+    let status = run(() => {
+        const commonStyles = "text-sm "
         if (reachable === true) {
-            return <div className={commonStyles+"text-green-500"}>
+            return <div className={commonStyles + "text-green-500"}>
                 {browser.i18n.getMessage("connection_connected")}
             </div>
         } else if (reachable === false) {
-            return <div className={commonStyles+"text-red-500"}>
+            return <div className={commonStyles + "text-red-500"}>
                 {browser.i18n.getMessage("connection_not_connected")}
             </div>
         } else {
-            return <div className={commonStyles+""}>
+            return <div className={commonStyles + ""}>
                 {browser.i18n.getMessage("connection_checking")}...
             </div>
         }
     })
-
 
 
     return <div className="p-4 bg-base-200 flex flex-row items-center">
