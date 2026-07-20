@@ -4,7 +4,7 @@ import {inRange} from "~/utils/NumberUtils";
 import {DownloadRequestHeaders, DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {addDownload, getHeadersForUrl} from "~/background/actions";
 import {run} from "~/utils/ScopeFunctions";
-import type {Tabs, WebRequest} from "webextension-polyfill";
+import {Tabs, WebRequest} from "webextension-polyfill";
 import browser from "webextension-polyfill";
 import {isChrome} from "~/utils/ExtensionInfo";
 import urlMatch from "match-url-wildcard"
@@ -23,7 +23,7 @@ type TabInfo = {
     url?: string,
 }
 
-type InterceptedBrowserRequestWithResponse = {
+export type InterceptedBrowserRequestWithResponse = {
     initialRequest: WebRequest.OnSendHeadersDetailsType
     finalRequest: WebRequest.OnSendHeadersDetailsType,
     finalResponse?: WebRequest.OnHeadersReceivedDetailsType,
@@ -382,16 +382,9 @@ export abstract class DownloadLinkInterceptor {
                         // then removing it
                         // }
                         await this.onDownloadSendToAppSuccess(request.finalRequest)
-                        // if (!isBrowserHonorRequestBlocking()){
-                        //     delete cancelledBrowserDownloads[details.requestId]
-                        // }
-                        //cancel browser request
                         return this.cancelResponse()
                     } else {
-                        await this.onDownloadSendToAppFailed(request.finalRequest)
-                        // if (!isBrowserHonorRequestBlocking()){
-                        //     startDownloadUsingNativeBrowser(request)
-                        // }
+                        await this.onDownloadSendToAppFailed(request)
                     }
                     return this.passResponse()
                 } finally {
@@ -546,13 +539,60 @@ export abstract class DownloadLinkInterceptor {
         )
     }
 
-    async onDownloadSendToAppSuccess(request: WebRequest.OnSendHeadersDetailsType) {
+    protected async onDownloadSendToAppSuccess(request: WebRequest.OnSendHeadersDetailsType) {
         await this.closeIfItWasNewTab(request)
     }
 
-    async onDownloadSendToAppFailed(request: WebRequest.OnSendHeadersDetailsType) {
-        // nothing
+    private async onDownloadSendToAppFailed(request: InterceptedBrowserRequestWithResponse) {
+        if (!Configs.getLatestConfig().allowPassDownloadIfAppNotRespond) {
+            // we shouldn't pass the download to browser
+            return
+        }
+        // we should start download by browser itself here
+
+        // in mv2 the request is not passed to browser download manager yet
+        // since we check this flag in browser.download.onCreate
+        // we can simply revert it back to false so the browser can automatically download it
+        request.handledOnWebRequest = false
+        if (!this.canBlockResponse()) {
+            // NO-OP for now. needs improvements
+
+            // chrome and other mv3 doesn't allow us to block the response
+            // at this point the browser.download already removed the download!
+            // so we have to create another one!
+            // await this.startDownloadUsingBrowserApi(request)
+        }
     }
+
+    // TODO improve this function, if I run this - my interceptor capture its request again
+    //  so the download will be cancelled from the browser.download.onCreate logic
+    /*
+    private async startDownloadUsingBrowserApi(request: InterceptedBrowserRequestWithResponse) {
+        const downloadRequest = request.finalRequest
+        const url = downloadRequest.url
+        const headers: Downloads.DownloadOptionsTypeHeadersItemType[] = (downloadRequest.requestHeaders ?? [])
+            .filter((h) => h.value !== undefined)
+            .map((h) => {
+                return {
+                    name: h.name,
+                    value: h.value!,
+                }
+            })
+            .filter((h) => {
+                return !isForbiddenHeader(h.name, h.value)
+            })
+        try {
+            await browser.downloads.download(
+                {
+                    url: url,
+                    headers: headers,
+                }
+            )
+        } catch (e) {
+            console.warn("unable to add this download to the browser", e)
+        }
+    }
+    */
 
     abstract passResponse(): any
 
