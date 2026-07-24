@@ -72,6 +72,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     @observable
     port!: number
+
+    @observable
+    apiKey!: string
+
     @observable
     sendHeaders!: boolean
 
@@ -127,6 +131,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setPort(value: number) {
         Configs.setConfigItem("port", value)
+    }
+
+    setApiKey(value: string) {
+        Configs.setConfigItem("apiKey", value)
     }
 
     setSendHeaders(value: boolean) {
@@ -269,9 +277,11 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 isNativeMessagingAvailable={vm.nativeMessagingAvailable}
             />
             <Divider/>
-            <PortSection
+            <HttpApiSection
                 port={vm.port}
                 setPort={(p) => vm.setPort(p)}
+                apiKey={vm.apiKey}
+                setApiKey={(p) => vm.setApiKey(p)}
                 onRequestTestPort={() => vm.testHttpPort()}
             />
             <Divider/>
@@ -533,10 +543,12 @@ function AutoCaptureSection(
     />
 }
 
-function PortSection(
+function HttpApiSection(
     props: {
         port: number,
         setPort: (number: number) => void,
+        apiKey: string,
+        setApiKey: (key: string) => void,
         onRequestTestPort: () => void,
     }
 ) {
@@ -551,35 +563,58 @@ function PortSection(
         props.setPort(newPort)
     }
 
-    return <OptionItem
-        title={
-            <div>{browser.i18n.getMessage("config_port")}</div>
-        }
-        toggle={
-            <>
+    return <div>
+        <OptionItem
+            title={
+                <div>{browser.i18n.getMessage("config_port")}</div>
+            }
+            toggle={
+                <>
+                    <input
+                        value={value}
+                        onBlur={() => emitData()}
+                        onChange={(event) => {
+                            const v = event.target.value
+                            const n = Number.parseInt(v)
+                            if (Number.isNaN(n)) {
+                                return
+                            }
+                            setValue(n)
+                        }}
+                        type="number" className="w-32 input"/>
+                    <button onClick={() => props.onRequestTestPort()} className="btn btn-primary normal-case">
+                        {browser.i18n.getMessage("test")}
+                    </button>
+                </>
+            }
+            description={
+                <div>
+                    {browser.i18n.getMessage("config_port_description")}
+                </div>
+            }
+        />
+        <OptionItem
+            className="px-4 pt-4"
+            title={
+                <div>{browser.i18n.getMessage("config_api_key")}</div>
+            }
+            toggle={
                 <input
-                    value={value}
-                    onBlur={() => emitData()}
-                    onChange={(event) => {
-                        const v = event.target.value
-                        const n = Number.parseInt(v)
-                        if (Number.isNaN(n)) {
-                            return
-                        }
-                        setValue(n)
+                    value={props.apiKey}
+                    onChange={event => {
+                        props.setApiKey(event.target.value)
                     }}
-                    type="number" className="w-32 input"/>
-                <button onClick={() => props.onRequestTestPort()} className="btn btn-primary normal-case">
-                    {browser.i18n.getMessage("test")}
-                </button>
-            </>
-        }
-        description={
-            <div>
-                {browser.i18n.getMessage("config_port_description")}
-            </div>
-        }
-    />
+                    type="text"
+                    className={classNames(
+                        "input",
+                    )}
+                />
+            }
+            description={
+                <div>{browser.i18n.getMessage("config_api_key_description")}</div>
+            }
+        />
+    </div>
 }
 
 function NativeMessagingSection(

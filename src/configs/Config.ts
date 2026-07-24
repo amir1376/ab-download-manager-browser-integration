@@ -72,6 +72,7 @@ const ConfigType = z.object({
     // minimum file size to capture in kilobytes. 0 = no minimum (capture all sizes)
     captureFileSizeMinimumKb: z.int().catch(0),
     bypassShortcut: z.string().catch("Delete"),
+    apiKey: z.string().catch(""),
 })
 
 export type Config = z.infer<typeof ConfigType>

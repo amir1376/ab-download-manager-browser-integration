@@ -80,6 +80,12 @@
   "config_port_description": {
     "message": "Make sure this port and the value in the app are the same otherwise this extension will not work properly"
   },
+  "config_api_key": {
+    "message": "API Key"
+  },
+  "config_api_key_description": {
+    "message": "If you enabled API key authentication in the app settings, paste the generated API key here."
+  },
   "config_port_connection_success": {
     "message": "Success\nPort ($port$) Is connected",
     "placeholders": {

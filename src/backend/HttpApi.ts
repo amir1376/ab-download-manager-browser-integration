@@ -2,6 +2,10 @@ import isNetworkError from "is-network-error";
 import {HttpApiError, NetworkError} from "~/backend/BackendError";
 import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
 import {IAppApi} from "~/backend/IAppApi";
+import {getLatestConfig} from "~/configs/Config";
+import {isNullOrBlank} from "~/utils/StringUtils";
+import {head} from "lodash";
+import Constants from "~/utils/Constants";
 
 export function createHttpApiClient(
     port: number,
@@ -20,6 +24,11 @@ export class HttpApi implements IAppApi {
         path: string,
         payload: any,
     ) {
+        const apiKey = getLatestConfig().apiKey
+        const headers: HeadersInit = {}
+        if (!isNullOrBlank(apiKey)) {
+            headers[Constants.authHeaderName] = apiKey
+        }
         const timeout = 500
         const controller = new AbortController()
         const id = setTimeout(() => controller.abort(), timeout)
@@ -27,8 +36,9 @@ export class HttpApi implements IAppApi {
         try {
             response = await fetch(this.apiUrl + path, {
                 method: "POST",
+                headers: headers,
                 body: JSON.stringify(payload),
-                signal: controller.signal
+                signal: controller.signal,
             })
         } catch (e) {
             if (isNetworkError(e) || controller.signal.aborted) {

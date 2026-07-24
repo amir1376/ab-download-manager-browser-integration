@@ -5,4 +5,5 @@ export default {
     website: website,
     downloadAppUrl: `${website}/#download`,
     repository: "https://github.com/amir1376/ab-download-manager",
+    authHeaderName: "X-Api-Key"
 }
