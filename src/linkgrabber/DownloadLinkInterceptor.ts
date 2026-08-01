@@ -17,6 +17,7 @@ import {getContentLength, getContentType} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
 import _ from "lodash";
 import * as BackgroundSharedState from "~/background/BackgroundSharedState";
+import {shouldDeferGoogleDriveDownloadToBrowser} from "~/linkgrabber/GoogleDriveDownloadInterception";
 
 type TabInfo = {
     title?: string,
@@ -173,6 +174,9 @@ export abstract class DownloadLinkInterceptor {
             return false
         }
         const downloadPage = this.getDownloadPage(details)
+        if (shouldDeferGoogleDriveDownloadToBrowser(downloadPage, details.url)) {
+            return false
+        }
         if (downloadPage && this.isInConfigBlacklist(downloadPage)) {
             return false
         }
