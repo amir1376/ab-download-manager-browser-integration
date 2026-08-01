@@ -18,6 +18,14 @@ import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLU
 import _ from "lodash";
 import * as BackgroundSharedState from "~/background/BackgroundSharedState";
 import {shouldDeferGoogleDriveDownloadToBrowser} from "~/linkgrabber/GoogleDriveDownloadInterception";
+import {AsyncBatcher} from "~/utils/AsyncBatcher";
+import {
+    createGoogleDriveDownloadRequest,
+    getGoogleDriveBatchKey,
+    GOOGLE_DRIVE_BATCH_DEBOUNCE_MS,
+    GOOGLE_DRIVE_BATCH_MAX_WAIT_MS,
+    GoogleDriveCapturedDownload,
+} from "~/linkgrabber/GoogleDriveDownloadBatching";
 
 type TabInfo = {
     title?: string,
@@ -35,6 +43,13 @@ export abstract class DownloadLinkInterceptor {
     protected readonly pendingRequests: Record<string, InterceptedBrowserRequestWithResponse> = {}
     private onMediaDetectedListener: OnMediaInterceptedFromRequestListener | null = null
     private tabCache: Record<number, TabInfo> = {}
+    private readonly googleDriveDownloadBatcher = new AsyncBatcher<GoogleDriveCapturedDownload, boolean>(
+        async captures => await this.requestAddDownloads(createGoogleDriveDownloadRequest(captures)),
+        {
+            debounceMs: GOOGLE_DRIVE_BATCH_DEBOUNCE_MS,
+            maxWaitMs: GOOGLE_DRIVE_BATCH_MAX_WAIT_MS,
+        },
+    )
 
     protected setPendingRequest(id: string, requestHeaders: WebRequest.OnSendHeadersDetailsType) {
         let request = this.pendingRequests[id]
@@ -218,12 +233,24 @@ export abstract class DownloadLinkInterceptor {
     }
 
 
-    protected async requestAddDownload(item: DownloadRequestItem) {
-        const result = await addDownload([item])
+    protected async requestAddDownloads(items: DownloadRequestItem[]) {
+        const result = await addDownload(items)
         if (getLatestConfig().allowPassDownloadIfAppNotRespond) {
             return result
         }
         return true
+    }
+
+    protected async requestAddDownload(item: DownloadRequestItem) {
+        return await this.requestAddDownloads([item])
+    }
+
+    private async requestGoogleDriveCapturedDownload(
+        capture: GoogleDriveCapturedDownload,
+        tabId: number | null | undefined,
+    ) {
+        const key = getGoogleDriveBatchKey(tabId, capture.item.downloadPage)
+        return await this.googleDriveDownloadBatcher.enqueue(key, capture)
     }
 
     protected createDirectDownloadItemFromWebRequest(
@@ -482,6 +509,10 @@ export abstract class DownloadLinkInterceptor {
             if (_.isEmpty(requestHeaders)) {
                 requestHeaders = await getHeadersForUrl(downloadUrl) || {}
             }
+            let responseFileName: string | null = null
+            let responseContentLength = details.totalBytes >= 0
+                ? details.totalBytes
+                : details.fileSize >= 0 ? details.fileSize : null
             if (interceptedRequest?.finalResponse) {
                 const response = interceptedRequest.finalResponse
                 if (this.isInConfigBlacklist(response.originUrl || response.url)) {
@@ -491,18 +522,34 @@ export abstract class DownloadLinkInterceptor {
                 if (!this.isDirectDownloadContent(response, responseHeaders)) {
                     return
                 }
+                responseFileName = getFileFromHeaders(responseHeaders)
+                responseContentLength = getContentLength(responseHeaders) ?? responseContentLength
             }
 
             await this.cancelDownload(details.id)
+            const suggestedName = details.filename
+                || responseFileName
+                || getFileFromUrl(downloadUrl)
             const item: DownloadRequestItem = {
                 link: downloadUrl,
                 description: null,
                 downloadPage: downloadPage,
                 headers: requestHeaders,
-                suggestedName: null,
+                suggestedName,
                 type: "http",
             };
-            await this.requestAddDownload(item)
+            if (shouldDeferGoogleDriveDownloadToBrowser(downloadPage, downloadUrl)) {
+                await this.requestGoogleDriveCapturedDownload(
+                    {
+                        item,
+                        fileName: suggestedName,
+                        contentLength: responseContentLength,
+                    },
+                    interceptedRequest?.finalRequest.tabId,
+                )
+            } else {
+                await this.requestAddDownload(item)
+            }
         })
     }
 
