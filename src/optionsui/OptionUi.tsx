@@ -265,6 +265,7 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 captureFileSizeMinimumKb={vm.captureFileSizeMinimumKb}
                 setCaptureFileSizeMinimumKb={(v) => vm.setCaptureFileSizeMinimumKb(v)}
                 bypassShortcut={vm.bypassShortcut}
+                defaultBypassShortcut={vm.defaultConfig.bypassShortcut}
                 setBypassShortcut={(v) => vm.setShortCut(v)}
             />
             <Divider/>
@@ -413,6 +414,7 @@ function AutoCaptureSection(
         captureFileSizeMinimumKb: number,
         setCaptureFileSizeMinimumKb: (n: number) => void,
         bypassShortcut: string,
+        defaultBypassShortcut: string,
         setBypassShortcut: (s: string) => void,
     }
 ) {
@@ -530,21 +532,70 @@ function AutoCaptureSection(
                 <div className="mt-2"/>
                 <div className="flex flex-col space-y-2">
                     <label>{browser.i18n.getMessage("config_bypass_shortcut")}</label>
-                    <div className="flex items-center space-x-2">
-                        <select
-                            value={props.bypassShortcut}
-                            onChange={(e) => props.setBypassShortcut(e.target.value)}
-                            className="select select-sm flex-1"
-                        >
-                            <option value={"Control"}>Control</option>
-                            <option value={"Delete"}>Delete</option>
-                        </select>
-                    </div>
+                    <ShortcutCapture
+                        value={props.bypassShortcut}
+                        defaultValue={props.defaultBypassShortcut}
+                        onChange={props.setBypassShortcut}
+                    />
                 </div>
                 <div>{browser.i18n.getMessage("config_bypass_shortcut_description")}</div>
             </div>
         }
     />
+}
+
+function ShortcutCapture(
+    props: {
+        value: string,
+        defaultValue?: string,
+        onChange: (shortcut: string) => void,
+        className?: string,
+    }
+) {
+    const [isCapturing, setIsCapturing] = useState(false)
+    const canBeReset = useMemo(() => {
+        return props.defaultValue !== undefined && props.defaultValue !== props.value
+    }, [props.defaultValue, props.value])
+
+    return <div className="flex flex-col space-y-2">
+        <div className="flex items-center space-x-2">
+            <input
+                type="text"
+                readOnly
+                value={isCapturing ? "" : props.value}
+                placeholder={
+                    isCapturing
+                        ? browser.i18n.getMessage("config_press_a_key")
+                        : props.value
+                }
+                onFocus={() => setIsCapturing(true)}
+                onBlur={() => setIsCapturing(false)}
+                onKeyDown={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    if (e.key) {
+                        props.onChange(e.key)
+                        setIsCapturing(false)
+                        ;(e.target as HTMLElement).blur()
+                    }
+                }}
+                className={classNames(
+                    "input input-sm flex-1 cursor-pointer select-none",
+                    isCapturing && "input-primary ring-2 ring-primary",
+                    props.className
+                )}
+            />
+        </div>
+        {
+            canBeReset && (
+                <div
+                    onClick={() => props.defaultValue !== undefined && props.onChange(props.defaultValue)}
+                    className="link">
+                    {browser.i18n.getMessage("reset_to_default")}
+                </div>
+            )
+        }
+    </div>
 }
 
 function HttpApiSection(
