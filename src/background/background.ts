@@ -11,6 +11,7 @@ import {IS_MV3} from "~/utils/ManifestUtil";
 import {setHoldingKey} from "~/background/BackgroundSharedState";
 import * as Backend from "~/backend/Backend";
 import {DefinedCommands} from "~/message/Commands";
+import * as ExtensionEntry from "~/utils/ExtensionEntry";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -42,7 +43,7 @@ run(async () => {
         if (IS_MV3){
             disposable.add(keepListeningToEvents())
         }
-        await Configs.boot()
+        await ExtensionEntry.boot()
         await Backend.boot()
         await initializeOptions()
         redirectDownloadLinksToMe()

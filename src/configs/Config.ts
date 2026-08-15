@@ -3,6 +3,9 @@ import {run} from "~/utils/ScopeFunctions";
 import {EventListener} from "~/base/EventListener";
 import Constants from "~/utils/Constants";
 import {z} from "~/utils/Zod";
+import {lazy} from "~/utils/Lazy";
+import {config} from "zod";
+import {getPlatform, isMac} from "~/utils/Platform";
 
 let _currentConfig: Config | null = null
 
@@ -71,13 +74,25 @@ const ConfigType = z.object({
     blacklistedUrls: z.array(z.string()).catch([]),
     // minimum file size to capture in kilobytes. 0 = no minimum (capture all sizes)
     captureFileSizeMinimumKb: z.int().catch(0),
-    bypassShortcut: z.string().catch("Delete"),
+    bypassShortcut: z.string().catch(() => {
+        if (isMac()) {
+            return "Backspace"
+        }
+        return "Delete"
+    }),
     apiKey: z.string().catch(""),
 })
 
 export type Config = z.infer<typeof ConfigType>
 export const configKeys: ReadonlyArray<keyof Config> = ConfigType.keyof().options
-export const defaultConfig: Config = ConfigType.parse({})
+
+const _defaultConfig = lazy(() => {
+    return ConfigType.parse({})
+})
+
+export function getDefaultConfig() {
+    return _defaultConfig.get()
+}
 
 async function getConfigsFromStorageOrDefault(): Promise<Config> {
     try {
@@ -85,6 +100,6 @@ async function getConfigsFromStorageOrDefault(): Promise<Config> {
         return ConfigType.parse(records);
     } catch (e) {
         console.error("fail to parse config from the browser storage", e)
-        return ConfigType.parse({});
+        return getDefaultConfig();
     }
 }

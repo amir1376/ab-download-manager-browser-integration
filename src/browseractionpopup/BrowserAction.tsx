@@ -10,6 +10,7 @@ import browser from "webextension-polyfill";
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
 import {sendMessage} from "webext-bridge/popup";
 import {DefinedCommands} from "~/message/Commands";
+import * as ExtensionEntry from "~/utils/ExtensionEntry";
 
 class BrowserActionViewModel extends BaseViewModel {
     private readonly keys: string[]
@@ -220,7 +221,7 @@ function AutoCaptureSection(
 
 
 run(async () => {
-    await Configs.boot()
+    await ExtensionEntry.boot()
     const vm = new BrowserActionViewModel(Configs.getLatestConfig())
     const container = document.getElementById("app")!
     ReactDom.render(

@@ -6,7 +6,7 @@ import {makeObservable, observable} from "mobx";
 import {observer} from "mobx-react-lite"
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config";
-import {Config, configKeys, defaultConfig} from "~/configs/Config";
+import {Config, configKeys, getDefaultConfig} from "~/configs/Config";
 import {constraintIn} from "~/utils/NumberUtils";
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
 import {sendMessage} from "webext-bridge/options"
@@ -18,6 +18,7 @@ import {isBlank} from "~/utils/StringUtils";
 import AutoGrowingTextarea from "~/optionsui/AutoGrowingTextarea";
 import {DefinedCommands} from "~/message/Commands";
 import {Nullable, WithSetters} from "~/utils/Types";
+import * as ExtensionEntry from "~/utils/ExtensionEntry";
 
 class ToolsViewModelEvent {
 }
@@ -39,6 +40,7 @@ type ConfigsWithSomeSetters = Omit<WithSetters<Configs.Config>,
 >
 
 class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements ConfigsWithSomeSetters {
+
     constructor(initialStates: Configs.Config) {
         super();
         makeObservable(this)
@@ -46,6 +48,8 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
             this.setConfigItem(k, initialStates[k])
         })
     }
+
+    readonly defaultConfig = getDefaultConfig();
 
     private setConfigItem<K extends keyof Config>(key: K, value: Config[K]) {
         (this as Config)[key] = value
@@ -253,9 +257,9 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
                 value={vm.autoCaptureLinks}
                 toggle={(v) => vm.setAutoCaptureLinks(v)}
                 fileTypes={vm.registeredFileTypes}
-                defaultFileTypes={defaultConfig.registeredFileTypes}
+                defaultFileTypes={vm.defaultConfig.registeredFileTypes}
                 blacklistedUrls={vm.blacklistedUrls}
-                defaultBlacklistedUrls={defaultConfig.blacklistedUrls}
+                defaultBlacklistedUrls={vm.defaultConfig.blacklistedUrls}
                 setFileTypes={types => vm.setRegisteredFileTypes(types)}
                 setBlacklistedUrls={urls => vm.setBlacklistedUrls(urls)}
                 captureFileSizeMinimumKb={vm.captureFileSizeMinimumKb}
@@ -672,7 +676,7 @@ function SendCookiesSection(
 }
 
 run(async () => {
-    await Configs.boot()
+    await ExtensionEntry.boot()
     const vm = new ToolsViewModel(Configs.getLatestConfig())
     const container = document.getElementById("app")!
     ReactDom.render(
