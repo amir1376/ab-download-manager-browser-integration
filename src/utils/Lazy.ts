@@ -1,8 +1,11 @@
+import {Nullable} from "~/utils/Types";
+
 const NOT_SET: Symbol = Symbol("NOT_SET");
 
 interface Lazy<T> {
     get(): T
 
+    getOrNull(): Nullable<T>
     isInitialized(): boolean
 }
 
@@ -21,5 +24,12 @@ export function lazy<T>(calculation: () => T): Lazy<T> {
         return value as T
     }
 
-    return {get, isInitialized}
+    function getOrNull(): Nullable<T> {
+        if (value === NOT_SET) {
+            return null
+        }
+        return value as T
+    }
+
+    return {get, getOrNull, isInitialized}
 }

@@ -1,10 +1,11 @@
-import browser, {Runtime} from "webextension-polyfill";
+import type {Runtime} from "webextension-polyfill";
 import {Nullable} from "~/utils/Types";
-
+import {PlatformInfoProvider} from "~/utils/platform/PlatformInfoProvider";
 let platform: Nullable<Runtime.PlatformInfo> = null
 
-export async function boot() {
-    platform = await browser.runtime.getPlatformInfo()
+
+export async function boot(platformInfoProvider: PlatformInfoProvider) {
+    platform = await platformInfoProvider.getPlatformInfo()
 }
 
 export function getPlatform() {

@@ -4,8 +4,7 @@ import {EventListener} from "~/base/EventListener";
 import Constants from "~/utils/Constants";
 import {z} from "~/utils/Zod";
 import {lazy} from "~/utils/Lazy";
-import {config} from "zod";
-import {getPlatform, isMac} from "~/utils/Platform";
+import {isMac} from "~/utils/platform/Platform";
 
 let _currentConfig: Config | null = null
 

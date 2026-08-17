@@ -1,0 +1,7 @@
+import {EntryPointType} from "~/utils/EntryPointTypes/EntryPointType";
+import BackgroundEntryProviders from "~/utils/EntryPointTypes/background/BackgroundEntryProviders";
+
+export default {
+    name: 'BrowserAction',
+    providers: BackgroundEntryProviders,
+} satisfies EntryPointType

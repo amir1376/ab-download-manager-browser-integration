@@ -1,5 +1,4 @@
 import React, {ReactNode, useEffect, useMemo, useState} from "react";
-import ReactDom from "react-dom";
 import "~/assets/css/styles.css"
 import {EventAwareViewModel, useViewModel} from "~/base/BaseViewModel";
 import {makeObservable, observable} from "mobx";
@@ -18,7 +17,9 @@ import {isBlank} from "~/utils/StringUtils";
 import AutoGrowingTextarea from "~/optionsui/AutoGrowingTextarea";
 import {DefinedCommands} from "~/message/Commands";
 import {Nullable, WithSetters} from "~/utils/Types";
-import * as ExtensionEntry from "~/utils/ExtensionEntry";
+import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
+import {createRoot} from "react-dom/client";
+import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryType";
 
 class ToolsViewModelEvent {
 }
@@ -726,12 +727,12 @@ function SendCookiesSection(
     />
 }
 
-run(async () => {
-    await ExtensionEntry.boot()
-    const vm = new ToolsViewModel(Configs.getLatestConfig())
-    const container = document.getElementById("app")!
-    ReactDom.render(
-        <App vm={vm}/>,
-        container,
-    )
-})
+export default defineExtensionEntry()
+    .withType(OptionUiEntryType)
+    .withInit(async (ctx) => {
+        const vm = new ToolsViewModel(ctx.getLatestConfig())
+        const container = document.getElementById("app")!
+        createRoot(container).render(
+            <App vm={vm}/>
+        )
+    })

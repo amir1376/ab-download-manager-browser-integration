@@ -1,5 +1,4 @@
 import React, {ReactNode} from "react";
-import ReactDom from "react-dom";
 import "~/assets/css/styles.css"
 import {BaseViewModel, useViewModel} from "~/base/BaseViewModel";
 import {action, makeObservable, observable} from "mobx";
@@ -10,7 +9,9 @@ import browser from "webextension-polyfill";
 import {AppIcon, SettingsIcon} from "~/components/ReactIcons";
 import {sendMessage} from "webext-bridge/popup";
 import {DefinedCommands} from "~/message/Commands";
-import * as ExtensionEntry from "~/utils/ExtensionEntry";
+import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
+import {createRoot} from "react-dom/client";
+import BrowserActionEntryType from "~/utils/EntryPointTypes/BrowserAction/BrowserActionEntryType";
 
 class BrowserActionViewModel extends BaseViewModel {
     private readonly keys: string[]
@@ -220,12 +221,12 @@ function AutoCaptureSection(
 }
 
 
-run(async () => {
-    await ExtensionEntry.boot()
-    const vm = new BrowserActionViewModel(Configs.getLatestConfig())
-    const container = document.getElementById("app")!
-    ReactDom.render(
-        <BrowserActionUi vm={vm}/>,
-        container,
-    )
-})
+export default defineExtensionEntry()
+    .withType(BrowserActionEntryType)
+    .withInit(async (context) => {
+        const vm = new BrowserActionViewModel(context.getLatestConfig())
+        const container = document.getElementById("app")!
+        createRoot(container).render(
+            <BrowserActionUi vm={vm}/>,
+        )
+    })

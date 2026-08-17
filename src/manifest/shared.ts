@@ -19,10 +19,10 @@ export function getBaseManifest() {
         },
         content_scripts: [{
             matches: ["*://*/*"],
-            js: ["src/contentscripts/ContentScript.ts"],
+            js: ["src/entrypoint/ContentScript.ts"],
         }],
         options_ui: {
-            page: "src/optionsui/option-ui.html",
+            page: "src/entrypoint/OptionUi/index.html",
             open_in_tab: true,
         },
         web_accessible_resources:[
@@ -34,11 +34,11 @@ export function getBaseManifest() {
 export function getBrowserActionInfo(){
     return  {
         default_title: "AB Download Manager",
-        default_popup: "src/browseractionpopup/browser-action.html"
+        default_popup: "src/entrypoint/BrowserAction/index.html",
     }
 }
 export function getBackgroundScript(){
-    return  "src/background/background.ts"
+    return "src/entrypoint/Background.ts"
 }
 export function getHostPermissions(){
     return [
