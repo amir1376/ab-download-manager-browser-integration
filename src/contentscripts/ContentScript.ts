@@ -12,6 +12,7 @@ import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 import {addDownloads} from "~/contentscripts/AddDownloads";
 import {sendMessage} from "webext-bridge/options";
 import {DefinedCommands} from "~/message/Commands";
+import * as ExtensionEntry from "~/utils/ExtensionEntry";
 
 const showPopupDelayed = debounce(500)
 
@@ -36,7 +37,7 @@ function shouldCreatePopup() {
 }
 
 run(async () => {
-    await Configs.boot()
+    await ExtensionEntry.boot()
     mousePosition.boot()
     HoldingKeyTracker.boot()
     selectionPopup.setOnPopupClicked(async () => {
