@@ -73,7 +73,7 @@ export default defineExtensionEntry()
                 showPopupDelayed.cancel()
             })
 
-            document.addEventListener("mouseup", () => {
+            document.addEventListener("mouseup", (mouseEvent) => {
                 showPopupDelayed(() => {
                     const mousePositionInPage = mousePosition.getMousePositionInPage();
                     if (!shouldCreatePopup() || mousePositionInPage === null) {
@@ -97,7 +97,7 @@ export default defineExtensionEntry()
                     try {
                         await sendMessage(
                             DefinedCommands.SET_HOLDING_KEY,
-                            HoldingKeyTracker.getHoldingKey(),
+                            HoldingKeyTracker.getHoldingShortcut(mouseEvent),
                             "background"
                         )
                     } catch (e) {
