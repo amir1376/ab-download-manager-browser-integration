@@ -20,6 +20,8 @@ import {Nullable, WithSetters} from "~/utils/Types";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import {createRoot} from "react-dom/client";
 import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryType";
+import {isModifierKey, normalizeShortcut, parseShortcut} from "~/utils/Shortcut";
+import {isMac} from "~/utils/platform/Platform";
 
 class ToolsViewModelEvent {
 }
@@ -554,31 +556,75 @@ function ShortcutCapture(
     }
 ) {
     const [isCapturing, setIsCapturing] = useState(false)
+    const [heldModifiers, setHeldModifiers] = useState<string[]>([])
     const canBeReset = useMemo(() => {
         return props.defaultValue !== undefined && props.defaultValue !== props.value
     }, [props.defaultValue, props.value])
+    // ctrl+click is the secondary click on mac, the click never reaches the page
+    const isUnusableOnMac = useMemo(() => {
+        return isMac() && parseShortcut(props.value).includes("Control")
+    }, [props.value])
+
+    function stopCapturing(target: EventTarget | null) {
+        setHeldModifiers([])
+        setIsCapturing(false)
+        ;(target as HTMLElement | null)?.blur()
+    }
+
+    function modifiersOf(e: React.KeyboardEvent): string[] {
+        const modifiers: string[] = []
+        if (e.ctrlKey) modifiers.push("Control")
+        if (e.altKey) modifiers.push("Alt")
+        if (e.shiftKey) modifiers.push("Shift")
+        if (e.metaKey) modifiers.push("Meta")
+        return modifiers
+    }
 
     return <div className="flex flex-col space-y-2">
         <div className="flex items-center space-x-2">
             <input
                 type="text"
                 readOnly
-                value={isCapturing ? "" : props.value}
+                value={isCapturing ? normalizeShortcut(heldModifiers) : props.value}
                 placeholder={
                     isCapturing
                         ? browser.i18n.getMessage("config_press_a_key")
                         : props.value
                 }
                 onFocus={() => setIsCapturing(true)}
-                onBlur={() => setIsCapturing(false)}
+                onBlur={() => {
+                    setHeldModifiers([])
+                    setIsCapturing(false)
+                }}
                 onKeyDown={(e) => {
+                    // tab is left alone, it is the only way out of the field with the keyboard
+                    if (e.key === "Tab") {
+                        stopCapturing(null)
+                        return
+                    }
                     e.preventDefault()
                     e.stopPropagation()
-                    if (e.key) {
-                        props.onChange(e.key)
-                        setIsCapturing(false)
-                        ;(e.target as HTMLElement).blur()
+                    // escape cancels and keeps the previous shortcut
+                    if (e.key === "Escape") {
+                        stopCapturing(e.target)
+                        return
                     }
+                    const modifiers = modifiersOf(e)
+                    if (isModifierKey(e.key)) {
+                        setHeldModifiers(modifiers)
+                        return
+                    }
+                    props.onChange(normalizeShortcut([...modifiers, e.key]))
+                    stopCapturing(e.target)
+                }}
+                onKeyUp={(e) => {
+                    // a shortcut made only of modifiers is taken when the first one is released
+                    if (!isCapturing || heldModifiers.length === 0) {
+                        return
+                    }
+                    e.preventDefault()
+                    props.onChange(normalizeShortcut(heldModifiers))
+                    stopCapturing(e.target)
                 }}
                 className={classNames(
                     "input input-sm flex-1 cursor-pointer select-none",
@@ -587,6 +633,13 @@ function ShortcutCapture(
                 )}
             />
         </div>
+        {
+            isUnusableOnMac && (
+                <div className="text-warning">
+                    {browser.i18n.getMessage("config_bypass_shortcut_control_mac_warning")}
+                </div>
+            )
+        }
         {
             canBeReset && (
                 <div
