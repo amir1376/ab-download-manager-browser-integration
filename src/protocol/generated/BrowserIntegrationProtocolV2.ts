@@ -2,7 +2,7 @@
 // Update only through the canonical desktop schema and lock workflow.
 
 export const BROWSER_INTEGRATION_PROTOCOL_MAJOR = 2 as const
-export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 0 as const
+export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 1 as const
 
 export const BrowserProtocolLimitsV2 = Object.freeze({
     maxFrameBytes: 256 * 1024,
@@ -25,7 +25,7 @@ export interface BrowserProtocolVersionV2 {
 
 export type BrowserMessageKindV2 = "REQUEST" | "RESPONSE" | "EVENT"
 export type BrowserActionV2 =
-    | "HELLO" | "GET_POLICY" | "POLICY_CHANGED"
+    | "HELLO" | "GET_POLICY" | "UPDATE_POLICY" | "POLICY_CHANGED"
     | "PREPARE_CAPTURE" | "COMMIT_CAPTURE" | "ABORT_CAPTURE" | "LIST_PREPARED_CAPTURES"
     | "SUBMIT_BATCH" | "CANCEL_BATCH" | "QUERY_BROWSER_CONTEXT"
     | "ADDRESS_REFRESH_CAPABILITIES" | "ADDRESS_REFRESH_SESSIONS" | "ADDRESS_REFRESH_CANDIDATE"

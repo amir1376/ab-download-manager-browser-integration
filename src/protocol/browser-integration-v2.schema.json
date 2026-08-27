@@ -46,7 +46,7 @@
         "protocolVersion": { "$ref": "#/$defs/protocolVersion" },
         "messageId": { "type": "string", "minLength": 1, "maxLength": 128 },
         "kind": { "enum": ["REQUEST", "RESPONSE", "EVENT"] },
-        "action": { "enum": ["HELLO", "GET_POLICY", "POLICY_CHANGED", "PREPARE_CAPTURE", "COMMIT_CAPTURE", "ABORT_CAPTURE", "LIST_PREPARED_CAPTURES", "SUBMIT_BATCH", "CANCEL_BATCH", "QUERY_BROWSER_CONTEXT", "ADDRESS_REFRESH_CAPABILITIES", "ADDRESS_REFRESH_SESSIONS", "ADDRESS_REFRESH_CANDIDATE", "PING", "DIAGNOSTICS"] },
+        "action": { "enum": ["HELLO", "GET_POLICY", "UPDATE_POLICY", "POLICY_CHANGED", "PREPARE_CAPTURE", "COMMIT_CAPTURE", "ABORT_CAPTURE", "LIST_PREPARED_CAPTURES", "SUBMIT_BATCH", "CANCEL_BATCH", "QUERY_BROWSER_CONTEXT", "ADDRESS_REFRESH_CAPABILITIES", "ADDRESS_REFRESH_SESSIONS", "ADDRESS_REFRESH_CANDIDATE", "PING", "DIAGNOSTICS"] },
         "deadlineEpochMs": { "type": ["integer", "null"], "minimum": 0 },
         "idempotencyKey": { "type": ["string", "null"], "maxLength": 128 },
         "payload": { "type": "object" }

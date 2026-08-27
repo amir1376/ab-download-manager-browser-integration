@@ -24,8 +24,17 @@ describe("browser integration protocol v2", () => {
         expect(media.variants[0].tracks[0].selected).toBe(false)
     })
 
-    it("keeps every downstream phase disabled before its gate", () => {
-        expect(Object.values(browserParityFeatureFlagsV2).every(value => value === false)).toBe(true)
+    it("enables only phases whose local implementation gates are complete", () => {
+        expect(browserParityFeatureFlagsV2).toMatchObject({
+            secureBridge: true,
+            twoPhaseCapture: true,
+            ftpCapture: true,
+            permissionPolicy: true,
+            reviewedBatches: false,
+            advancedMediaDiscovery: false,
+            adaptiveMediaTransfer: false,
+            uxPolicy: false,
+        })
         expect(BrowserProtocolLimitsV2.maxFrameBytes).toBe(256 * 1024)
         expect(BrowserProtocolLimitsV2.maxBodyBytes).toBe(4 * 1024 * 1024)
         expect(BrowserProtocolLimitsV2.maxBatchCandidates).toBe(5_000)

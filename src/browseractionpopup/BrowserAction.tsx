@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import "~/assets/css/styles.css"
 import {BaseViewModel, useViewModel} from "~/base/BaseViewModel";
 import {action, makeObservable, observable} from "mobx";
@@ -130,10 +130,33 @@ const BrowserActionUi: React.FC<{
             <AutoCaptureSection enabled={vm.autoCaptureLinks} toggle={(v) => vm.setAutoCaptureLinks(v)}/>
             <EnableSection enabled={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
             <SilentAddDownload enabled={vm.silentAddDownload} toggle={(v) => vm.setSilentAddDownload(v)}/>
+            <RecentBrowserDownloads/>
             <MoreSettings/>
         </div>
     </div>
 })
+
+function RecentBrowserDownloads() {
+    const [items, setItems] = useState<Array<{id: number; name: string}>>([])
+    const [result, setResult] = useState<string | null>(null)
+    useEffect(() => {
+        void browser.downloads.search({limit: 5, orderBy: ["-startTime"]}).then(downloads => {
+            setItems(downloads.filter(item => !item.byExtensionId && /^(https?|ftps?):/i.test(item.url)).map(item => ({
+                id: item.id,
+                name: item.filename?.split(/[\\/]/).pop() || item.url,
+            })))
+        })
+    }, [])
+    if (!items.length) return null
+    return <div className="px-4 py-3 border-t border-base-content/20 max-w-96">
+        <div className="text-sm mb-2">Recapture a browser download</div>
+        {items.map(item => <button key={item.id} className="btn btn-ghost btn-xs block max-w-full truncate" title={item.name} onClick={() => {
+            void sendMessage(DefinedCommands.RECAPTURE_BROWSER_DOWNLOAD_V2, item.id, "background")
+                .then(ok => setResult(ok ? "Added to desktop review" : "Could not recapture"))
+        }}>{item.name}</button>)}
+        {result && <div className="text-xs mt-1">{result}</div>}
+    </div>
+}
 
 function Divider() {
     return <div className="w-full bg-base-content/20 h-px"/>

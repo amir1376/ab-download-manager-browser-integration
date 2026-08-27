@@ -59,6 +59,21 @@ export const BrowserIntegrationCapabilitiesV2Schema = z.object({
     featureFlags: FeatureFlags,
 })
 
+export const BrowserIntegrationPolicyV2Schema = z.object({
+    schemaVersion: z.literal(2),
+    revision: z.int().min(0),
+    mode: z.enum(["OFF", "STANDARD", "FULL"]),
+    automaticInterception: z.boolean(),
+    advancedMediaInspection: z.boolean(),
+    privateBrowsing: z.boolean(),
+    sendProtectedContext: z.boolean(),
+    registeredFileTypes: z.array(z.string().regex(/^[A-Za-z0-9]{1,16}$/)).max(512),
+    registeredMimeTypes: z.array(z.string().min(1).max(128)).max(512),
+    excludedUrls: z.array(z.string().max(16_384)).max(2048),
+    forceShortcut: z.string().max(128).nullable().optional(),
+    bypassShortcut: z.string().max(128).nullable().optional(),
+})
+
 export const CaptureProposalV2Schema = z.object({
     captureId: z.string().min(1).max(128), idempotencyKey: z.string().min(1).max(128),
     browserFamily: z.enum(["CHROME", "EDGE", "FIREFOX", "OPERA", "CHROMIUM", "BRAVE", "VIVALDI", "UNKNOWN"]),

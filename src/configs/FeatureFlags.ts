@@ -10,14 +10,14 @@ export interface BrowserParityFeatureFlagsV2 {
 }
 
 /**
- * Phase features remain disabled until their phase gate is complete.
- * Capability negotiation will replace these static defaults in Phase 1.
+ * Compile-time rollout gates are combined with desktop capability negotiation
+ * and the authoritative privacy policy. A true value never grants permission by itself.
  */
 export const browserParityFeatureFlagsV2: Readonly<BrowserParityFeatureFlagsV2> = Object.freeze({
-    secureBridge: false,
-    twoPhaseCapture: false,
-    ftpCapture: false,
-    permissionPolicy: false,
+    secureBridge: true,
+    twoPhaseCapture: true,
+    ftpCapture: true,
+    permissionPolicy: true,
     reviewedBatches: false,
     advancedMediaDiscovery: false,
     adaptiveMediaTransfer: false,

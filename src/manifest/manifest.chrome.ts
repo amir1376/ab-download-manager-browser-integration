@@ -3,7 +3,8 @@ import {
     getBaseManifest,
     getBrowserActionInfo,
     getCommonPermissions,
-    getHostPermissions
+    getHostPermissions,
+    getOptionalPermissions,
 } from "./shared";
 import ManifestV3 = chrome.runtime.ManifestV3;
 // import ManifestV2 = chrome.runtime.ManifestV2;
@@ -17,8 +18,10 @@ export function getManifestForChrome(): ManifestV3 {
             service_worker: getBackgroundScript(),
         },
         action: getBrowserActionInfo(),
-        host_permissions: getHostPermissions(),
+        optional_host_permissions: getHostPermissions(),
         permissions: getCommonPermissions(),
+        optional_permissions: [...getOptionalPermissions(), "scripting"],
+        incognito: "split",
     } as unknown as ManifestV3
     /*return {
         manifest_version: 2,

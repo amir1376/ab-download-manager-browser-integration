@@ -3,7 +3,8 @@ import {
     getBaseManifest,
     getBrowserActionInfo,
     getCommonPermissions,
-    getHostPermissions
+    getHostPermissions,
+    getOptionalPermissions,
 } from "./shared";
 import ManifestV2 = chrome.runtime.ManifestV2;
 
@@ -21,10 +22,12 @@ export function getManifestForFirefox(): ManifestV2 {
         },
         browser_action: getBrowserActionInfo(),
         permissions: [
-            ...getHostPermissions(),
             ...getCommonPermissions(),
-            // only in firefox as it supports mv2
-            "webRequestBlocking",
         ],
+        optional_permissions: [
+            ...getHostPermissions(),
+            ...getOptionalPermissions(),
+        ],
+        incognito: "split",
     } as unknown as ManifestV2
 }

@@ -7,6 +7,7 @@ import {BrowserTarget, getExtensionBrowserTarget, isChrome} from "~/utils/Extens
 import {getFileExtension, getFileFromUrl} from "~/utils/URLUtils"
 import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
 import {RequestContextRegistryV2} from "./RequestContextRegistryV2"
+import {getPermissionRuntimeStateV2} from "~/permissions/PermissionRuntimeStateV2"
 
 interface CaptureBridgeV2 {
     prepare(proposal: CaptureProposalV2): Promise<PreparedCaptureV2>
@@ -31,6 +32,10 @@ const defaultBridge: CaptureBridgeV2 = {
 
 export class CaptureCoordinatorV2 {
     private readonly registry: RequestContextRegistryV2
+    private readonly disposers: Array<() => void> = []
+    private readonly cleanupTimers = new Set<ReturnType<typeof setTimeout>>()
+    private booted = false
+    private snapshotQueued = false
 
     constructor(
         registry: RequestContextRegistryV2 = new RequestContextRegistryV2(),
@@ -39,50 +44,91 @@ export class CaptureCoordinatorV2 {
         this.registry = registry
     }
 
-    boot(): void {
+    boot(): () => void {
+        if (this.booted) return () => this.close()
+        this.booted = true
         const filter: WebRequest.RequestFilter = {urls: ["http://*/*", "https://*/*"]}
+        const beforeRequest = (details: WebRequest.OnBeforeRequestDetailsType) => {
+            this.registry.observeBeforeRequest(details); this.queueSnapshot()
+        }
         browser.webRequest.onBeforeRequest.addListener(
-            details => this.registry.observeBeforeRequest(details), filter, ["requestBody"],
+            beforeRequest, filter, ["requestBody"],
         )
+        this.disposers.push(() => browser.webRequest.onBeforeRequest.removeListener(beforeRequest))
+        const sendHeaders = (details: WebRequest.OnSendHeadersDetailsType) => {
+            this.registry.observeSendHeaders(details); this.queueSnapshot()
+        }
         browser.webRequest.onSendHeaders.addListener(
-            details => this.registry.observeSendHeaders(details),
+            sendHeaders,
             filter,
             isChrome() ? ["requestHeaders", "extraHeaders"] : ["requestHeaders"],
         )
+        this.disposers.push(() => browser.webRequest.onSendHeaders.removeListener(sendHeaders))
+        const headersReceived = (details: WebRequest.OnHeadersReceivedDetailsType) => {
+            this.registry.observeHeadersReceived(details); this.queueSnapshot()
+        }
         browser.webRequest.onHeadersReceived.addListener(
-            details => this.registry.observeHeadersReceived(details),
+            headersReceived,
             filter,
             isChrome() ? ["responseHeaders", "extraHeaders"] : ["responseHeaders"],
         )
+        this.disposers.push(() => browser.webRequest.onHeadersReceived.removeListener(headersReceived))
+        const beforeRedirect = (details: WebRequest.OnBeforeRedirectDetailsType) => {
+            this.registry.observeRedirect(details); this.queueSnapshot()
+        }
         browser.webRequest.onBeforeRedirect.addListener(
-            details => this.registry.observeRedirect(details), filter, ["responseHeaders"],
+            beforeRedirect, filter, ["responseHeaders"],
         )
+        this.disposers.push(() => browser.webRequest.onBeforeRedirect.removeListener(beforeRedirect))
+        const completed = (details: WebRequest.OnCompletedDetailsType) => this.forgetLater(details.requestId)
         browser.webRequest.onCompleted.addListener(
-            details => this.forgetLater(details.requestId), filter,
+            completed, filter,
         )
+        this.disposers.push(() => browser.webRequest.onCompleted.removeListener(completed))
+        const failed = (details: WebRequest.OnErrorOccurredDetailsType) => this.forgetLater(details.requestId)
         browser.webRequest.onErrorOccurred.addListener(
-            details => this.forgetLater(details.requestId), filter,
+            failed, filter,
         )
-        browser.tabs.onRemoved.addListener(tabId => this.registry.forgetTab(tabId))
-        browser.downloads.onCreated.addListener(download => void this.capture(download))
-        backend.registerNativeBrowserRequestHandler(
+        this.disposers.push(() => browser.webRequest.onErrorOccurred.removeListener(failed))
+        const removed = (tabId: number) => { this.registry.forgetTab(tabId); this.queueSnapshot() }
+        browser.tabs.onRemoved.addListener(removed)
+        this.disposers.push(() => browser.tabs.onRemoved.removeListener(removed))
+        const created = (download: Downloads.DownloadItem) => void this.capture(download)
+        browser.downloads.onCreated.addListener(created)
+        this.disposers.push(() => browser.downloads.onCreated.removeListener(created))
+        this.disposers.push(backend.registerNativeBrowserRequestHandler(
             "queryBrowserContextV2",
             payload => this.queryBrowserContext(payload),
-        )
-        void this.reconcile()
+        ))
+        void this.restoreSnapshot().then(() => this.reconcile())
+        return () => this.close()
+    }
+
+    close(): void {
+        if (!this.booted) return
+        this.booted = false
+        while (this.disposers.length) this.disposers.pop()?.()
+        for (const timer of this.cleanupTimers) clearTimeout(timer)
+        this.cleanupTimers.clear()
+        this.registry.clear()
+        void removeRegistrySnapshot()
     }
 
     async capture(download: Downloads.DownloadItem): Promise<void> {
-        if (!this.isEligible(download)) return
         const match = this.registry.matchDownload(download)
         if (match.kind !== "MATCHED") return
+        if (!this.registry.canCapture(match.record)) return
+        if (!this.isEligible(download, match.record.tabId)) return
 
         let paused = false
         let captureId: string | null = null
+        let shelfSuppressed = false
         try {
             await browser.downloads.pause(download.id)
             paused = true
-            const context = await this.registry.createContext(match.record, download)
+            const policy = backend.getBrowserPolicyV2()
+            if (!policy) throw new Error("Browser policy is unavailable")
+            const context = await this.registry.createContext(match.record, download, policy.sendProtectedContext)
             captureId = crypto.randomUUID()
             const proposal: CaptureProposalV2 = {
                 captureId,
@@ -102,6 +148,7 @@ export class CaptureCoordinatorV2 {
                 expiresAtEpochMs: prepared.expiresAtEpochMs,
             })
 
+            shelfSuppressed = await setDownloadShelfEnabled(false)
             await browser.downloads.cancel(download.id)
             paused = false
             await browser.downloads.erase({id: download.id})
@@ -134,21 +181,35 @@ export class CaptureCoordinatorV2 {
             if (captureId !== null) await this.bridge.abort(captureId).catch(() => null)
             if (paused) await browser.downloads.resume(download.id).catch(() => undefined)
         } finally {
+            if (shelfSuppressed) await setDownloadShelfEnabled(true)
             this.registry.forget(match.record.requestId)
+            this.queueSnapshot()
         }
     }
 
-    private isEligible(download: Downloads.DownloadItem): boolean {
+    private isEligible(download: Downloads.DownloadItem, tabId: number): boolean {
+        const policy = backend.getBrowserPolicyV2()
+        const permission = getPermissionRuntimeStateV2()
+        if (!policy || policy.mode !== "FULL" || !permission.fullAuthority || !download.url.startsWith("http") || download.byExtensionId) return false
+        if (download.incognito && (!policy.privateBrowsing || !permission.privateAllowed)) return false
+        if (BackgroundSharedState.isTabBypassed(tabId)) return false
+        if (BackgroundSharedState.isShortcutPressed(tabId, policy.bypassShortcut)) return false
+        const forced = BackgroundSharedState.isShortcutPressed(tabId, policy.forceShortcut)
+        if (!forced && !policy.automaticInterception) return false
+        if (!forced && policy.excludedUrls.length && urlMatch(download.url, policy.excludedUrls)) return false
+        if (!forced && download.referrer && policy.excludedUrls.length && urlMatch(download.referrer, policy.excludedUrls)) return false
         const config = getLatestConfig()
-        if (!config.autoCaptureLinks || !download.url.startsWith("http") || download.byExtensionId) return false
-        if (BackgroundSharedState.isBypassShortcutPressed()) return false
-        if (config.blacklistedUrls.length && urlMatch(download.url, config.blacklistedUrls)) return false
-        if (download.referrer && config.blacklistedUrls.length && urlMatch(download.referrer, config.blacklistedUrls)) return false
         if (config.captureFileSizeMinimumKb > 0 && download.fileSize >= 0 &&
             download.fileSize < config.captureFileSizeMinimumKb * 1024) return false
         const fileName = download.filename?.split(/[\\/]/).pop() || getFileFromUrl(download.url)
         if (!fileName) return false
-        return config.registeredFileTypes.includes(getFileExtension(fileName).toLowerCase())
+        if (forced) return true
+        const extensionEligible = policy.registeredFileTypes.includes(getFileExtension(fileName).toLowerCase())
+        const mime = (download as Downloads.DownloadItem & {mime?: string}).mime?.split(';')[0].trim().toLowerCase()
+        const mimeEligible = Boolean(mime && policy.registeredMimeTypes.some(value =>
+            value.endsWith("/*") ? mime.startsWith(value.slice(0, -1)) : mime === value,
+        ))
+        return extensionEligible || mimeEligible
     }
 
     private async reconcile(): Promise<void> {
@@ -178,7 +239,11 @@ export class CaptureCoordinatorV2 {
         try {
             return {
                 status: "FOUND",
-                context: await this.registry.createContext(record, request.download as Downloads.DownloadItem),
+                context: await this.registry.createContext(
+                    record,
+                    request.download as Downloads.DownloadItem,
+                    backend.getBrowserPolicyV2()?.sendProtectedContext === true,
+                ),
             }
         } catch {
             return {status: "UNAVAILABLE"}
@@ -186,7 +251,36 @@ export class CaptureCoordinatorV2 {
     }
 
     private forgetLater(requestId: string): void {
-        setTimeout(() => this.registry.forget(requestId), 20_000)
+        const timer = setTimeout(() => {
+            this.cleanupTimers.delete(timer)
+            this.registry.forget(requestId)
+            this.queueSnapshot()
+        }, 20_000)
+        this.cleanupTimers.add(timer)
+    }
+
+    private queueSnapshot(): void {
+        if (this.snapshotQueued || !this.booted) return
+        this.snapshotQueued = true
+        queueMicrotask(() => {
+            this.snapshotQueued = false
+            if (this.booted) void saveRegistrySnapshot(this.registry.exportSnapshot())
+        })
+    }
+
+    private async restoreSnapshot(): Promise<void> {
+        this.registry.restoreSnapshot(await loadRegistrySnapshot())
+    }
+}
+
+async function setDownloadShelfEnabled(enabled: boolean): Promise<boolean> {
+    const downloads = browser.downloads as unknown as {setShelfEnabled?: (enabled: boolean) => Promise<void>}
+    if (!downloads.setShelfEnabled) return false
+    try {
+        await downloads.setShelfEnabled(enabled)
+        return true
+    } catch {
+        return false
     }
 }
 
@@ -195,6 +289,7 @@ function browserFamily(): "CHROME" | "FIREFOX" {
 }
 
 const RECEIPT_PREFIX = "browser-capture-v2:"
+const REGISTRY_SNAPSHOT_KEY = "browser-request-registry-v2"
 
 async function receiptStorage(): Promise<{get(keys?: string[] | null): Promise<Record<string, unknown>>; set(items: Record<string, unknown>): Promise<void>; remove(keys: string | string[]): Promise<void>}> {
     const candidate = (browser.storage as unknown as {session?: typeof browser.storage.local}).session
@@ -228,4 +323,23 @@ async function loadReceipts(): Promise<CaptureReceiptV2[]> {
         receipts.push(receipt as CaptureReceiptV2)
     }
     return receipts
+}
+
+async function saveRegistrySnapshot(snapshot: unknown): Promise<void> {
+    const storage = await sessionStorageOnly()
+    if (storage) await storage.set({[REGISTRY_SNAPSHOT_KEY]: snapshot})
+}
+
+async function loadRegistrySnapshot(): Promise<unknown> {
+    const storage = await sessionStorageOnly()
+    return storage ? (await storage.get(REGISTRY_SNAPSHOT_KEY))[REGISTRY_SNAPSHOT_KEY] : null
+}
+
+async function removeRegistrySnapshot(): Promise<void> {
+    const storage = await sessionStorageOnly()
+    if (storage) await storage.remove(REGISTRY_SNAPSHOT_KEY)
+}
+
+async function sessionStorageOnly(): Promise<typeof browser.storage.local | null> {
+    return (browser.storage as unknown as {session?: typeof browser.storage.local}).session ?? null
 }

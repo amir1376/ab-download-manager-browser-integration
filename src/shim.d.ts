@@ -16,7 +16,12 @@ declare module "webext-bridge" {
         test_native_messaging: ProtocolWithReturn<undefined, boolean>;
         is_app_reachable: ProtocolWithReturn<undefined, boolean>;
         get_headers:ProtocolWithReturn<string[],(DownloadRequestHeaders | null)[]>;
-        set_holding_key: string;
+        set_holding_key: {key: string; pressed: boolean};
         get_platform: ProtocolWithReturn<undefined, Runtime.PlatformInfo>,
+        get_browser_policy_status_v2: ProtocolWithReturn<null, unknown>;
+        update_browser_policy_v2: ProtocolWithReturn<unknown, unknown>;
+        reconcile_browser_permissions_v2: ProtocolWithReturn<null, unknown>;
+        set_tab_capture_bypass_v2: ProtocolWithReturn<{tabId: number; bypassed: boolean}, boolean>;
+        recapture_browser_download_v2: ProtocolWithReturn<number, boolean>;
     }
 }

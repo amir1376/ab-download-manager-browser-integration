@@ -20,6 +20,7 @@ import {Nullable, WithSetters} from "~/utils/Types";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import {createRoot} from "react-dom/client";
 import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryType";
+import {BrowserIntegrationPolicySectionV2} from "~/optionsui/BrowserIntegrationPolicySectionV2";
 
 class ToolsViewModelEvent {
 }
@@ -254,6 +255,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
         </div>
 
         <div className="p-4 bg-base-200 shadow">
+            <BrowserIntegrationPolicySectionV2/>
+            <Divider/>
             <AutoCaptureSection
                 value={vm.autoCaptureLinks}
                 toggle={(v) => vm.setAutoCaptureLinks(v)}

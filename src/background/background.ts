@@ -1,16 +1,22 @@
 import {initializeOptions} from "~/contextmenus/ContextMenus";
 import * as backend from "~/backend/Backend"
 import * as Backend from "~/backend/Backend"
-import {redirectDownloadLinksToMe} from "~/linkgrabber/LinkGrabber";
 import {onMessage} from "webext-bridge/background";
 import {addDownload, getHeadersForUrls} from "~/background/actions";
 import {keepListeningToEvents} from "~/utils/extension-api";
 import {IS_MV3} from "~/utils/ManifestUtil";
-import {setHoldingKey} from "~/background/BackgroundSharedState";
+import * as BackgroundSharedState from "~/background/BackgroundSharedState";
 import {DefinedCommands} from "~/message/Commands";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import platformInfoProvider from "~/utils/platform/InitPlatformFromBackground";
 import BackgroundEntryType from "~/utils/EntryPointTypes/background/BackgroundEntryType";
+import {
+    bootBrowserPermissionPolicyV2,
+    getBrowserPermissionStatusV2,
+    reconcileBrowserPermissionPolicyV2,
+} from "~/permissions/BrowserPermissionPolicyV2";
+import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -32,10 +38,38 @@ function receiveMessageFromContentScripts() {
         return await getHeadersForUrls(msg.data)
     })
     onMessage(DefinedCommands.SET_HOLDING_KEY, async (msg) => {
-        setHoldingKey(msg.data)
+        const data = msg.data as {key?: unknown; pressed?: unknown}
+        const tabId = (msg.sender as unknown as {tabId?: number}).tabId ?? -1
+        await BackgroundSharedState.setHoldingKey(
+            tabId,
+            typeof data.key === "string" ? data.key : "",
+            data.pressed === true,
+        )
     })
     onMessage(DefinedCommands.GET_PLATFORM, async () => {
         return await platformInfoProvider.getPlatformInfo()
+    })
+    onMessage(DefinedCommands.GET_BROWSER_POLICY_STATUS_V2, async () => ({
+        policy: Backend.getBrowserPolicyV2(),
+        permissions: getBrowserPermissionStatusV2(),
+    }))
+    onMessage(DefinedCommands.UPDATE_BROWSER_POLICY_V2, async msg => {
+        const policy = await Backend.updateBrowserPolicyV2(msg.data as unknown as BrowserIntegrationPolicyV2)
+        const permissions = await reconcileBrowserPermissionPolicyV2()
+        return {policy, permissions}
+    })
+    onMessage(DefinedCommands.RECONCILE_BROWSER_PERMISSIONS_V2, async () => ({
+        policy: Backend.getBrowserPolicyV2(),
+        permissions: await reconcileBrowserPermissionPolicyV2(),
+    }))
+    onMessage(DefinedCommands.SET_TAB_CAPTURE_BYPASS_V2, async msg => {
+        const data = msg.data as {tabId?: unknown; bypassed?: unknown}
+        if (typeof data.tabId !== "number") return false
+        await BackgroundSharedState.setTabBypass(data.tabId, data.bypassed === true)
+        return true
+    })
+    onMessage(DefinedCommands.RECAPTURE_BROWSER_DOWNLOAD_V2, async msg => {
+        return typeof msg.data === "number" && await recaptureBrowserDownloadV2(msg.data)
     })
 }
 
@@ -48,8 +82,9 @@ export default defineExtensionEntry()
                 disposable.add(keepListeningToEvents())
             }
             await Backend.boot()
+            await BackgroundSharedState.boot()
+            await bootBrowserPermissionPolicyV2()
             await initializeOptions()
-            redirectDownloadLinksToMe()
             receiveMessageFromContentScripts()
             console.log("ab dm extension loaded successfully")
         } catch (e) {

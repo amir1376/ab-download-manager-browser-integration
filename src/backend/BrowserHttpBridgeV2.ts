@@ -1,5 +1,6 @@
-import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
+import type {BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
 import {PreparedCaptureListV2Schema, PreparedCaptureV2Schema} from "~/protocol/BrowserBridgeV2"
+import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema"
 
 export class BrowserHttpBridgeV2 {
     constructor(
@@ -17,6 +18,18 @@ export class BrowserHttpBridgeV2 {
         return PreparedCaptureV2Schema.parse(
             await this.request("browser/v2/captures/prepare", proposal)
         ) as PreparedCaptureV2
+    }
+
+    async getPolicy(): Promise<BrowserIntegrationPolicyV2> {
+        return BrowserIntegrationPolicyV2Schema.parse(
+            await this.request("browser/v2/policy", null, "GET")
+        ) as BrowserIntegrationPolicyV2
+    }
+
+    async updatePolicy(policy: BrowserIntegrationPolicyV2): Promise<BrowserIntegrationPolicyV2> {
+        return BrowserIntegrationPolicyV2Schema.parse(
+            await this.request("browser/v2/policy", policy)
+        ) as BrowserIntegrationPolicyV2
     }
 
     async markBrowserReleased(captureId: string): Promise<PreparedCaptureV2 | null> {

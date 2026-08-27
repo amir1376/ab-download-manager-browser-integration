@@ -33,6 +33,18 @@ interface RequestRecordV2 {
     remoteAddress: string | null
 }
 
+interface RequestRecordSnapshotV2 extends Omit<RequestRecordV2, "requestBodyBytes" | "withheldFields" | "incompleteFields"> {
+    requestBodyBase64: string | null
+    withheldFields: string[]
+    incompleteFields: string[]
+}
+
+export interface RequestRegistrySnapshotV2 {
+    schemaVersion: 2
+    createdAtEpochMs: number
+    records: RequestRecordSnapshotV2[]
+}
+
 export type DownloadRequestMatchV2 =
     | {kind: "MATCHED"; record: RequestRecordV2}
     | {kind: "AMBIGUOUS"}
@@ -122,6 +134,61 @@ export class RequestContextRegistryV2 {
         for (const record of [...(this.byTab.get(tabId) ?? [])]) this.remove(record)
     }
 
+    clear(): void {
+        for (const record of [...this.byRequestId.values()]) this.remove(record)
+    }
+
+    canCapture(record: RequestRecordV2): boolean {
+        return record.method === "GET" || record.method === "HEAD" ||
+            (record.requestBodyBytes !== null && !record.withheldFields.has("requestBody"))
+    }
+
+    exportSnapshot(maxBytes = MAX_SESSION_SNAPSHOT_BYTES): RequestRegistrySnapshotV2 {
+        this.cleanup()
+        let retainedBytes = 0
+        const records: RequestRecordSnapshotV2[] = []
+        const newest = [...this.byRequestId.values()].sort((a, b) => b.createdAtEpochMs - a.createdAtEpochMs)
+        for (const record of newest) {
+            const withheld = new Set(record.withheldFields)
+            let body: string | null = null
+            if (record.requestBodyBytes) {
+                const estimated = Math.ceil(record.requestBodyBytes.byteLength / 3) * 4
+                if (retainedBytes + estimated <= maxBytes) {
+                    body = bytesToBase64(record.requestBodyBytes)
+                    retainedBytes += estimated
+                } else {
+                    withheld.add("requestBody:workerSnapshot")
+                }
+            }
+            records.push({
+                ...record,
+                requestBodyBase64: body,
+                withheldFields: [...withheld],
+                incompleteFields: [...record.incompleteFields],
+            })
+            if (records.length >= MAX_GLOBAL_REQUESTS) break
+        }
+        return {schemaVersion: 2, createdAtEpochMs: this.now(), records}
+    }
+
+    restoreSnapshot(value: unknown): number {
+        if (!isSnapshot(value)) return 0
+        let restored = 0
+        for (const snapshot of value.records) {
+            if (this.byRequestId.has(snapshot.requestId) || snapshot.createdAtEpochMs < this.now() - REQUEST_TTL_MS) continue
+            const {requestBodyBase64, withheldFields, incompleteFields, ...safe} = snapshot
+            const record: RequestRecordV2 = {
+                ...safe,
+                requestBodyBytes: requestBodyBase64 ? base64ToBytes(requestBodyBase64) : null,
+                withheldFields: new Set(withheldFields),
+                incompleteFields: new Set(incompleteFields),
+            }
+            this.replace(record)
+            restored++
+        }
+        return restored
+    }
+
     getByRequestId(requestId: string): RequestRecordV2 | null {
         this.cleanup()
         return this.byRequestId.get(requestId) ?? null
@@ -143,29 +210,40 @@ export class RequestContextRegistryV2 {
     async createContext(
         record: RequestRecordV2,
         download: Downloads.DownloadItem,
+        sendProtectedContext = true,
     ): Promise<BrowserRequestContextV2> {
-        const body = await encodeRequestBody(record)
-        const cookies = await captureCookies(record.finalUrl)
+        const body = sendProtectedContext ? await encodeRequestBody(record) : null
+        const cookies = sendProtectedContext
+            ? await captureCookies(record.finalUrl)
+            : {values: [], incomplete: false, storeId: null}
         const response = new Headers(record.responseHeaders.map<[string, string]>(header => [header.name, header.value]))
         const disposition = getContentDisposition(response)
         const fileName = disposition ? getFileNameFromHeader(disposition) : null
         const incomplete = new Set(record.incompleteFields)
-        const proxy = await captureProxy(Boolean(download.incognito))
-        if (proxy === null) incomplete.add("proxy")
+        const proxy = sendProtectedContext ? await captureProxy(Boolean(download.incognito)) : null
+        if (sendProtectedContext && proxy === null) incomplete.add("proxy")
         if (cookies.incomplete) incomplete.add("cookies")
+        const withheld = new Set(record.withheldFields)
+        if (!sendProtectedContext) {
+            if (record.requestBodyBytes) withheld.add("requestBody:policy")
+            if (record.requestHeaders.length) withheld.add("requestHeaders:policy")
+            if (record.responseHeaders.length) withheld.add("responseHeaders:policy")
+            withheld.add("cookies:policy")
+            withheld.add("proxy:policy")
+        }
         return {
             originalUrl: record.originalUrl,
             finalUrl: record.finalUrl,
             method: record.method,
             requestBody: body,
-            requestHeaders: record.requestHeaders,
-            responseHeaders: record.responseHeaders,
+            requestHeaders: sendProtectedContext ? record.requestHeaders : [],
+            responseHeaders: sendProtectedContext ? record.responseHeaders : [],
             cookies: cookies.values,
-            redirects: record.redirects,
-            referrer: download.referrer || findHeader(record.requestHeaders, "referer"),
-            origin: findHeader(record.requestHeaders, "origin"),
-            initiator: record.initiator,
-            documentUrl: record.documentUrl,
+            redirects: sendProtectedContext ? record.redirects : [],
+            referrer: sendProtectedContext ? download.referrer || findHeader(record.requestHeaders, "referer") : null,
+            origin: sendProtectedContext ? findHeader(record.requestHeaders, "origin") : null,
+            initiator: sendProtectedContext ? record.initiator : null,
+            documentUrl: sendProtectedContext ? record.documentUrl : null,
             tabId: record.tabId,
             frameId: record.frameId,
             parentFrameId: record.parentFrameId,
@@ -177,7 +255,7 @@ export class RequestContextRegistryV2 {
             statusCode: record.statusCode,
             remoteAddress: record.remoteAddress,
             proxy,
-            withheldFields: [...record.withheldFields],
+            withheldFields: [...withheld],
             incompleteFields: [...incomplete],
         }
     }
@@ -214,7 +292,23 @@ export class RequestContextRegistryV2 {
         while (tabRecords.length > BrowserProtocolLimitsV2.maxRequestsPerTab) {
             this.remove(tabRecords[0])
         }
+        this.enforceGlobalLimits()
         this.cleanup()
+    }
+
+    private enforceGlobalLimits(): void {
+        const oldest = () => [...this.byRequestId.values()].sort((a, b) => a.createdAtEpochMs - b.createdAtEpochMs)[0]
+        while (this.byRequestId.size > MAX_GLOBAL_REQUESTS || this.totalBodyBytes() > MAX_TOTAL_BODY_BYTES) {
+            const candidate = oldest()
+            if (!candidate) break
+            this.remove(candidate)
+        }
+    }
+
+    private totalBodyBytes(): number {
+        let total = 0
+        for (const record of this.byRequestId.values()) total += record.requestBodyBytes?.byteLength ?? 0
+        return total
     }
 
     private cleanup(): void {
@@ -235,6 +329,25 @@ export class RequestContextRegistryV2 {
         record.requestBodyBytes?.fill(0)
         record.requestBodyBytes = null
     }
+}
+
+function isSnapshot(value: unknown): value is RequestRegistrySnapshotV2 {
+    if (typeof value !== "object" || value === null) return false
+    const snapshot = value as Partial<RequestRegistrySnapshotV2>
+    return snapshot.schemaVersion === 2 && Array.isArray(snapshot.records) && snapshot.records.length <= MAX_GLOBAL_REQUESTS
+}
+
+function bytesToBase64(bytes: Uint8Array): string {
+    let binary = ""
+    for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+        binary += String.fromCharCode(...bytes.subarray(offset, Math.min(offset + 0x8000, bytes.length)))
+    }
+    return btoa(binary)
+}
+
+function base64ToBytes(value: string): Uint8Array {
+    const binary = atob(value)
+    return Uint8Array.from(binary, character => character.charCodeAt(0))
 }
 
 function captureRequestBody(details: WebRequest.OnBeforeRequestDetailsType): {bytes: Uint8Array | null; mediaType: string | null; withheld: boolean} {
@@ -369,3 +482,6 @@ function isHttpUrl(url: string): boolean {
 
 const REQUEST_TTL_MS = 5 * 60_000
 const MATCH_WINDOW_MS = 15_000
+const MAX_GLOBAL_REQUESTS = 2_048
+const MAX_TOTAL_BODY_BYTES = 16 * 1024 * 1024
+const MAX_SESSION_SNAPSHOT_BYTES = 8 * 1024 * 1024

@@ -73,4 +73,51 @@ describe("RequestContextRegistryV2", () => {
             url: "https://example.invalid/file", startTime: new Date(1_001).toISOString(),
         } as any).kind).toBe("AMBIGUOUS")
     })
+
+    it("restores bounded worker state and fails POST capture open when its body cannot be retained", async () => {
+        const first = new RequestContextRegistryV2(() => 2_000)
+        first.observeBeforeRequest({
+            requestId: "post", url: "https://example.invalid/export", method: "POST", tabId: 2, frameId: 0,
+            timeStamp: 1_000, type: "xmlhttprequest",
+            requestBody: {raw: [{bytes: new TextEncoder().encode("secret-body").buffer}]},
+        } as any)
+        const fullSnapshot = first.exportSnapshot()
+        const restored = new RequestContextRegistryV2(() => 2_001)
+        expect(restored.restoreSnapshot(fullSnapshot)).toBe(1)
+        const matched = restored.matchDownload({url: "https://example.invalid/export", startTime: new Date(1_001).toISOString()} as any)
+        expect(matched.kind).toBe("MATCHED")
+        if (matched.kind !== "MATCHED") throw new Error("Expected match")
+        expect(restored.canCapture(matched.record)).toBe(true)
+
+        const bounded = new RequestContextRegistryV2(() => 2_001)
+        bounded.restoreSnapshot(first.exportSnapshot(0))
+        const omitted = bounded.matchDownload({url: "https://example.invalid/export", startTime: new Date(1_001).toISOString()} as any)
+        expect(omitted.kind).toBe("MATCHED")
+        if (omitted.kind !== "MATCHED") throw new Error("Expected match")
+        expect(bounded.canCapture(omitted.record)).toBe(false)
+    })
+
+    it("withholds protected context when FULL consent did not authorize it", async () => {
+        const registry = new RequestContextRegistryV2(() => 2_000)
+        registry.observeBeforeRequest({
+            requestId: "r-private", url: "https://example.invalid/file", method: "POST", tabId: 1, frameId: 0,
+            timeStamp: 1_000, type: "main_frame",
+            requestBody: {raw: [{bytes: new TextEncoder().encode("secret").buffer}]},
+        } as any)
+        registry.observeSendHeaders({
+            requestId: "r-private", url: "https://example.invalid/file", method: "POST", tabId: 1, frameId: 0,
+            timeStamp: 1_001, type: "main_frame", requestHeaders: [{name: "Authorization", value: "secret"}],
+        } as any)
+        const download = {url: "https://example.invalid/file", startTime: new Date(1_001).toISOString(), incognito: false} as any
+        const match = registry.matchDownload(download)
+        if (match.kind !== "MATCHED") throw new Error("Expected match")
+        const context = await registry.createContext(match.record, download, false)
+
+        expect(context.requestBody).toBeNull()
+        expect(context.requestHeaders).toEqual([])
+        expect(context.cookies).toEqual([])
+        expect(context.proxy).toBeNull()
+        expect(context.withheldFields).toContain("requestHeaders:policy")
+        expect(mocks.getAll).not.toHaveBeenCalled()
+    })
 })

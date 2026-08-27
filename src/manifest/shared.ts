@@ -17,10 +17,6 @@ export function getBaseManifest() {
             96: icon96,
             128: icon128,
         },
-        content_scripts: [{
-            matches: ["*://*/*"],
-            js: ["src/entrypoint/ContentScript.ts"],
-        }],
         options_ui: {
             page: "src/entrypoint/OptionUi/index.html",
             open_in_tab: true,
@@ -42,18 +38,21 @@ export function getBackgroundScript(){
 }
 export function getHostPermissions(){
     return [
-        "*://*/*",
+        "http://*/*",
+        "https://*/*",
     ]
 }
 export function getCommonPermissions():ManifestPermissions[]{
     return [
+        "activeTab",
+        "alarms",
         "contextMenus",
-        "webRequest",
-        "cookies",
         "storage",
-        "tabs",
         "downloads",
-        "notifications",
         "nativeMessaging",
     ]
+}
+
+export function getOptionalPermissions(): ManifestPermissions[] {
+    return ["webRequest", "cookies", "tabs"]
 }

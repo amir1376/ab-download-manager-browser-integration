@@ -23,6 +23,7 @@ export function classifyFtpUrl(url: string): {url: string; mode: FtpCaptureModeV
 export async function captureExplicitFtpV2(
     url: string,
     downloadPage: string | null,
+    privateContext = false,
 ): Promise<void> {
     const classified = classifyFtpUrl(url)
     if (!classified) throw new Error("Unsupported FTP URL")
@@ -36,7 +37,7 @@ export async function captureExplicitFtpV2(
         documentUrl: downloadPage,
         tabId: -1,
         frameId: -1,
-        privateContext: false,
+        privateContext,
         fileName: classified.fileName,
         mimeType: `application/x-abdm-${classified.mode.toLowerCase()}`,
         proxy: null,

@@ -10,4 +10,9 @@ export const DefinedCommands = Object.freeze({
     SET_HOLDING_KEY: "set_holding_key",
     GET_PLATFORM: "get_platform",
     DOWNLOADABLE_MEDIA_DETECTED: "downloadable_media_detected",
+    GET_BROWSER_POLICY_STATUS_V2: "get_browser_policy_status_v2",
+    UPDATE_BROWSER_POLICY_V2: "update_browser_policy_v2",
+    RECONCILE_BROWSER_PERMISSIONS_V2: "reconcile_browser_permissions_v2",
+    SET_TAB_CAPTURE_BYPASS_V2: "set_tab_capture_bypass_v2",
+    RECAPTURE_BROWSER_DOWNLOAD_V2: "recapture_browser_download_v2",
 })

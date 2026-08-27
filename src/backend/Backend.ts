@@ -14,6 +14,8 @@ import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
 import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "~/backend/ProtocolCompatibility";
 import {BrowserHttpBridgeV2} from "~/backend/BrowserHttpBridgeV2";
 import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -24,20 +26,29 @@ let httpApi: HttpApi | null = null
 // lazy init
 let nativeMessaging: NativeMessagingApi | null = null
 let helloRefresh: Promise<void> | null = null
+let currentPolicyV2: BrowserIntegrationPolicyV2 | null = null
+const policyListeners = new Set<(policy: BrowserIntegrationPolicyV2 | null) => void>()
 
 nativeMessagingTransport.addConnectionListener((connected) => {
     _isNativeMessagingSupported = connected
     if (!connected) {
         clearBrowserHelloV2()
+        currentPolicyV2 = null
+        for (const listener of policyListeners) listener(null)
         return
     }
     void refreshBrowserHelloV2()
 })
 
-nativeMessagingTransport.addNativeRequestHandler("policyChangedV2", async () => ({
-    accepted: false,
-    reason: browserParityFeatureFlagsV2.permissionPolicy ? "POLICY_REFRESH_REQUIRED" : "FEATURE_NOT_ENABLED",
-}))
+nativeMessagingTransport.addNativeRequestHandler("policyChangedV2", async payload => {
+    if (!browserParityFeatureFlagsV2.permissionPolicy) return {accepted: false, reason: "FEATURE_NOT_ENABLED"}
+    try {
+        setCurrentPolicyV2(BrowserIntegrationPolicyV2Schema.parse(payload) as BrowserIntegrationPolicyV2)
+        return {accepted: true}
+    } catch {
+        return {accepted: false, reason: "INVALID_POLICY"}
+    }
+})
 
 export function registerNativeBrowserRequestHandler(
     action: string,
@@ -58,6 +69,13 @@ async function refreshBrowserHelloV2(): Promise<void> {
         helloRefresh = null
     })
     return helloRefresh
+}
+
+function setCurrentPolicyV2(policy: BrowserIntegrationPolicyV2): BrowserIntegrationPolicyV2 {
+    if (currentPolicyV2 !== null && policy.revision < currentPolicyV2.revision) return currentPolicyV2
+    currentPolicyV2 = policy
+    for (const listener of policyListeners) listener(policy)
+    return policy
 }
 
 function getHttpApi() {
@@ -84,6 +102,7 @@ export async function boot() {
         try {
             await refreshBrowserHelloV2()
             if (getBrowserHelloV2() === null) throw new Error("Protocol v2 unavailable")
+            await refreshBrowserPolicyV2()
         } catch {
             clearBrowserHelloV2()
             console.log("Browser integration protocol v2 is unavailable; legacy compatibility is active")
@@ -137,10 +156,27 @@ export function getBrowserProtocolCompatibilityMode() {
 }
 
 export function canUseAutomaticTakeover(): boolean {
+    const hello = getBrowserHelloV2()
+    const policy = currentPolicyV2
     return canUseAutomaticTakeoverV2(
         getBrowserProtocolCompatibilityMode(),
-        browserParityFeatureFlagsV2,
-    )
+        hello?.capabilities.featureFlags ?? browserParityFeatureFlagsV2,
+    ) && browserParityFeatureFlagsV2.secureBridge && browserParityFeatureFlagsV2.twoPhaseCapture &&
+        policy?.mode === "FULL" && policy.automaticInterception
+}
+
+export function getBrowserPolicyV2(): BrowserIntegrationPolicyV2 | null {
+    return currentPolicyV2
+}
+
+export function addBrowserPolicyListener(listener: (policy: BrowserIntegrationPolicyV2 | null) => void): () => void {
+    policyListeners.add(listener)
+    return () => policyListeners.delete(listener)
+}
+
+export function isFeatureAvailableV2(feature: keyof typeof browserParityFeatureFlagsV2): boolean {
+    const hello = getBrowserHelloV2()
+    return Boolean(browserParityFeatureFlagsV2[feature] && hello?.capabilities.featureFlags[feature])
 }
 
 function getBrowserHttpBridgeV2(): BrowserHttpBridgeV2 | null {
@@ -163,6 +199,22 @@ async function useCaptureBridgeV2<T>(
     const http = getBrowserHttpBridgeV2()
     if (http === null) throw new Error("Browser integration protocol v2 is unavailable")
     return await httpAction(http)
+}
+
+export async function refreshBrowserPolicyV2(): Promise<BrowserIntegrationPolicyV2> {
+    const policy = await useCaptureBridgeV2(
+        api => api.getPolicyV2(),
+        api => api.getPolicy(),
+    )
+    return setCurrentPolicyV2(policy)
+}
+
+export async function updateBrowserPolicyV2(policy: BrowserIntegrationPolicyV2): Promise<BrowserIntegrationPolicyV2> {
+    const updated = await useCaptureBridgeV2(
+        api => api.updatePolicyV2(policy),
+        api => api.updatePolicy(policy),
+    )
+    return setCurrentPolicyV2(updated)
 }
 
 export async function prepareCaptureV2(proposal: CaptureProposalV2): Promise<PreparedCaptureV2> {

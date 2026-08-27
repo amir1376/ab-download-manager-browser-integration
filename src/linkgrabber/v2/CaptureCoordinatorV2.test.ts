@@ -30,7 +30,26 @@ vi.mock("~/configs/Config", () => ({
         registeredFileTypes: ["bin"],
     }),
 }))
-vi.mock("~/background/BackgroundSharedState", () => ({isBypassShortcutPressed: () => false}))
+vi.mock("~/background/BackgroundSharedState", () => ({
+    isTabBypassed: () => false,
+    isShortcutPressed: () => false,
+}))
+vi.mock("~/backend/Backend", () => ({
+    getBrowserPolicyV2: () => ({
+        schemaVersion: 2, revision: 1, mode: "FULL", automaticInterception: true,
+        advancedMediaInspection: false, privateBrowsing: false, sendProtectedContext: true,
+        registeredFileTypes: ["bin"], registeredMimeTypes: [], excludedUrls: [],
+        forceShortcut: "Insert", bypassShortcut: "Delete",
+    }),
+    registerNativeBrowserRequestHandler: () => () => undefined,
+    prepareCaptureV2: vi.fn(),
+    markBrowserReleasedV2: vi.fn(),
+    abortCaptureV2: vi.fn(),
+    listPreparedCapturesV2: vi.fn(),
+}))
+vi.mock("~/permissions/PermissionRuntimeStateV2", () => ({
+    getPermissionRuntimeStateV2: () => ({fullAuthority: true, privateAllowed: false, grantedOrigins: ["https://*/*"]}),
+}))
 vi.mock("~/utils/ExtensionInfo", () => ({
     BrowserTarget: {chrome: "chrome", firefox: "firefox"},
     getExtensionBrowserTarget: () => "chrome",
@@ -50,9 +69,10 @@ describe("CaptureCoordinatorV2", () => {
 
     it("cancels browser ownership only after durable preparation and commits a review", async () => {
         const calls: string[] = []
-        const record = {requestId: "r1", createdAtEpochMs: 1_000}
+        const record = {requestId: "r1", createdAtEpochMs: 1_000, tabId: 1}
         const registry: any = {
             matchDownload: () => ({kind: "MATCHED", record}),
+            canCapture: () => true,
             createContext: async () => context(),
             forget: vi.fn(),
         }
@@ -74,7 +94,8 @@ describe("CaptureCoordinatorV2", () => {
 
     it("resumes the browser when durable preparation fails", async () => {
         const registry: any = {
-            matchDownload: () => ({kind: "MATCHED", record: {requestId: "r1", createdAtEpochMs: 1_000}}),
+            matchDownload: () => ({kind: "MATCHED", record: {requestId: "r1", createdAtEpochMs: 1_000, tabId: 1}}),
+            canCapture: () => true,
             createContext: async () => context(), forget: vi.fn(),
         }
         const bridge: any = {

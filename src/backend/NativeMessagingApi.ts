@@ -9,7 +9,8 @@ import {
 } from "~/interfaces/AddressRefresh";
 import {BrowserHelloResponseV2, BrowserHelloResponseV2Schema} from "~/protocol/BrowserBridgeV2";
 import {PreparedCaptureListV2Schema, PreparedCaptureV2Schema} from "~/protocol/BrowserBridgeV2";
-import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import type {BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
 
 
 export class NativeMessagingApi implements IAppApi {
@@ -93,6 +94,18 @@ export class NativeMessagingApi implements IAppApi {
         return PreparedCaptureV2Schema.parse(
             await this.transport.requestTyped<unknown>("prepareCaptureV2", proposal)
         ) as PreparedCaptureV2
+    }
+
+    async getPolicyV2(): Promise<BrowserIntegrationPolicyV2> {
+        return BrowserIntegrationPolicyV2Schema.parse(
+            await this.transport.requestTyped<unknown>("getPolicyV2", null)
+        ) as BrowserIntegrationPolicyV2
+    }
+
+    async updatePolicyV2(policy: BrowserIntegrationPolicyV2): Promise<BrowserIntegrationPolicyV2> {
+        return BrowserIntegrationPolicyV2Schema.parse(
+            await this.transport.requestTyped<unknown>("updatePolicyV2", policy)
+        ) as BrowserIntegrationPolicyV2
     }
 
     async markBrowserReleasedV2(captureId: string): Promise<PreparedCaptureV2 | null> {
