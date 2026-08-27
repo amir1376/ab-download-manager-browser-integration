@@ -21,8 +21,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 
 | Phase | Extension state |
 |---|---|
-| 0. Contracts, fixtures, flags | IN_PROGRESS |
-| 1. Secure transport and compatibility | NOT_STARTED |
+| 0. Contracts, fixtures, flags | COMPLETE |
+| 1. Secure transport and compatibility | IN_PROGRESS |
 | 2. Request context and takeover | NOT_STARTED |
 | 3. FTP/FTPS browser intake | NOT_STARTED |
 | 4. Permissions, policy, lifecycle | NOT_STARTED |
@@ -40,7 +40,7 @@ schema copies and generated TypeScript types whose hashes are locked by
 - [x] Add frozen capture/media fixtures and desktop-owned state-machine baseline.
 - [x] Add disabled-by-default phase feature flags.
 - [x] Add schema, lock, and fixture validation to tests.
-- [ ] Update this file with exact validation results and checkpoint commit.
+- [x] Update this file with exact validation results and checkpoint commit.
 
 ## Validation receipts
 
@@ -49,6 +49,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 - TypeScript: passed.
 - Vitest: 10/10 passed across three files.
 - No runtime phase flag is enabled.
+- Contract checkpoints: desktop `e05130d134afc7b7e6fa27c65c30b5d9df4455eb`;
+  extension `cf6bb9fe319db8e69b53ed4c1ffa5c23d2527caa`.
 
 ## Resume instructions
 

@@ -5,12 +5,12 @@
     "minor": 0
   },
   "canonicalRepository": "ab-download-manager",
-  "canonicalCommit": "eedc84568102bfd6fa8db800075358c922f833b2",
+  "canonicalCommit": "e05130d134afc7b7e6fa27c65c30b5d9df4455eb",
   "canonicalSchema": "integration/server/src/main/resources/protocol/browser-integration-v2.schema.json",
   "schemaSha256": "35469f0ca41ae5971e237362cd059824c067cb96b628cfd8b2804cdb5bbe3fde",
   "vendoredSchema": "src/protocol/browser-integration-v2.schema.json",
   "generatedTypescript": "src/protocol/generated/BrowserIntegrationProtocolV2.ts",
   "generatedKotlinSha256": "1368fb624f05838a374cde61007aa50263c1b127e65c9bd09c840cf33b90d8de",
   "generatedTypescriptSha256": "98ddc8e3bb21bee3c3320c005f412396c54437ae464689a47b70b03414ef0de5",
-  "state": "PHASE_0_WORKTREE_SCHEMA_FROZEN_PENDING_COMMIT"
+  "state": "PHASE_0_FROZEN"
 }
