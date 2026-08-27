@@ -14,6 +14,7 @@ if (status && !allowDirty) throw new Error("Release packaging requires a clean t
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"))
 const protocolLock = JSON.parse(fs.readFileSync(path.join(root, "docs/browser-parity/PROTOCOL_LOCK.json"), "utf8"))
+const protocolVersion = `${protocolLock.protocolVersion.major}.${protocolLock.protocolVersion.minor}`
 const commit = git("rev-parse", "HEAD")
 const commitEpoch = Number(git("show", "-s", "--format=%ct", commit))
 const commitTime = new Date(commitEpoch * 1000).toISOString()
@@ -44,10 +45,11 @@ artifacts.push({
 
 const attestation = {
   schemaVersion: 1,
-  releaseCandidateId: `${commit.slice(0, 12)}-protocol-${protocolLock.protocolVersion}`,
+  releaseCandidateId: `${commit.slice(0, 12)}-protocol-${protocolVersion}`,
   createdAt: commitTime,
   source: {
     repository: packageJson.repository,
+    origin: git("remote", "get-url", "origin"),
     branch: git("branch", "--show-current"),
     commit,
     cleanTrackedWorktree: status.length === 0,
