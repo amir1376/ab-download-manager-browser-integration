@@ -1,0 +1,19 @@
+{
+  "protocolVersion": { "major": 2, "minor": 0 },
+  "desktopVersion": "phase-0-test",
+  "supportedActions": ["HELLO", "GET_POLICY", "PREPARE_CAPTURE", "PING"],
+  "supportedTransports": ["NATIVE_PORT", "NATIVE_ONE_SHOT", "AUTHENTICATED_HTTP"],
+  "supportedSchemes": ["HTTP", "HTTPS", "FTP", "FTPS_EXPLICIT", "FTPS_IMPLICIT", "HLS", "DASH"],
+  "maxFrameBytes": 262144,
+  "maxBodyBytes": 4194304,
+  "featureFlags": {
+    "secureBridge": false,
+    "twoPhaseCapture": false,
+    "ftpCapture": false,
+    "permissionPolicy": false,
+    "reviewedBatches": false,
+    "advancedMediaDiscovery": false,
+    "adaptiveMediaTransfer": false,
+    "uxPolicy": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "groupId": "media-phase0-1",
+  "pageGeneration": 3,
+  "title": "Fixture media",
+  "live": false,
+  "protectedMedia": false,
+  "variants": [
+    {
+      "variantId": "1080p",
+      "url": "https://media.example.invalid/master.m3u8",
+      "transport": "HLS",
+      "width": 1920,
+      "height": 1080,
+      "frameRate": 30.0,
+      "bandwidth": 5000000,
+      "container": "mp4",
+      "tracks": [
+        {
+          "trackId": "audio-en",
+          "role": "AUDIO",
+          "language": "en",
+          "codec": "mp4a.40.2",
+          "selected": false
+        }
+      ],
+      "contextRef": null
+    }
+  ]
+}

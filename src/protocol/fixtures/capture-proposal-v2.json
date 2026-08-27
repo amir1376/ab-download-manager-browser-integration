@@ -1,0 +1,53 @@
+{
+  "captureId": "capture-phase0-1",
+  "idempotencyKey": "capture-phase0-1",
+  "browserFamily": "CHROME",
+  "browserDownloadId": 42,
+  "generation": 7,
+  "requestedDisposition": "REVIEW",
+  "requestContext": {
+    "originalUrl": "https://example.invalid/start",
+    "finalUrl": "https://cdn.example.invalid/file.bin",
+    "method": "POST",
+    "requestBody": {
+      "mediaType": "application/x-www-form-urlencoded",
+      "encoding": "BASE64",
+      "data": "YT0x",
+      "sha256": "d7f175817f0f1d2b790b1a44a1d648cc560bd74af7b8d319a6ce24b52f25f744",
+      "byteLength": 3
+    },
+    "requestHeaders": [
+      { "name": "Accept", "value": "application/octet-stream" },
+      { "name": "Accept", "value": "*/*" }
+    ],
+    "responseHeaders": [
+      { "name": "Content-Disposition", "value": "attachment; filename=file.bin" }
+    ],
+    "cookies": [],
+    "redirects": [
+      {
+        "fromUrl": "https://example.invalid/start",
+        "toUrl": "https://cdn.example.invalid/file.bin",
+        "statusCode": 302,
+        "responseHeaders": []
+      }
+    ],
+    "referrer": "https://example.invalid/page",
+    "origin": "https://example.invalid",
+    "initiator": "https://example.invalid",
+    "documentUrl": "https://example.invalid/page",
+    "tabId": 9,
+    "frameId": 0,
+    "parentFrameId": null,
+    "privateContext": false,
+    "containerId": null,
+    "fileName": "file.bin",
+    "mimeType": "application/octet-stream",
+    "expectedSize": 1024,
+    "statusCode": 200,
+    "remoteAddress": null,
+    "proxy": null,
+    "withheldFields": [],
+    "incompleteFields": ["remoteAddress"]
+  }
+}
