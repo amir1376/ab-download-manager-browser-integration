@@ -22,8 +22,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | Phase | Extension state |
 |---|---|
 | 0. Contracts, fixtures, flags | COMPLETE |
-| 1. Secure transport and compatibility | IN_PROGRESS |
-| 2. Request context and takeover | NOT_STARTED |
+| 1. Secure transport and compatibility | COMPLETE_LOCAL |
+| 2. Request context and takeover | IN_PROGRESS |
 | 3. FTP/FTPS browser intake | NOT_STARTED |
 | 4. Permissions, policy, lifecycle | NOT_STARTED |
 | 5. Context menus and reviewed batches | NOT_STARTED |
@@ -71,6 +71,16 @@ schema copies and generated TypeScript types whose hashes are locked by
   correlated native ID; unsupported or failing actions return bounded error shapes.
 - Feature-off policy/context requests fail closed and return no page data.
 - TypeScript passed; extension tests passed 15/15 across four files.
+
+## Phase 1 local completion
+
+- Added correlated desktop-originated native requests and bounded replies.
+- Added v2 frame-limit, reconnect, compatibility, and native-request tests.
+- Removed direct Lodash usage; Firefox lint is 0 errors/5 warnings/1 notice and no
+  longer reports the dangerous `Function` constructor.
+- Final local receipt: TypeScript passed; 17/17 tests passed; Chrome/Firefox builds
+  passed.
+- Phase 2 owns full request-context production and two-phase browser takeover.
 
 ## Resume instructions
 

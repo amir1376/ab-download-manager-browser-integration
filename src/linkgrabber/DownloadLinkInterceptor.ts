@@ -15,7 +15,6 @@ import {OnMediaInterceptedFromRequestListener} from "~/media/OnMediaInterceptedF
 import {MEDIA_BLACKLIST_URLS} from "~/media/MediaBlackList";
 import {getContentLength, getContentType} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
-import _ from "lodash";
 import * as BackgroundSharedState from "~/background/BackgroundSharedState";
 import {AddressRefreshCaptureCoordinator} from "~/addressrefresh/AddressRefreshCaptureCoordinator";
 
@@ -505,7 +504,7 @@ export abstract class DownloadLinkInterceptor {
                     }
                 })
             }
-            if (_.isEmpty(requestHeaders)) {
+            if (Object.keys(requestHeaders).length === 0) {
                 requestHeaders = await getHeadersForUrl(downloadUrl) || {}
             }
             if (interceptedRequest?.finalResponse) {

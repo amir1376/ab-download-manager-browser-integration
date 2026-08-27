@@ -11,6 +11,7 @@ import {CompositeAppApi} from "~/backend/CompositeAppApi";
 import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "~/protocol/BrowserBridgeV2";
 import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
+import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "~/backend/ProtocolCompatibility";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -124,6 +125,17 @@ function getApi(): IAppApi {
     return new CompositeAppApi(
         priority,
         reportErrorFrom,
+    )
+}
+
+export function getBrowserProtocolCompatibilityMode() {
+    return classifyBrowserProtocolCompatibility(isNativeMessagingSupported(), getBrowserHelloV2())
+}
+
+export function canUseAutomaticTakeover(): boolean {
+    return canUseAutomaticTakeoverV2(
+        getBrowserProtocolCompatibilityMode(),
+        browserParityFeatureFlagsV2,
     )
 }
 

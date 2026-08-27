@@ -5,7 +5,6 @@ import {run} from "~/utils/ScopeFunctions";
 import {Resolution, Variant} from "hls-parser/types";
 import * as HLSUtils from "~/media/HLSUtils";
 import * as MultiMediaUtils from "~/media/MultiMediaUtils"
-import _ from "lodash";
 import HLS from "hls-parser"
 import {getContentDisposition, getContentLength, getContentType} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromUrl, getFileNameWithoutExtension} from "~/utils/URLUtils";
@@ -201,8 +200,9 @@ export class MediaOnTab {
             mediaToProcess.fileExtension = extension
             mediaToProcess.type = "hls"
             mediaToProcess.link = request.url
-            mediaToProcess.duration = _.sumBy(
-                playlist.segments, value => value.duration
+            mediaToProcess.duration = playlist.segments.reduce(
+                (total, value) => total + value.duration,
+                0,
             )
             mediaToProcess.bandwidth = mediaToProcess.myVariant?.bandwidth
             mediaToProcess.resolution = mediaToProcess.myVariant?.resolution
@@ -260,7 +260,7 @@ export class MediaOnTab {
             // tab title is not defined
         }
 
-        const downloadableMediaList = _
+        const downloadableMediaList = Object
             .entries(this.currentMediaToProcess)
             .map(([_, value]) => {
                 return createDownloadableMedia(

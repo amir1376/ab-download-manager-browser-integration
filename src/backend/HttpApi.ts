@@ -4,7 +4,6 @@ import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
 import {IAppApi} from "~/backend/IAppApi";
 import {getLatestConfig} from "~/configs/Config";
 import {isNullOrBlank} from "~/utils/StringUtils";
-import {head} from "lodash";
 import Constants from "~/utils/Constants";
 import {
     AddressRefreshCandidate,

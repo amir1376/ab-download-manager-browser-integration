@@ -1,6 +1,5 @@
 import {IAppApi} from "~/backend/IAppApi";
 import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
-import _ from "lodash";
 import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 
 export class CompositeAppApi implements IAppApi {
@@ -14,7 +13,7 @@ export class CompositeAppApi implements IAppApi {
     }
 
     private shouldUseThisForLog(appApi: IAppApi) {
-        return _.isEqual(appApi, this.exposeLogFrom)
+        return appApi === this.exposeLogFrom
     }
 
     private async action<R>(
