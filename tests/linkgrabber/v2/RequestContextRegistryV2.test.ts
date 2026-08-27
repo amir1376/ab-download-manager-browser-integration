@@ -14,7 +14,7 @@ vi.mock("webextension-polyfill", () => ({default: {
     proxy: {settings: {get: mocks.getProxy}},
 }}))
 
-import {RequestContextRegistryV2} from "./RequestContextRegistryV2"
+import {RequestContextRegistryV2} from "~/linkgrabber/v2/RequestContextRegistryV2"
 
 describe("RequestContextRegistryV2", () => {
     beforeEach(() => {

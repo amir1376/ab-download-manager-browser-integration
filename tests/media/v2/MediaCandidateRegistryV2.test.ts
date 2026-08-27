@@ -42,7 +42,7 @@ vi.mock("~/utils/ExtensionInfo", () => ({
     getExtensionBrowserTarget: () => "firefox",
 }))
 
-import {MediaCandidateRegistryV2} from "./MediaCandidateRegistryV2"
+import {MediaCandidateRegistryV2} from "~/media/v2/MediaCandidateRegistryV2"
 
 describe("media candidate registry v2", () => {
     beforeEach(() => {

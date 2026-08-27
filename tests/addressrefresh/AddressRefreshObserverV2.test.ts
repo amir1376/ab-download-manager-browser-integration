@@ -14,13 +14,13 @@ vi.mock("webextension-polyfill", () => ({default: {
     downloads: {onCreated: event(), pause: vi.fn(), cancel: vi.fn(), erase: vi.fn(), resume: vi.fn()},
 }}))
 vi.mock("~/utils/ExtensionInfo", () => ({isChrome: () => true}))
-vi.mock("./AddressRefreshCaptureCoordinator", () => ({AddressRefreshCaptureCoordinator: class {
+vi.mock("~/addressrefresh/AddressRefreshCaptureCoordinator", () => ({AddressRefreshCaptureCoordinator: class {
     boot = vi.fn(async () => undefined); close = mocks.close
     observeBeforeRequest = vi.fn(); observeSendHeaders = vi.fn(); observeRedirect = vi.fn(); observeResponse = vi.fn()
     forget = vi.fn(); onTabClosed = vi.fn(); shouldCancelBrowserDownload = vi.fn(() => false)
 }}))
 
-import {bootAddressRefreshObserverV2} from "./AddressRefreshObserverV2"
+import {bootAddressRefreshObserverV2} from "~/addressrefresh/AddressRefreshObserverV2"
 
 describe("address refresh observer lifecycle", () => {
     it("removes every browser listener and clears coordinator timers on policy teardown", async () => {

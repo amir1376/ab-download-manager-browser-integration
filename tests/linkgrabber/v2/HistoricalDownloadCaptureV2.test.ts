@@ -19,9 +19,9 @@ vi.mock("~/backend/Backend", () => ({
 vi.mock("~/permissions/PermissionRuntimeStateV2", () => ({
     getPermissionRuntimeStateV2: () => ({privateAllowed: false}),
 }))
-vi.mock("./FtpCaptureV2", () => ({classifyFtpUrl: () => null, captureExplicitFtpV2: vi.fn()}))
+vi.mock("~/linkgrabber/v2/FtpCaptureV2", () => ({classifyFtpUrl: () => null, captureExplicitFtpV2: vi.fn()}))
 
-import {recaptureBrowserDownloadV2} from "./HistoricalDownloadCaptureV2"
+import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2"
 
 describe("historical browser download recapture", () => {
     it("creates a review without claiming or deleting the browser-owned item", async () => {

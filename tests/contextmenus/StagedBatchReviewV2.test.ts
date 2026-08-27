@@ -14,7 +14,7 @@ vi.mock("webextension-polyfill", () => ({default: {
     tabs: {create: mocks.createTab},
     runtime: {getURL: (path: string) => `chrome-extension://id/${path}`},
 }}))
-vi.mock("./BatchCollectorV2", () => ({
+vi.mock("~/contextmenus/BatchCollectorV2", () => ({
     collectBrowserBatchV2: vi.fn(async () => ({scope: "SELECTED", privateContext: false, candidates: [
         {candidateId: "a", url: "https://example.invalid/a", sourceKind: "LINK", frameId: 0},
         {candidateId: "b", url: "https://example.invalid/b", sourceKind: "TEXT", frameId: 1},
@@ -22,7 +22,7 @@ vi.mock("./BatchCollectorV2", () => ({
     submitCollectedBatchV2: mocks.submit,
 }))
 
-import {stageBatchReviewV2, submitStagedBatchReviewV2} from "./StagedBatchReviewV2"
+import {stageBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2"
 
 describe("staged browser batch review", () => {
     it("opens a review without submission and transports only the user selection", async () => {

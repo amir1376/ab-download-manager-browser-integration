@@ -1,7 +1,7 @@
 import {beforeAll, describe, expect, it, vi} from "vitest";
 import type {AddressRefreshSession} from "~/interfaces/AddressRefresh";
-import type {ObservedRequest} from "./AddressRefreshCaptureCoordinator";
-import fixture from "./fixtures/address-refresh-v1-candidate.json";
+import type {ObservedRequest} from "~/addressrefresh/AddressRefreshCaptureCoordinator";
+import fixture from "~/addressrefresh/fixtures/address-refresh-v1-candidate.json";
 
 vi.mock("webextension-polyfill", () => ({
     default: {cookies: {getAll: vi.fn(async () => [])}},
@@ -12,10 +12,10 @@ vi.mock("~/backend/Backend", () => ({
     submitAddressRefreshCandidate: vi.fn(),
 }))
 
-let policy: typeof import("./AddressRefreshCaptureCoordinator")
+let policy: typeof import("~/addressrefresh/AddressRefreshCaptureCoordinator")
 
 beforeAll(async () => {
-    policy = await import("./AddressRefreshCaptureCoordinator")
+    policy = await import("~/addressrefresh/AddressRefreshCaptureCoordinator")
 })
 
 const session: AddressRefreshSession = {

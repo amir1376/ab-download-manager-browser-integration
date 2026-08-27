@@ -28,7 +28,7 @@ vi.mock("webextension-polyfill", () => ({
     },
 }))
 
-import {NativeMessagingTransport} from "./NativeMessagingTransport"
+import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport"
 
 describe("NativeMessagingTransport reconnect policy", () => {
     beforeEach(() => {

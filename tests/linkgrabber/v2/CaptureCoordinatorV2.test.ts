@@ -60,7 +60,7 @@ vi.mock("~/utils/ExtensionInfo", () => ({
     isChrome: () => true,
 }))
 
-import {CaptureCoordinatorV2} from "./CaptureCoordinatorV2"
+import {CaptureCoordinatorV2} from "~/linkgrabber/v2/CaptureCoordinatorV2"
 
 describe("CaptureCoordinatorV2", () => {
     beforeEach(() => {

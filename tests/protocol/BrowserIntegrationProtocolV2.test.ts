@@ -1,15 +1,15 @@
 import {describe, expect, it} from "vitest"
-import capabilitiesFixture from "./fixtures/capabilities-v2.json"
-import captureFixture from "./fixtures/capture-proposal-v2.json"
-import mediaFixture from "./fixtures/media-group-v2.json"
+import capabilitiesFixture from "~/protocol/fixtures/capabilities-v2.json"
+import captureFixture from "~/protocol/fixtures/capture-proposal-v2.json"
+import mediaFixture from "~/protocol/fixtures/media-group-v2.json"
 import {
     BrowserIntegrationCapabilitiesV2Schema,
     BrowserMediaGroupV2Schema,
     CaptureProposalV2Schema,
-} from "./BrowserIntegrationProtocolV2Schema"
-import {BrowserProtocolLimitsV2} from "./generated/BrowserIntegrationProtocolV2"
+} from "~/protocol/BrowserIntegrationProtocolV2Schema"
+import {BrowserProtocolLimitsV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
 import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags"
-import {clearBrowserHelloV2, getBrowserHelloV2, PreparedCaptureV2Schema, setBrowserHelloV2} from "./BrowserBridgeV2"
+import {clearBrowserHelloV2, getBrowserHelloV2, PreparedCaptureV2Schema, setBrowserHelloV2} from "~/protocol/BrowserBridgeV2"
 
 describe("browser integration protocol v2", () => {
     it("strictly parses shared fixtures without collapsing ordered headers", () => {

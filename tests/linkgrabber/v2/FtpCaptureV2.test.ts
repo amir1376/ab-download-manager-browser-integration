@@ -4,7 +4,7 @@ vi.mock("~/backend/Backend", () => ({
     prepareCaptureV2: vi.fn(),
     markBrowserReleasedV2: vi.fn(),
 }))
-import {classifyFtpUrl} from "./FtpCaptureV2"
+import {classifyFtpUrl} from "~/linkgrabber/v2/FtpCaptureV2"
 
 describe("FTP browser capture", () => {
     it("classifies FTP and both FTPS modes without retaining embedded credentials", () => {

@@ -1,3 +1,4 @@
+// Test-only permission fixtures are kept outside the production source tree.
 import {beforeEach, describe, expect, it, vi} from "vitest"
 
 const mocks = vi.hoisted(() => ({

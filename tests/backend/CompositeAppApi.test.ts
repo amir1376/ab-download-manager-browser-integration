@@ -1,6 +1,6 @@
 import {describe, expect, it, vi} from "vitest";
-import {CompositeAppApi} from "./CompositeAppApi";
-import type {IAppApi} from "./IAppApi";
+import {CompositeAppApi} from "~/backend/CompositeAppApi";
+import type {IAppApi} from "~/backend/IAppApi";
 
 function fakeApi(overrides: Partial<IAppApi> = {}): IAppApi {
     return {

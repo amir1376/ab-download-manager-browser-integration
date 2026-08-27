@@ -38,7 +38,7 @@ vi.mock("~/backend/Backend", () => ({
 vi.mock("~/linkgrabber/LinkGrabber", () => ({configureAutomaticTakeoverV2: mocks.configure}))
 vi.mock("~/utils/ExtensionInfo", () => ({isChrome: () => true}))
 
-import {reconcileBrowserPermissionPolicyV2} from "./BrowserPermissionPolicyV2"
+import {reconcileBrowserPermissionPolicyV2} from "~/permissions/BrowserPermissionPolicyV2"
 
 describe("permission reconciliation", () => {
     beforeEach(() => {

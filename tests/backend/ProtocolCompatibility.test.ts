@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest"
 import capabilities from "~/protocol/fixtures/capabilities-v2.json"
-import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "./ProtocolCompatibility"
+import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "~/backend/ProtocolCompatibility"
 
 describe("one-release protocol compatibility", () => {
     it("limits an old desktop to explicit-only compatibility", () => {

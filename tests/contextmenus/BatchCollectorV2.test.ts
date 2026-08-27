@@ -32,7 +32,7 @@ vi.mock("~/backend/Backend", () => ({
     cancelBrowserBatchV2: vi.fn(async () => null),
 }))
 
-import {collectAndSubmitBatchV2} from "./BatchCollectorV2"
+import {collectAndSubmitBatchV2} from "~/contextmenus/BatchCollectorV2"
 
 describe("bounded cross-frame batch collection", () => {
     it("rejects malformed candidates deduplicates fragments and waits for desktop review", async () => {
