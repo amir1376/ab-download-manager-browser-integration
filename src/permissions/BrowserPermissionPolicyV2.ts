@@ -71,8 +71,18 @@ async function applyPolicy(): Promise<BrowserPermissionStatusV2> {
         automaticCaptureActive,
         missingPermissions,
     }
+    await broadcastAppliedPolicy(policy)
     await browser.storage.local.set({[STATUS_KEY]: currentStatus})
     return currentStatus
+}
+
+async function broadcastAppliedPolicy(policy: ReturnType<typeof Backend.getBrowserPolicyV2>): Promise<void> {
+    const tabs = await browser.tabs.query({})
+    await Promise.all(tabs.filter(tab => tab.id !== undefined).map(tab => browser.tabs.sendMessage(tab.id!, {
+        action: "browserPolicyAppliedV2",
+        advancedMediaInspection: policy?.mode === "FULL" && policy.advancedMediaInspection,
+        mediaSiteAdapters: policy?.mediaSiteAdapters ?? [],
+    }).catch(() => undefined)))
 }
 
 export async function requestFullBrowserPermissionsV2(): Promise<boolean> {

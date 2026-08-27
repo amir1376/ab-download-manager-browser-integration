@@ -85,7 +85,8 @@
         "excludedUrls": { "type": "array", "maxItems": 2048, "items": { "type": "string", "maxLength": 16384 } },
         "forceShortcut": { "type": ["string", "null"], "maxLength": 128 },
         "bypassShortcut": { "type": ["string", "null"], "maxLength": 128 },
-        "customMenuActions": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/customMenuAction" } }
+        "customMenuActions": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/customMenuAction" } },
+        "mediaSiteAdapters": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/mediaSiteAdapter" } }
       }
     },
     "customMenuAction": {
@@ -97,6 +98,18 @@
         "title": { "type": "string", "minLength": 1, "maxLength": 128 },
         "scope": { "enum": ["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"] },
         "sourceKinds": { "type": "array", "uniqueItems": true, "maxItems": 10, "items": { "enum": ["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"] } }
+      }
+    },
+    "mediaSiteAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "hostPattern", "selectors", "attributes"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+        "hostPattern": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "urlRegex": { "type": ["string", "null"], "maxLength": 256 },
+        "selectors": { "type": "array", "maxItems": 32, "items": { "type": "string", "minLength": 1, "maxLength": 512 } },
+        "attributes": { "type": "array", "maxItems": 16, "items": { "type": "string", "pattern": "^[A-Za-z_:][-A-Za-z0-9_:.]{0,63}$" } }
       }
     },
     "orderedHeader": {

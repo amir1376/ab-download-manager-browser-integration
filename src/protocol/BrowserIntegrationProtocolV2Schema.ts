@@ -78,6 +78,13 @@ export const BrowserIntegrationPolicyV2Schema = z.object({
         scope: z.enum(["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"]),
         sourceKinds: z.array(z.enum(["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"])).max(10),
     })).max(32).optional(),
+    mediaSiteAdapters: z.array(z.object({
+        id: z.string().regex(/^[A-Za-z0-9_-]{1,64}$/),
+        hostPattern: z.string().min(1).max(256),
+        urlRegex: z.string().max(256).nullable().optional(),
+        selectors: z.array(z.string().min(1).max(512)).max(32),
+        attributes: z.array(z.string().regex(/^[A-Za-z_:][-A-Za-z0-9_:.]{0,63}$/)).max(16),
+    })).max(32).optional(),
 })
 
 const BrowserCandidateV2Schema = z.object({

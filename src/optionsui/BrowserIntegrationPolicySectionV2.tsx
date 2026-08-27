@@ -111,6 +111,15 @@ export function BrowserIntegrationPolicySectionV2() {
                 sourceKinds: (parts[3] ?? '').split(',').map(kind => kind.trim().toUpperCase()).filter(Boolean) as never[],
             }))})}
         />
+        <TextPolicyField
+            label="Media site adapters (id | host | URL regex | selectors ; separated | attributes)"
+            value={(policy.mediaSiteAdapters ?? []).map(adapter => `${adapter.id} | ${adapter.hostPattern} | ${adapter.urlRegex ?? ''} | ${adapter.selectors.join(';')} | ${adapter.attributes.join(',')}`).join('\n')}
+            commit={value => void update({mediaSiteAdapters: value.split('\n').map(line => line.split('|').map(part => part.trim())).filter(parts => parts.length >= 4 && parts[0] && parts[1]).map(parts => ({
+                id: parts[0], hostPattern: parts[1], urlRegex: parts[2] || null,
+                selectors: parts[3].split(';').map(selector => selector.trim()).filter(Boolean),
+                attributes: (parts[4] || 'src,href,content').split(',').map(attribute => attribute.trim()).filter(Boolean),
+            }))})}
+        />
         <div className="grid grid-cols-2 gap-2">
             <ShortcutPolicyField label="Force key" value={policy.forceShortcut ?? ""} commit={value => void update({forceShortcut: value || null})}/>
             <ShortcutPolicyField label="Bypass key" value={policy.bypassShortcut ?? ""} commit={value => void update({bypassShortcut: value || null})}/>

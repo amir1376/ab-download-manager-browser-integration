@@ -13,6 +13,9 @@ import {sendMessage} from "webext-bridge/options";
 import {DefinedCommands} from "~/message/Commands";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import ContentScriptEntryType from "~/utils/EntryPointTypes/ContentScript/ContentScriptEntryType";
+import {MediaDiscoveryV2} from "~/media/v2/MediaDiscoveryV2";
+import {MediaPanelV2} from "~/media/v2/MediaPanelV2";
+import type {MediaPanelCandidateV2} from "~/media/v2/MediaCandidateRegistryV2";
 
 const showPopupDelayed = debounce(500)
 
@@ -44,6 +47,11 @@ export default defineExtensionEntry()
         scope.__abdmContentScriptV2 = true
         const disposable = context.getDisposable()
         try {
+            let mediaDiscovery = new MediaDiscoveryV2()
+            const mediaPanel = new MediaPanelV2()
+            void mediaDiscovery.boot()
+            disposable.add(() => mediaDiscovery.close())
+            disposable.add(() => mediaPanel.close())
             mousePosition.boot()
             disposable.add(mousePosition.dispose)
             disposable.add(HoldingKeyTracker.boot((key, pressed) => {
@@ -124,6 +132,14 @@ export default defineExtensionEntry()
                 if (value.action === "disableBrowserIntegrationV2") disposable.dispose()
                 if (value.action === "browserBatchFeedbackV2" && typeof value.message === "string") {
                     alert(createAlertStringForMyExtension(value.message))
+                }
+                if (value.action === "mediaCandidatesV2") {
+                    const candidates = (message as {candidates?: unknown}).candidates
+                    if (Array.isArray(candidates)) mediaPanel.update(candidates.slice(0, 512) as MediaPanelCandidateV2[])
+                }
+                if (value.action === "browserPolicyAppliedV2") {
+                    if ((message as {advancedMediaInspection?: unknown}).advancedMediaInspection === true) void mediaDiscovery.boot()
+                    else { mediaDiscovery.close(); mediaDiscovery = new MediaDiscoveryV2(); mediaPanel.update([]) }
                 }
             }
             browser.runtime.onMessage.addListener(disableListener)

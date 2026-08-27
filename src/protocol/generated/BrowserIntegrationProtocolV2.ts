@@ -2,7 +2,7 @@
 // Update only through the canonical desktop schema and lock workflow.
 
 export const BROWSER_INTEGRATION_PROTOCOL_MAJOR = 2 as const
-export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 2 as const
+export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 3 as const
 
 export const BrowserProtocolLimitsV2 = Object.freeze({
     maxFrameBytes: 256 * 1024,
@@ -82,6 +82,15 @@ export interface BrowserIntegrationPolicyV2 {
     forceShortcut?: string | null
     bypassShortcut?: string | null
     customMenuActions?: BrowserCustomMenuActionV2[]
+    mediaSiteAdapters?: BrowserMediaSiteAdapterV2[]
+}
+
+export interface BrowserMediaSiteAdapterV2 {
+    id: string
+    hostPattern: string
+    urlRegex?: string | null
+    selectors: string[]
+    attributes: string[]
 }
 
 export interface BrowserCustomMenuActionV2 {

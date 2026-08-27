@@ -18,6 +18,7 @@ import {
 import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2";
 import {cancelStagedBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
+import {MediaCandidateRegistryV2} from "~/media/v2/MediaCandidateRegistryV2";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -95,6 +96,7 @@ export default defineExtensionEntry()
             await Backend.boot()
             await BackgroundSharedState.boot()
             await bootBrowserPermissionPolicyV2()
+            await new MediaCandidateRegistryV2().boot()
             await initializeOptions()
             receiveMessageFromContentScripts()
             console.log("ab dm extension loaded successfully")
