@@ -1,0 +1,56 @@
+name: Browser Integration Release Candidate
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [codex/browser-parity-v2]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "26"
+          cache: npm
+      - run: npm ci
+      - run: npm audit --omit=dev --audit-level=low
+      - run: npm run release:rc
+      - name: Rebuild and compare deterministic packages
+        run: |
+          node scripts/build-release-candidate.mjs --output-dir dist/release-second
+          node scripts/compare-release-directories.mjs dist/release dist/release-second
+      - name: Firefox package lint
+        run: npx web-ext lint --source-dir dist/firefox --output json
+      - name: Installed Microsoft Edge MV3 smoke
+        if: runner.os == 'Windows'
+        run: npm run browser:e2e:edge
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-rc-${{ matrix.os }}
+          path: dist/release
+          if-no-files-found: error
+
+  cross-platform-reproducibility:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "26"
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: browser-rc-*
+          path: downloaded-release-candidates
+      - run: node scripts/verify-cross-platform-attestations.mjs downloaded-release-candidates

@@ -1,5 +1,3 @@
-import * as process from "process";
-
 export enum BrowserTarget{
     chrome = "chrome",
     firefox = "firefox",

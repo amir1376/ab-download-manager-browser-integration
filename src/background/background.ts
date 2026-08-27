@@ -124,6 +124,9 @@ export default defineExtensionEntry()
     .withType(BackgroundEntryType)
     .withInit(async (ctx) => {
         const disposable = ctx.getDisposable()
+        // Register UI/content handlers before any native I/O. Extension pages may
+        // open while MV3 startup is still negotiating with an unavailable host.
+        receiveMessageFromContentScripts()
         try {
             if (IS_MV3) {
                 disposable.add(keepListeningToEvents())
@@ -147,7 +150,6 @@ export default defineExtensionEntry()
             await configureAddressRefresh()
             Backend.addBrowserPolicyListener(() => void configureAddressRefresh())
             await initializeOptions()
-            receiveMessageFromContentScripts()
             receiveKeyboardCommands()
             console.log("ab dm extension loaded successfully")
         } catch (e) {
