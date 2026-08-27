@@ -4,6 +4,8 @@ import {DownloadRequestItem,DownloadRequestHeaders} from "~/interfaces/DownloadR
 import {sendMessage} from "webext-bridge/background"
 import {addDownload, getHeadersForUrl} from "~/background/actions";
 import {DefinedCommands} from "~/message/Commands";
+import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
+import {captureExplicitFtpV2, classifyFtpUrl} from "~/linkgrabber/v2/FtpCaptureV2";
 const optionIds = Object.freeze({
     downloadWithAbDm: "download-with-ab-dm",
     downloadSelectedWithAbDm: "download-selected-with-ab-dm",
@@ -37,6 +39,14 @@ function createOnCLickHandlers() {
                     return
                 }
                 const downloadPage = args.pageUrl ?? null
+                if (classifyFtpUrl(link)) {
+                    if (!browserParityFeatureFlagsV2.ftpCapture) {
+                        console.log("FTP capture v2 is not enabled")
+                        return
+                    }
+                    await captureExplicitFtpV2(link, downloadPage)
+                    break
+                }
                 const description = args.linkText ?? null
                 let headers: DownloadRequestHeaders | null = null
                 if (Configs.getLatestConfig().sendHeaders) {
