@@ -52,6 +52,17 @@ schema copies and generated TypeScript types whose hashes are locked by
 - Contract checkpoints: desktop `e05130d134afc7b7e6fa27c65c30b5d9df4455eb`;
   extension `cf6bb9fe319db8e69b53ed4c1ffa5c23d2527caa`.
 
+## Phase 1 checkpoint A
+
+- Native messaging now establishes the persistent port during boot and retries
+  disconnects with bounded 1/2/5/10/30-second backoff.
+- `helloV2` is validated strictly and its pairing key remains memory-scoped.
+- Secure HTTP fallback uses `127.0.0.1` and the native-derived key; legacy
+  extension configuration remains a one-release fallback.
+- TypeScript passed; extension tests passed 11/11.
+- Remaining: transport failure/restart tests, native events/context query,
+  prepared-capture calls, and final compatibility gates.
+
 ## Resume instructions
 
 1. Verify both repositories' branches and worktree states.

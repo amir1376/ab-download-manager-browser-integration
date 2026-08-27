@@ -9,6 +9,7 @@ import {NativeMessagingApi} from "~/backend/NativeMessagingApi";
 import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport";
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
 import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
+import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "~/protocol/BrowserBridgeV2";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -18,6 +19,30 @@ let _isNativeMessagingSupported = false
 let httpApi: HttpApi | null = null
 // lazy init
 let nativeMessaging: NativeMessagingApi | null = null
+let helloRefresh: Promise<void> | null = null
+
+nativeMessagingTransport.addConnectionListener((connected) => {
+    _isNativeMessagingSupported = connected
+    if (!connected) {
+        clearBrowserHelloV2()
+        return
+    }
+    void refreshBrowserHelloV2()
+})
+
+async function refreshBrowserHelloV2(): Promise<void> {
+    if (helloRefresh !== null) return helloRefresh
+    helloRefresh = (async () => {
+        try {
+            setBrowserHelloV2(await getOrInitNativeMessagingApi().helloV2())
+        } catch {
+            clearBrowserHelloV2()
+        }
+    })().finally(() => {
+        helloRefresh = null
+    })
+    return helloRefresh
+}
 
 function getHttpApi() {
     if (httpApi == null) {
@@ -37,9 +62,16 @@ function getOrInitNativeMessagingApi() {
 export async function boot() {
     const nativeMessagingApi = getOrInitNativeMessagingApi()
 
-    _isNativeMessagingSupported = await nativeMessagingApi.test()
+    _isNativeMessagingSupported = await nativeMessagingApi.connectAndTest()
     if (isNativeMessagingSupported()) {
         console.log("Native messaging is available")
+        try {
+            await refreshBrowserHelloV2()
+            if (getBrowserHelloV2() === null) throw new Error("Protocol v2 unavailable")
+        } catch {
+            clearBrowserHelloV2()
+            console.log("Browser integration protocol v2 is unavailable; legacy compatibility is active")
+        }
     } else {
         console.log("Native messaging is not available!")
     }
@@ -86,8 +118,12 @@ function getApi(): IAppApi {
 
 function getRefreshApi(): IAppApi {
     const nativeMessagingApi = getOrInitNativeMessagingApi()
+    const hello = getBrowserHelloV2()
+    const httpFallback = hello
+        ? new HttpApi(hello.httpFallback.baseUrl, () => hello.httpFallback.apiKey)
+        : getHttpApi()
     return new CompositeAppApi(
-        [nativeMessagingApi, getHttpApi()],
+        [nativeMessagingApi, httpFallback],
         nativeMessagingApi,
     )
 }

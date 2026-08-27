@@ -24,6 +24,10 @@ export class NativeMessagingTransport {
         new Map<string, PendingRequest>();
 
     private connecting = false;
+    private reconnectEnabled = false;
+    private reconnectAttempt = 0;
+    private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    private readonly connectionListeners = new Set<(connected: boolean) => void>();
 
     constructor(
         private readonly packageName: string,
@@ -33,6 +37,7 @@ export class NativeMessagingTransport {
 
 
     connect(): void {
+        this.reconnectEnabled = true;
         if (this.port !== null || this.connecting) {
             return;
         }
@@ -44,11 +49,15 @@ export class NativeMessagingTransport {
                 this.packageName
             );
             this.port = port;
+            this.reconnectAttempt = 0;
+            this.clearReconnectTimer();
 
             port.onMessage.addListener(this.handleMessage);
             port.onDisconnect.addListener(this.handleDisconnect);
+            this.notifyConnection(true);
         } catch (e) {
             this.port = null;
+            this.scheduleReconnect();
             throw e;
         } finally {
             this.connecting = false;
@@ -56,11 +65,19 @@ export class NativeMessagingTransport {
     }
 
     disconnect(): void {
+        this.reconnectEnabled = false;
+        this.clearReconnectTimer();
         const port = this.port;
 
         this.port = null;
 
         port?.disconnect();
+        this.notifyConnection(false);
+    }
+
+    addConnectionListener(listener: (connected: boolean) => void): () => void {
+        this.connectionListeners.add(listener)
+        return () => this.connectionListeners.delete(listener)
     }
 
     isConnected(): boolean {
@@ -251,6 +268,7 @@ export class NativeMessagingTransport {
         if (this.port === port) {
             this.port = null;
         }
+        this.notifyConnection(false);
 
         const message =
             port.error?.message ??
@@ -268,5 +286,39 @@ export class NativeMessagingTransport {
             "Native messaging disconnected:",
             message,
         );
+        this.scheduleReconnect();
     };
+
+    private scheduleReconnect(): void {
+        if (!this.reconnectEnabled || this.reconnectTimer !== null || this.port !== null) return
+        const delay = RECONNECT_DELAYS[Math.min(this.reconnectAttempt, RECONNECT_DELAYS.length - 1)]
+        this.reconnectAttempt++
+        this.reconnectTimer = setTimeout(() => {
+            this.reconnectTimer = null
+            try {
+                this.connect()
+            } catch {
+                this.scheduleReconnect()
+            }
+        }, delay)
+    }
+
+    private clearReconnectTimer(): void {
+        if (this.reconnectTimer !== null) {
+            clearTimeout(this.reconnectTimer)
+            this.reconnectTimer = null
+        }
+    }
+
+    private notifyConnection(connected: boolean): void {
+        for (const listener of this.connectionListeners) {
+            try {
+                listener(connected)
+            } catch (error) {
+                console.warn("Native connection listener failed", error)
+            }
+        }
+    }
 }
+
+const RECONNECT_DELAYS = [1_000, 2_000, 5_000, 10_000, 30_000] as const

@@ -7,6 +7,7 @@ import {
     AddressRefreshCapabilities,
     AddressRefreshSession
 } from "~/interfaces/AddressRefresh";
+import {BrowserHelloResponseV2, BrowserHelloResponseV2Schema} from "~/protocol/BrowserBridgeV2";
 
 
 export class NativeMessagingApi implements IAppApi {
@@ -47,7 +48,6 @@ export class NativeMessagingApi implements IAppApi {
                 "Cannot connect to native messaging host",
                 e,
             );
-            this.transport.disconnect();
             return false;
         }
     }
@@ -79,5 +79,11 @@ export class NativeMessagingApi implements IAppApi {
 
     submitAddressRefreshCandidate(candidate: AddressRefreshCandidate): Promise<AddressRefreshCandidateResult> {
         return this.transport.requestTyped("addressRefreshCandidate", candidate)
+    }
+
+    async helloV2(): Promise<BrowserHelloResponseV2> {
+        return BrowserHelloResponseV2Schema.parse(
+            await this.transport.requestTyped<unknown>("helloV2", null)
+        ) as BrowserHelloResponseV2
     }
 }

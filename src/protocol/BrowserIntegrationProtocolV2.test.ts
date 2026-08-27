@@ -9,6 +9,7 @@ import {
 } from "./BrowserIntegrationProtocolV2Schema"
 import {BrowserProtocolLimitsV2} from "./generated/BrowserIntegrationProtocolV2"
 import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags"
+import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "./BrowserBridgeV2"
 
 describe("browser integration protocol v2", () => {
     it("strictly parses shared fixtures without collapsing ordered headers", () => {
@@ -28,5 +29,27 @@ describe("browser integration protocol v2", () => {
         expect(BrowserProtocolLimitsV2.maxFrameBytes).toBe(256 * 1024)
         expect(BrowserProtocolLimitsV2.maxBodyBytes).toBe(4 * 1024 * 1024)
         expect(BrowserProtocolLimitsV2.maxBatchCandidates).toBe(5_000)
+    })
+
+    it("accepts only paired loopback HTTP bootstrap data and keeps it memory scoped", () => {
+        const hello = setBrowserHelloV2({
+            capabilities: capabilitiesFixture,
+            httpFallback: {
+                baseUrl: "http://127.0.0.1:15151/",
+                apiKey: "phase-one-pairing-secret",
+                headerName: "X-Api-Key",
+            },
+        })
+        expect(getBrowserHelloV2()).toBe(hello)
+        expect(() => setBrowserHelloV2({
+            capabilities: capabilitiesFixture,
+            httpFallback: {
+                baseUrl: "http://192.0.2.1:15151/",
+                apiKey: "phase-one-pairing-secret",
+                headerName: "X-Api-Key",
+            },
+        })).toThrow()
+        clearBrowserHelloV2()
+        expect(getBrowserHelloV2()).toBeNull()
     })
 })

@@ -16,14 +16,19 @@ import {
 export function createHttpApiClient(
     port: number,
     basePath: string = "",
+    apiKeyProvider: () => string = () => getLatestConfig().apiKey,
 ) {
     return new HttpApi(
-        `http://localhost:${port}/${basePath}`
+        `http://127.0.0.1:${port}/${basePath}`,
+        apiKeyProvider,
     )
 }
 
 export class HttpApi implements IAppApi {
-    constructor(private apiUrl: string) {
+    constructor(
+        private apiUrl: string,
+        private readonly apiKeyProvider: () => string = () => getLatestConfig().apiKey,
+    ) {
     }
 
     private async request(
@@ -32,7 +37,7 @@ export class HttpApi implements IAppApi {
         method: "GET" | "POST" = "POST",
         timeout: number = 500,
     ) {
-        const apiKey = getLatestConfig().apiKey
+        const apiKey = this.apiKeyProvider()
         const headers: HeadersInit = {}
         if (!isNullOrBlank(apiKey)) {
             headers[Constants.authHeaderName] = apiKey
