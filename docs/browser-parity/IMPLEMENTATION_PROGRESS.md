@@ -25,8 +25,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 1. Secure transport and compatibility | COMPLETE_LOCAL |
 | 2. Request context and takeover | COMPLETE_LOCAL |
 | 3. FTP/FTPS browser intake | COMPLETE_LOCAL |
-| 4. Permissions, policy, lifecycle | IN_PROGRESS |
-| 5. Context menus and reviewed batches | NOT_STARTED |
+| 4. Permissions, policy, lifecycle | COMPLETE_LOCAL |
+| 5. Context menus and reviewed batches | IN_PROGRESS |
 | 6. Media discovery and panel | NOT_STARTED |
 | 7. Media selection and renewal | NOT_STARTED |
 | 8. UX, migration, localization, accessibility | NOT_STARTED |
@@ -118,6 +118,25 @@ schema copies and generated TypeScript types whose hashes are locked by
   `68939bd7df2c9c2ad223bb9cc1c095d69cc57bc5`.
 - The runtime feature remains off until Phase 4 consent/policy controls and Phase 9
   installed-browser/native/desktop FTP and FTPS validation are complete.
+
+## Phase 4 local completion
+
+- Added paired desktop policy v2.1 with `STANDARD` default and explicit `FULL`
+  consent for automatic takeover, advanced inspection, private windows, and
+  protected request context.
+- Replaced install-time all-host/cookies/webRequest/tabs/notifications authority
+  with per-site and FULL optional grants, dynamic content registration, onboarding,
+  revocation synchronization, existing-content teardown, and open-tab replay.
+- Added per-tab session bypass, immediate force/bypass key state, private-access
+  checks, extension/MIME policy, full-address exclusions, shelf suppression, and
+  explicit recent-download recapture.
+- Added bounded MV3 request snapshots and session restoration; protected POST bodies
+  that exceed the snapshot budget fail open instead of risking context loss.
+- Final local receipt: TypeScript passed; 31/31 tests; Chrome/Firefox production
+  builds; protocol v2.1 lock. Checkpoints: `ffa38bd4ea8d17ac70ecba2dcc636eb0dd2558fd`,
+  `0dc01ad4bb1ab0ba4900fef702144a92780e242b`.
+- Actual permission prompts, private windows, worker suspension, restart, shelf, and
+  revocation scenarios remain Phase 9 installed-browser gates.
 
 ## Resume instructions
 
