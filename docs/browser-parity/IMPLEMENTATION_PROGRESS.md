@@ -30,7 +30,7 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 6. Media discovery and panel | COMPLETE_LOCAL |
 | 7. Media selection and renewal | COMPLETE_LOCAL |
 | 8. UX, migration, localization, accessibility | COMPLETE_LOCAL |
-| 9. Packaging and browser E2E | IN_PROGRESS |
+| 9. Packaging and browser E2E | COMPLETE_WITH_EXTERNAL_GATES |
 
 ## Phase 0 checklist
 
@@ -226,6 +226,27 @@ schema copies and generated TypeScript types whose hashes are locked by
 
 - Beginning deterministic release-candidate archives, packaged-browser/native E2E,
   cross-platform evidence reconciliation, and final ledger/attestation closure.
+
+## Phase 9 local completion with external gates
+
+- Final clean source checkpoint: `d7481e98d2c0fe2129ddfd5e2ebfb05f5f8938a2`;
+  protocol 2.4; extension 1.6.0.
+- Deterministic Chrome, Firefox, and source archives reproduce byte-for-byte and
+  pass integrity checks. The Chrome/Firefox hashes are respectively
+  `7d02e9f9a6371ba9740d7c62190c3b520bae1047eda39c8868ac1e888091f8b8`
+  and `365b1494fd7442c65c8a30208af5cb7f194ad6d563b3dddf790aa6ee97f978cb`.
+- Final local gates: 51/51 tests across 24 files; zero tests under `src`;
+  TypeScript; both builds; production dependency audit with 0 vulnerabilities;
+  Firefox lint 0 errors; Edge 151 UI/MV3 worker/browser restart; Firefox 155
+  temporary installation; Firefox packaged-host spawn; packaged host protocol 2.4
+  negotiation with the Windows desktop.
+- The official Chrome CRX public key pins unpacked builds to the native-authorized
+  store ID `bbobopahenonfdgjgaleledndnnfhooj`.
+- The three-OS workflow rebuilds twice, audits, lints, exercises Edge on Windows,
+  and reconciles package hashes. It has been authored but not executed remotely.
+- Overall parity remains unproven until signed-store, Linux/macOS, complete
+  browser/scenario, human-locale, and licensed IDM comparison gates pass. See the
+  desktop `docs/browser-parity/RELEASE_CANDIDATE_ATTESTATION.md`.
 
 ## Resume instructions
 
