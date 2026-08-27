@@ -1,0 +1,40 @@
+{
+  "operationId": "operation-1",
+  "nonce": "redacted-test-nonce",
+  "url": "https://media.invalid/video.mp4?token=redacted",
+  "method": "GET",
+  "headers": {
+    "Authorization": "redacted-test-authorization"
+  },
+  "cookies": [
+    {
+      "name": "session",
+      "value": "redacted-test-cookie",
+      "domain": "media.invalid",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true
+    }
+  ],
+  "referer": "https://source.invalid/watch/1",
+  "origin": "https://source.invalid",
+  "userAgent": "ABDM-Protocol-Fixture",
+  "expectedSize": 1024,
+  "mimeType": "video/mp4",
+  "protocolVersion": {
+    "major": 1,
+    "minor": 0
+  },
+  "candidateId": "candidate-1",
+  "capturedAtEpochMs": 2000,
+  "tabId": 4,
+  "frameId": 0,
+  "documentUrl": "https://source.invalid/watch/1",
+  "initiator": "https://source.invalid",
+  "resourceRole": "primary",
+  "redirectChain": [],
+  "responseStatus": 200,
+  "contentDispositionFileName": "video.mp4",
+  "etag": "redacted-test-etag",
+  "lastModified": "Thu, 27 Aug 2026 00:00:00 GMT"
+}

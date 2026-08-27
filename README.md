@@ -14,6 +14,11 @@ In order to use this extension you need to [install](https://abdownloadmanager.c
 - Adds a `Download With AB DM` in browser's context menu
 - Automatically captures download links when the user wants to download the file from their browser
 - Show a `Download Selected` popup when the user selects some section of the page that contains links
+- Re-captures expired download addresses for AB Download Manager through authenticated native messaging, with an API-key-protected HTTP fallback
+
+### Address refresh compatibility
+
+Version 1.6.0 adds address-refresh protocol v1 for current AB Download Manager builds. Capture is active only while the user has an explicit five-minute refresh session open in the app. URLs, cookies, headers, request bodies, and session nonces remain in memory and are never written to extension storage.
 
 ## How To Build
 In order to build this extension locally:

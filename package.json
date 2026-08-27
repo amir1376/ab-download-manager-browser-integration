@@ -1,6 +1,6 @@
 {
   "name": "ab-download-manager-browser-integration",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "displayName": "AB Download Manager Browser Integration",
   "author": "AmirHossein Abdolmotallebi",
   "description": "Download files with AB Download Manager app",
@@ -19,6 +19,8 @@
     "pack:firefox": "npm run build:firefox && web-ext build --source-dir ./dist/firefox --artifacts-dir ./dist --filename firefox.zip",
     "pack:chrome": "npm run build:chrome && web-ext build --source-dir ./dist/chrome --artifacts-dir ./dist --filename chrome.zip",
     "pack": "npm run pack:chrome && npm run pack:firefox && npm run pack:src",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "serve:firefox": "web-ext run --firefox-profile default-release --start-url \"about:debugging#/runtime/this-firefox\"  --source-dir ./dist/firefox --devtools",
     "serve:chrome": "web-ext run -t chromium --start-url \"https://example.com\" --source-dir ./dist/chrome"
   },
@@ -38,13 +40,14 @@
     "typescript": "^5.0.4",
     "vite": "~4.3.9",
     "vite-plugin-environment": "^1.1.3",
+    "vitest": "^2.1.9",
     "web-ext": "^8.10.0"
   },
   "dependencies": {
     "classnames": "^2.5.1",
     "hls-parser": "^0.15.0",
     "is-network-error": "^1.0.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.18.1",
     "match-url-wildcard": "^0.0.5",
     "mobx": "^6.12.0",
     "mobx-react-lite": "^4.0.5",

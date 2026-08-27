@@ -1,6 +1,7 @@
 import {IAppApi} from "~/backend/IAppApi";
 import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
 import _ from "lodash";
+import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 
 export class CompositeAppApi implements IAppApi {
     constructor(
@@ -40,5 +41,17 @@ export class CompositeAppApi implements IAppApi {
 
     ping(): Promise<boolean> {
         return this.action(api => api.ping())
+    }
+
+    addressRefreshCapabilities() {
+        return this.action(api => api.addressRefreshCapabilities())
+    }
+
+    addressRefreshSessions() {
+        return this.action(api => api.addressRefreshSessions())
+    }
+
+    submitAddressRefreshCandidate(candidate: AddressRefreshCandidate) {
+        return this.action(api => api.submitAddressRefreshCandidate(candidate))
     }
 }

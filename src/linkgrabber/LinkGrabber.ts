@@ -4,16 +4,19 @@ import {Manifest2DownloadLinkInterceptor} from "~/linkgrabber/Manifest2DownloadL
 import {run} from "~/utils/ScopeFunctions";
 import {Manifest3DownloadLinkInterceptor} from "~/linkgrabber/Manifest3DownloadLinkInterceptor";
 import {MediaRegistry} from "~/media/MediaRegistry";
+import {AddressRefreshCaptureCoordinator} from "~/addressrefresh/AddressRefreshCaptureCoordinator";
 
 export function redirectDownloadLinksToMe() {
     const downloadMediaRegistry = new MediaRegistry()
     downloadMediaRegistry.boot()
+    const addressRefreshCoordinator = new AddressRefreshCaptureCoordinator()
+    addressRefreshCoordinator.boot().catch(() => undefined)
     const downloadLinkInterceptor: DownloadLinkInterceptor = run(() => {
         switch (getExtensionBrowserTarget()) {
             case BrowserTarget.chrome:
-                return new Manifest3DownloadLinkInterceptor()
+                return new Manifest3DownloadLinkInterceptor(addressRefreshCoordinator)
             case BrowserTarget.firefox:
-                return new Manifest2DownloadLinkInterceptor()
+                return new Manifest2DownloadLinkInterceptor(addressRefreshCoordinator)
         }
     })
     downloadLinkInterceptor.redirectDownloadsToExtension()

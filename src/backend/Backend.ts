@@ -8,6 +8,7 @@ import {IAppApi} from "~/backend/IAppApi";
 import {NativeMessagingApi} from "~/backend/NativeMessagingApi";
 import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport";
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
+import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -83,6 +84,14 @@ function getApi(): IAppApi {
     )
 }
 
+function getRefreshApi(): IAppApi {
+    const nativeMessagingApi = getOrInitNativeMessagingApi()
+    return new CompositeAppApi(
+        [nativeMessagingApi, getHttpApi()],
+        nativeMessagingApi,
+    )
+}
+
 
 export async function addDownload(
     downloadRequestItems: DownloadRequestItem[],
@@ -127,6 +136,18 @@ export async function nativeMessagingPing() {
     } catch (e) {
         return false
     }
+}
+
+export async function addressRefreshCapabilities() {
+    return await getRefreshApi().addressRefreshCapabilities()
+}
+
+export async function addressRefreshSessions() {
+    return await getRefreshApi().addressRefreshSessions()
+}
+
+export async function submitAddressRefreshCandidate(candidate: AddressRefreshCandidate) {
+    return await getRefreshApi().submitAddressRefreshCandidate(candidate)
 }
 
 

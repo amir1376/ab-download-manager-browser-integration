@@ -17,6 +17,7 @@ import {getContentLength, getContentType} from "~/utils/HeaderUtils";
 import {getFileExtension, getFileFromHeaders, getFileFromUrl} from "~/utils/URLUtils";
 import _ from "lodash";
 import * as BackgroundSharedState from "~/background/BackgroundSharedState";
+import {AddressRefreshCaptureCoordinator} from "~/addressrefresh/AddressRefreshCaptureCoordinator";
 
 type TabInfo = {
     title?: string,
@@ -31,6 +32,9 @@ export type InterceptedBrowserRequestWithResponse = {
 }
 
 export abstract class DownloadLinkInterceptor {
+    constructor(private readonly addressRefreshCoordinator: AddressRefreshCaptureCoordinator) {
+    }
+
     protected readonly pendingRequests: Record<string, InterceptedBrowserRequestWithResponse> = {}
     private onMediaDetectedListener: OnMediaInterceptedFromRequestListener | null = null
     private tabCache: Record<number, TabInfo> = {}
@@ -295,10 +299,17 @@ export abstract class DownloadLinkInterceptor {
         browser.tabs.onRemoved.addListener((tabId, _) => {
             this.removeItemInNewTabs(tabId)
             delete this.tabCache[tabId]
+            this.addressRefreshCoordinator.onTabClosed(tabId)
         })
+        browser.webRequest.onBeforeRequest.addListener(
+            details => this.addressRefreshCoordinator.observeBeforeRequest(details),
+            filter,
+            ["requestBody"],
+        )
         browser.webRequest.onSendHeaders.addListener(
             (details) => {
                 this.setPendingRequest(details.requestId, details)
+                this.addressRefreshCoordinator.observeSendHeaders(details)
             },
             filter,
             run(() => {
@@ -313,15 +324,22 @@ export abstract class DownloadLinkInterceptor {
         browser.webRequest.onErrorOccurred.addListener(
             (details) => {
                 this.removePendingRequest(details.requestId)
+                this.addressRefreshCoordinator.forget(details.requestId)
             },
             filter,
         )
+        browser.webRequest.onBeforeRedirect.addListener(
+            details => this.addressRefreshCoordinator.observeRedirect(details),
+            filter,
+            ["responseHeaders"],
+        )
         browser.webRequest.onResponseStarted.addListener(
-            (details) => {
+            async (details) => {
                 const request = this.pendingRequests[details.requestId]
                 if (!request) {
                     return
                 }
+                await this.addressRefreshCoordinator.observeResponse(details)
                 this.checkForDirectMedia(details, request.finalRequest)
             },
             {
@@ -333,11 +351,12 @@ export abstract class DownloadLinkInterceptor {
             ],
         )
         browser.webRequest.onResponseStarted.addListener(
-            (details) => {
+            async (details) => {
                 const request = this.pendingRequests[details.requestId]
                 if (!request) {
                     return
                 }
+                await this.addressRefreshCoordinator.observeResponse(details)
                 this.checkForHLS(details, request.finalRequest)
             }, {
                 types: ["xmlhttprequest"],
@@ -355,6 +374,7 @@ export abstract class DownloadLinkInterceptor {
         browser.webRequest.onCompleted.addListener(
             (details) => {
                 this.removePendingRequest(details.requestId)
+                this.addressRefreshCoordinator.forget(details.requestId)
             },
             filter
         )
@@ -366,6 +386,12 @@ export abstract class DownloadLinkInterceptor {
                         return this.passResponse()
                     }
                     request.finalResponse = details
+                    const capturedForRefresh = await this.addressRefreshCoordinator.observeResponse(details)
+                    if (capturedForRefresh) {
+                        request.handledOnWebRequest = true
+                        await this.onDownloadSendToAppSuccess(request.finalRequest)
+                        return this.cancelResponse()
+                    }
                     const result = this.shouldHandleRequestForDirectDownload(details);
                     if (!result) {
                         return this.passResponse()
@@ -401,6 +427,10 @@ export abstract class DownloadLinkInterceptor {
             })
         )
         browser.downloads?.onCreated?.addListener(async (details) => {
+            if (this.addressRefreshCoordinator.shouldCancelBrowserDownload(details.url)) {
+                await this.cancelDownload(details.id)
+                return
+            }
             if (!getLatestConfig().autoCaptureLinks) {
                 // console.log("autoCaptureLinks is disabled")
                 return

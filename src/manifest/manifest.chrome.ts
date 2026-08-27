@@ -19,7 +19,7 @@ export function getManifestForChrome(): ManifestV3 {
         action: getBrowserActionInfo(),
         host_permissions: getHostPermissions(),
         permissions: getCommonPermissions(),
-    }
+    } as unknown as ManifestV3
     /*return {
         manifest_version: 2,
         ...getBaseManifest(),

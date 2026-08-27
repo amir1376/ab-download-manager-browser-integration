@@ -26,5 +26,5 @@ export function getManifestForFirefox(): ManifestV2 {
             // only in firefox as it supports mv2
             "webRequestBlocking",
         ],
-    }
+    } as unknown as ManifestV2
 }

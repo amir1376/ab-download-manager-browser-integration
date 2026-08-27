@@ -6,6 +6,12 @@ import {getLatestConfig} from "~/configs/Config";
 import {isNullOrBlank} from "~/utils/StringUtils";
 import {head} from "lodash";
 import Constants from "~/utils/Constants";
+import {
+    AddressRefreshCandidate,
+    AddressRefreshCandidateResult,
+    AddressRefreshCapabilities,
+    AddressRefreshSession
+} from "~/interfaces/AddressRefresh";
 
 export function createHttpApiClient(
     port: number,
@@ -22,22 +28,23 @@ export class HttpApi implements IAppApi {
 
     private async request(
         path: string,
-        payload: any,
+        payload: any = null,
+        method: "GET" | "POST" = "POST",
+        timeout: number = 500,
     ) {
         const apiKey = getLatestConfig().apiKey
         const headers: HeadersInit = {}
         if (!isNullOrBlank(apiKey)) {
             headers[Constants.authHeaderName] = apiKey
         }
-        const timeout = 500
         const controller = new AbortController()
         const id = setTimeout(() => controller.abort(), timeout)
         let response: Response
         try {
             response = await fetch(this.apiUrl + path, {
-                method: "POST",
+                method: method,
                 headers: headers,
-                body: JSON.stringify(payload),
+                body: method === "POST" ? JSON.stringify(payload) : undefined,
                 signal: controller.signal,
             })
         } catch (e) {
@@ -63,5 +70,17 @@ export class HttpApi implements IAppApi {
     async ping(): Promise<boolean> {
         await this.request("ping", null)
         return true
+    }
+
+    async addressRefreshCapabilities(): Promise<AddressRefreshCapabilities> {
+        return await (await this.request("address-refresh/capabilities", null, "GET", 2_000)).json()
+    }
+
+    async addressRefreshSessions(): Promise<AddressRefreshSession[]> {
+        return await (await this.request("address-refresh/sessions", null, "GET", 2_000)).json()
+    }
+
+    async submitAddressRefreshCandidate(candidate: AddressRefreshCandidate): Promise<AddressRefreshCandidateResult> {
+        return await (await this.request("address-refresh/candidate", candidate, "POST", 5_000)).json()
     }
 }

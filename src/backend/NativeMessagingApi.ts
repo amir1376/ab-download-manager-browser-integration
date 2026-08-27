@@ -1,6 +1,12 @@
 import {IAppApi} from "~/backend/IAppApi";
 import {AddDownloadRequest} from "~/interfaces/AddDownloadRequest";
 import {NativeMessagingTransport} from "./nativemessaging/NativeMessagingTransport";
+import {
+    AddressRefreshCandidate,
+    AddressRefreshCandidateResult,
+    AddressRefreshCapabilities,
+    AddressRefreshSession
+} from "~/interfaces/AddressRefresh";
 
 
 export class NativeMessagingApi implements IAppApi {
@@ -61,5 +67,17 @@ export class NativeMessagingApi implements IAppApi {
             null,
         );
         return true;
+    }
+
+    addressRefreshCapabilities(): Promise<AddressRefreshCapabilities> {
+        return this.transport.requestTyped("addressRefreshCapabilities", null)
+    }
+
+    addressRefreshSessions(): Promise<AddressRefreshSession[]> {
+        return this.transport.requestTyped("addressRefreshSessions", null)
+    }
+
+    submitAddressRefreshCandidate(candidate: AddressRefreshCandidate): Promise<AddressRefreshCandidateResult> {
+        return this.transport.requestTyped("addressRefreshCandidate", candidate)
     }
 }
