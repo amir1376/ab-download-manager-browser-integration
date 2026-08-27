@@ -6,14 +6,21 @@ const mocks = vi.hoisted(() => ({
         secure: true, httpOnly: true, sameSite: "lax", expirationDate: 10_000,
         storeId: "default", session: false,
     }]),
+    getProxy: vi.fn(async () => ({value: {mode: "fixed_servers", rules: {singleProxy: {scheme: "https", host: "proxy.invalid", port: 8443}}}})),
 }))
 
-vi.mock("webextension-polyfill", () => ({default: {cookies: {getAll: mocks.getAll}}}))
+vi.mock("webextension-polyfill", () => ({default: {
+    cookies: {getAll: mocks.getAll},
+    proxy: {settings: {get: mocks.getProxy}},
+}}))
 
 import {RequestContextRegistryV2} from "./RequestContextRegistryV2"
 
 describe("RequestContextRegistryV2", () => {
-    beforeEach(() => mocks.getAll.mockClear())
+    beforeEach(() => {
+        mocks.getAll.mockClear()
+        mocks.getProxy.mockClear()
+    })
 
     it("preserves POST bytes, duplicate headers, redirects, cookies, and response metadata", async () => {
         const registry = new RequestContextRegistryV2(() => 2_000)
@@ -51,6 +58,7 @@ describe("RequestContextRegistryV2", () => {
         expect(context.requestBody?.byteLength).toBe(3)
         expect(context.cookies[0].sameSite).toBe("LAX")
         expect(context.remoteAddress).toBe("192.0.2.5")
+        expect(context.proxy).toEqual({type: "HTTPS", endpoint: "proxy.invalid:8443", usernameRef: null})
     })
 
     it("fails ambiguous identical URL correlation open to the browser", () => {

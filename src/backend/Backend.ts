@@ -34,15 +34,17 @@ nativeMessagingTransport.addConnectionListener((connected) => {
     void refreshBrowserHelloV2()
 })
 
-nativeMessagingTransport.addNativeRequestHandler("queryBrowserContextV2", () => ({
-    status: "UNAVAILABLE",
-    reason: browserParityFeatureFlagsV2.twoPhaseCapture ? "NO_MATCHING_CONTEXT" : "FEATURE_NOT_ENABLED",
-}))
-
 nativeMessagingTransport.addNativeRequestHandler("policyChangedV2", async () => ({
     accepted: false,
     reason: browserParityFeatureFlagsV2.permissionPolicy ? "POLICY_REFRESH_REQUIRED" : "FEATURE_NOT_ENABLED",
 }))
+
+export function registerNativeBrowserRequestHandler(
+    action: string,
+    handler: (payload: unknown) => Promise<unknown> | unknown,
+): () => void {
+    return nativeMessagingTransport.addNativeRequestHandler(action, handler)
+}
 
 async function refreshBrowserHelloV2(): Promise<void> {
     if (helloRefresh !== null) return helloRefresh

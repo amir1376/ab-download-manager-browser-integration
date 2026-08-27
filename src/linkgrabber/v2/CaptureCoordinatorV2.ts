@@ -65,6 +65,10 @@ export class CaptureCoordinatorV2 {
         )
         browser.tabs.onRemoved.addListener(tabId => this.registry.forgetTab(tabId))
         browser.downloads.onCreated.addListener(download => void this.capture(download))
+        backend.registerNativeBrowserRequestHandler(
+            "queryBrowserContextV2",
+            payload => this.queryBrowserContext(payload),
+        )
         void this.reconcile()
     }
 
@@ -160,6 +164,24 @@ export class CaptureCoordinatorV2 {
                 const result = await this.bridge.released(receipt.captureId).catch(() => null)
                 if (result?.state === "COMMITTED_REVIEW") await removeReceipt(receipt.captureId)
             }
+        }
+    }
+
+    private async queryBrowserContext(payload: unknown): Promise<unknown> {
+        if (typeof payload !== "object" || payload === null) return {status: "INVALID_REQUEST"}
+        const request = payload as {requestId?: unknown; download?: unknown}
+        if (typeof request.requestId !== "string" || typeof request.download !== "object" || request.download === null) {
+            return {status: "INVALID_REQUEST"}
+        }
+        const record = this.registry.getByRequestId(request.requestId)
+        if (!record) return {status: "NOT_FOUND"}
+        try {
+            return {
+                status: "FOUND",
+                context: await this.registry.createContext(record, request.download as Downloads.DownloadItem),
+            }
+        } catch {
+            return {status: "UNAVAILABLE"}
         }
     }
 

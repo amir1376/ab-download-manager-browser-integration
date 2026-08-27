@@ -23,8 +23,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 |---|---|
 | 0. Contracts, fixtures, flags | COMPLETE |
 | 1. Secure transport and compatibility | COMPLETE_LOCAL |
-| 2. Request context and takeover | IN_PROGRESS |
-| 3. FTP/FTPS browser intake | NOT_STARTED |
+| 2. Request context and takeover | COMPLETE_LOCAL |
+| 3. FTP/FTPS browser intake | IN_PROGRESS |
 | 4. Permissions, policy, lifecycle | NOT_STARTED |
 | 5. Context menus and reviewed batches | NOT_STARTED |
 | 6. Media discovery and panel | NOT_STARTED |
@@ -93,6 +93,16 @@ schema copies and generated TypeScript types whose hashes are locked by
 - TypeScript passed; 22/22 extension tests passed across seven files.
 - The v2 takeover gate remains disabled until committed-review consumption and
   actual browser/native validation are ready.
+
+## Phase 2 local completion
+
+- Added header byte caps, proxy-mode capture, and native context-query fulfillment.
+- Desktop handoff tests prove committed review follows protected-context claim and
+  durable review persistence.
+- Final local receipt: TypeScript passed; 22/22 extension tests passed; Kotlin
+  browser-context/native suites passed.
+- Runtime activation remains gated behind Phase 4 consent and Phase 9 actual-browser
+  validation.
 
 ## Resume instructions
 

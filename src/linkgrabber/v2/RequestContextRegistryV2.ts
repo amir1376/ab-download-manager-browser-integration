@@ -76,6 +76,7 @@ export class RequestContextRegistryV2 {
         record.finalUrl = details.url
         record.method = details.method.toUpperCase()
         record.requestHeaders = toOrderedHeaders(details.requestHeaders)
+        if (headersWereLimited(details.requestHeaders, record.requestHeaders)) record.withheldFields.add("requestHeaders")
         record.documentUrl = details.documentUrl ?? record.documentUrl
         record.initiator = details.originUrl ?? record.initiator
         record.requestBodyMediaType = findHeader(record.requestHeaders, "content-type") ?? record.requestBodyMediaType
@@ -86,6 +87,7 @@ export class RequestContextRegistryV2 {
         if (!record) return
         record.finalUrl = details.url
         record.responseHeaders = toOrderedHeaders(details.responseHeaders)
+        if (headersWereLimited(details.responseHeaders, record.responseHeaders)) record.withheldFields.add("responseHeaders")
         record.statusCode = details.statusCode
         record.remoteAddress = (details as unknown as {ip?: string}).ip ?? null
         if (!record.remoteAddress) record.incompleteFields.add("remoteAddress")
@@ -104,6 +106,9 @@ export class RequestContextRegistryV2 {
             statusCode: details.statusCode,
             responseHeaders: toOrderedHeaders(details.responseHeaders),
         })
+        if (headersWereLimited(details.responseHeaders, record.redirects.at(-1)!.responseHeaders)) {
+            record.withheldFields.add("redirectResponseHeaders")
+        }
         record.finalUrl = details.redirectUrl
     }
 
@@ -115,6 +120,11 @@ export class RequestContextRegistryV2 {
 
     forgetTab(tabId: number): void {
         for (const record of [...(this.byTab.get(tabId) ?? [])]) this.remove(record)
+    }
+
+    getByRequestId(requestId: string): RequestRecordV2 | null {
+        this.cleanup()
+        return this.byRequestId.get(requestId) ?? null
     }
 
     matchDownload(download: Downloads.DownloadItem): DownloadRequestMatchV2 {
@@ -140,7 +150,8 @@ export class RequestContextRegistryV2 {
         const disposition = getContentDisposition(response)
         const fileName = disposition ? getFileNameFromHeader(disposition) : null
         const incomplete = new Set(record.incompleteFields)
-        incomplete.add("proxy")
+        const proxy = await captureProxy(Boolean(download.incognito))
+        if (proxy === null) incomplete.add("proxy")
         if (cookies.incomplete) incomplete.add("cookies")
         return {
             originalUrl: record.originalUrl,
@@ -165,7 +176,7 @@ export class RequestContextRegistryV2 {
             expectedSize: getContentLength(response) ?? (download.fileSize >= 0 ? download.fileSize : null),
             statusCode: record.statusCode,
             remoteAddress: record.remoteAddress,
-            proxy: null,
+            proxy,
             withheldFields: [...record.withheldFields],
             incompleteFields: [...incomplete],
         }
@@ -306,10 +317,46 @@ function normalizeSameSite(value: string | undefined): BrowserCookieSameSiteV2 |
 }
 
 function toOrderedHeaders(headers?: WebRequest.HttpHeaders): OrderedHeaderV2[] {
-    return (headers ?? [])
-        .filter((header): header is {name: string; value: string} => header.value !== undefined)
-        .slice(0, BrowserProtocolLimitsV2.maxHeaderCount)
-        .map(header => ({name: header.name, value: header.value}))
+    const output: OrderedHeaderV2[] = []
+    let bytes = 0
+    for (const header of headers ?? []) {
+        if (header.value === undefined) continue
+        const nextBytes = new TextEncoder().encode(`${header.name}:${header.value}`).byteLength
+        if (output.length >= BrowserProtocolLimitsV2.maxHeaderCount ||
+            bytes + nextBytes > BrowserProtocolLimitsV2.maxHeaderBytes) break
+        output.push({name: header.name, value: header.value})
+        bytes += nextBytes
+    }
+    return output
+}
+
+function headersWereLimited(raw: WebRequest.HttpHeaders | undefined, captured: OrderedHeaderV2[]): boolean {
+    return (raw ?? []).filter(header => header.value !== undefined).length > captured.length
+}
+
+async function captureProxy(privateContext: boolean): Promise<BrowserRequestContextV2["proxy"]> {
+    try {
+        const settings = await browser.proxy.settings.get({incognito: privateContext})
+        const value = settings.value as Record<string, unknown> | undefined
+        const mode = value?.mode
+        if (mode === "direct") return {type: "DIRECT", endpoint: null, usernameRef: null}
+        if (mode === "system" || mode === "auto_detect" || mode === "pac_script") {
+            return {type: "SYSTEM", endpoint: null, usernameRef: null}
+        }
+        if (mode === "fixed_servers") {
+            const rules = value?.rules as Record<string, unknown> | undefined
+            const candidate = (rules?.singleProxy ?? rules?.proxyForHttps ?? rules?.proxyForHttp) as Record<string, unknown> | undefined
+            if (candidate && typeof candidate.host === "string") {
+                const scheme = String(candidate.scheme ?? "http").toLowerCase()
+                const type = scheme.startsWith("socks5") ? "SOCKS5" : scheme.startsWith("socks") ? "SOCKS4" : scheme === "https" ? "HTTPS" : "HTTP"
+                const port = typeof candidate.port === "number" ? `:${candidate.port}` : ""
+                return {type, endpoint: `${candidate.host}${port}`, usernameRef: null}
+            }
+        }
+        return {type: "UNKNOWN", endpoint: null, usernameRef: null}
+    } catch {
+        return null
+    }
 }
 
 function findHeader(headers: OrderedHeaderV2[], name: string): string | null {
