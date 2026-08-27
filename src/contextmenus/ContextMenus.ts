@@ -147,6 +147,15 @@ async function submitBatch(
         await stageBatchReviewV2(tabId, scope, privateContext, frameId, sourceKinds)
     } catch (failure) {
         console.warn("Browser batch collection failed", failure)
+        const code = failure instanceof Error ? failure.message : "BROWSER_BATCH_FAILED"
+        const message = code === "NO_LINKS_FOUND" ? "No downloadable links were found in this selection or page." :
+            code === "SESSION_REVIEW_STORAGE_UNAVAILABLE" ? "This browser cannot safely retain a private batch review." :
+                "The link review could not be prepared. Browser-owned downloads were not changed."
+        await browser.tabs.sendMessage(tabId, {action: "browserBatchFeedbackV2", message}).catch(async () => {
+            const action = (browser as unknown as {action?: {setBadgeText(details: {text: string}): Promise<void>; setTitle(details: {title: string}): Promise<void>}}).action
+            await action?.setBadgeText({text: "!"})
+            await action?.setTitle({title: message})
+        })
     }
 }
 

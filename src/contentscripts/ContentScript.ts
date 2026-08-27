@@ -120,8 +120,11 @@ export default defineExtensionEntry()
             disposable.add(() => MediaPopup.setItemClickListener(() => undefined))
 
             const disableListener = (message: unknown) => {
-                if ((message as {action?: unknown})?.action !== "disableBrowserIntegrationV2") return
-                disposable.dispose()
+                const value = message as {action?: unknown; message?: unknown}
+                if (value.action === "disableBrowserIntegrationV2") disposable.dispose()
+                if (value.action === "browserBatchFeedbackV2" && typeof value.message === "string") {
+                    alert(createAlertStringForMyExtension(value.message))
+                }
             }
             browser.runtime.onMessage.addListener(disableListener)
             disposable.add(() => browser.runtime.onMessage.removeListener(disableListener))
