@@ -12,6 +12,8 @@ import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "~/protocol/BrowserBridgeV2";
 import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
 import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "~/backend/ProtocolCompatibility";
+import {BrowserHttpBridgeV2} from "~/backend/BrowserHttpBridgeV2";
+import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -136,6 +138,56 @@ export function canUseAutomaticTakeover(): boolean {
     return canUseAutomaticTakeoverV2(
         getBrowserProtocolCompatibilityMode(),
         browserParityFeatureFlagsV2,
+    )
+}
+
+function getBrowserHttpBridgeV2(): BrowserHttpBridgeV2 | null {
+    const hello = getBrowserHelloV2()
+    return hello ? new BrowserHttpBridgeV2(hello.httpFallback.baseUrl, hello.httpFallback.apiKey) : null
+}
+
+async function useCaptureBridgeV2<T>(
+    nativeAction: (api: NativeMessagingApi) => Promise<T>,
+    httpAction: (api: BrowserHttpBridgeV2) => Promise<T>,
+): Promise<T> {
+    const nativeApi = getOrInitNativeMessagingApi()
+    if (nativeApi.isConnected()) {
+        try {
+            return await nativeAction(nativeApi)
+        } catch {
+            // Authenticated HTTP is the bounded fallback negotiated by helloV2.
+        }
+    }
+    const http = getBrowserHttpBridgeV2()
+    if (http === null) throw new Error("Browser integration protocol v2 is unavailable")
+    return await httpAction(http)
+}
+
+export async function prepareCaptureV2(proposal: CaptureProposalV2): Promise<PreparedCaptureV2> {
+    return useCaptureBridgeV2(
+        api => api.prepareCaptureV2(proposal),
+        api => api.prepareCapture(proposal),
+    )
+}
+
+export async function markBrowserReleasedV2(captureId: string): Promise<PreparedCaptureV2 | null> {
+    return useCaptureBridgeV2(
+        api => api.markBrowserReleasedV2(captureId),
+        api => api.markBrowserReleased(captureId),
+    )
+}
+
+export async function abortCaptureV2(captureId: string): Promise<PreparedCaptureV2 | null> {
+    return useCaptureBridgeV2(
+        api => api.abortCaptureV2(captureId),
+        api => api.abortCapture(captureId),
+    )
+}
+
+export async function listPreparedCapturesV2(): Promise<PreparedCaptureV2[]> {
+    return useCaptureBridgeV2(
+        api => api.listPreparedCapturesV2(),
+        api => api.listPreparedCaptures(),
     )
 }
 

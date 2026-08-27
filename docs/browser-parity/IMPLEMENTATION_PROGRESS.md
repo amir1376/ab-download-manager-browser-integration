@@ -82,6 +82,18 @@ schema copies and generated TypeScript types whose hashes are locked by
   passed.
 - Phase 2 owns full request-context production and two-phase browser takeover.
 
+## Phase 2 checkpoint A
+
+- Added bounded request-context staging with POST bytes, ordered headers, redirects,
+  structured cookies, frames/private identity, response metadata, and explicit
+  unknown/withheld fields.
+- Added pause → durable prepare → cancel/erase → committed-review coordination.
+- Ambiguous correlation and every pre-release failure retain or resume browser
+  ownership; post-release response loss persists a recovery receipt.
+- TypeScript passed; 22/22 extension tests passed across seven files.
+- The v2 takeover gate remains disabled until committed-review consumption and
+  actual browser/native validation are ready.
+
 ## Resume instructions
 
 1. Verify both repositories' branches and worktree states.

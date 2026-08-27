@@ -5,8 +5,14 @@ import {run} from "~/utils/ScopeFunctions";
 import {Manifest3DownloadLinkInterceptor} from "~/linkgrabber/Manifest3DownloadLinkInterceptor";
 import {MediaRegistry} from "~/media/MediaRegistry";
 import {AddressRefreshCaptureCoordinator} from "~/addressrefresh/AddressRefreshCaptureCoordinator";
+import {canUseAutomaticTakeover} from "~/backend/Backend";
+import {CaptureCoordinatorV2} from "~/linkgrabber/v2/CaptureCoordinatorV2";
 
 export function redirectDownloadLinksToMe() {
+    if (canUseAutomaticTakeover()) {
+        new CaptureCoordinatorV2().boot()
+        return
+    }
     const downloadMediaRegistry = new MediaRegistry()
     downloadMediaRegistry.boot()
     const addressRefreshCoordinator = new AddressRefreshCaptureCoordinator()
