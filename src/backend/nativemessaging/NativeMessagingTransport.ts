@@ -5,6 +5,7 @@ import {
     isNativeMessagingMessage,
     NativeMessagingMessage,
     NativeMessagingMessageContent,
+    isMessageIdFromNative,
     processResponseOrThrow,
 } from "./NativeMessagingProtocol";
 
@@ -28,6 +29,7 @@ export class NativeMessagingTransport {
     private reconnectAttempt = 0;
     private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
     private readonly connectionListeners = new Set<(connected: boolean) => void>();
+    private readonly nativeRequestHandlers = new Map<string, (payload: unknown) => Promise<unknown> | unknown>();
 
     constructor(
         private readonly packageName: string,
@@ -78,6 +80,15 @@ export class NativeMessagingTransport {
     addConnectionListener(listener: (connected: boolean) => void): () => void {
         this.connectionListeners.add(listener)
         return () => this.connectionListeners.delete(listener)
+    }
+
+    addNativeRequestHandler(
+        action: string,
+        handler: (payload: unknown) => Promise<unknown> | unknown,
+    ): () => void {
+        if (this.nativeRequestHandlers.has(action)) throw new Error(`Native request handler already exists: ${action}`)
+        this.nativeRequestHandlers.set(action, handler)
+        return () => this.nativeRequestHandlers.delete(action)
     }
 
     isConnected(): boolean {
@@ -232,8 +243,10 @@ export class NativeMessagingTransport {
 
         const pendingRequest = this.pendingRequests.get(message.id);
         if (pendingRequest === undefined) {
-            // Native initiated event or unknown message.
-            // it's a good idea to add event handler here too.
+            if (isMessageIdFromNative(message.id) && message.content.action) {
+                void this.handleNativeRequest(message)
+                return
+            }
             console.log("Unhandled native message", message,);
             return;
         }
@@ -288,6 +301,44 @@ export class NativeMessagingTransport {
         );
         this.scheduleReconnect();
     };
+
+    private async handleNativeRequest(message: NativeMessagingMessage): Promise<void> {
+        const port = this.port
+        if (port === null || !message.content.action) return
+        const handler = this.nativeRequestHandlers.get(message.content.action)
+        if (!handler) {
+            port.postMessage(this.createNativeReply(message, true, {
+                errorType: "UNSUPPORTED_NATIVE_ACTION",
+                message: `Unsupported native action: ${message.content.action}`,
+            }))
+            return
+        }
+        try {
+            const payload = JSON.parse(message.content.payload)
+            const result = await handler(payload)
+            port.postMessage(this.createNativeReply(message, false, result))
+        } catch {
+            port.postMessage(this.createNativeReply(message, true, {
+                errorType: "NATIVE_REQUEST_FAILED",
+                message: "Native browser request failed",
+            }))
+        }
+    }
+
+    private createNativeReply(
+        request: NativeMessagingMessage,
+        isError: boolean,
+        payload: unknown,
+    ): NativeMessagingMessage {
+        return {
+            id: request.id,
+            content: {
+                action: null,
+                isError,
+                payload: JSON.stringify(payload),
+            },
+        }
+    }
 
     private scheduleReconnect(): void {
         if (!this.reconnectEnabled || this.reconnectTimer !== null || this.port !== null) return

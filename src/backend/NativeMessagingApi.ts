@@ -8,6 +8,8 @@ import {
     AddressRefreshSession
 } from "~/interfaces/AddressRefresh";
 import {BrowserHelloResponseV2, BrowserHelloResponseV2Schema} from "~/protocol/BrowserBridgeV2";
+import {PreparedCaptureListV2Schema, PreparedCaptureV2Schema} from "~/protocol/BrowserBridgeV2";
+import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 
 
 export class NativeMessagingApi implements IAppApi {
@@ -85,5 +87,27 @@ export class NativeMessagingApi implements IAppApi {
         return BrowserHelloResponseV2Schema.parse(
             await this.transport.requestTyped<unknown>("helloV2", null)
         ) as BrowserHelloResponseV2
+    }
+
+    async prepareCaptureV2(proposal: CaptureProposalV2): Promise<PreparedCaptureV2> {
+        return PreparedCaptureV2Schema.parse(
+            await this.transport.requestTyped<unknown>("prepareCaptureV2", proposal)
+        ) as PreparedCaptureV2
+    }
+
+    async markBrowserReleasedV2(captureId: string): Promise<PreparedCaptureV2 | null> {
+        const value = await this.transport.requestTyped<unknown>("browserReleasedV2", {captureId})
+        return value === null ? null : PreparedCaptureV2Schema.parse(value) as PreparedCaptureV2
+    }
+
+    async listPreparedCapturesV2(): Promise<PreparedCaptureV2[]> {
+        return PreparedCaptureListV2Schema.parse(
+            await this.transport.requestTyped<unknown>("listPreparedCapturesV2", null)
+        ) as PreparedCaptureV2[]
+    }
+
+    async abortCaptureV2(captureId: string): Promise<PreparedCaptureV2 | null> {
+        const value = await this.transport.requestTyped<unknown>("abortCaptureV2", {captureId})
+        return value === null ? null : PreparedCaptureV2Schema.parse(value) as PreparedCaptureV2
     }
 }

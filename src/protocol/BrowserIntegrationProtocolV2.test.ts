@@ -9,7 +9,7 @@ import {
 } from "./BrowserIntegrationProtocolV2Schema"
 import {BrowserProtocolLimitsV2} from "./generated/BrowserIntegrationProtocolV2"
 import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags"
-import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "./BrowserBridgeV2"
+import {clearBrowserHelloV2, getBrowserHelloV2, PreparedCaptureV2Schema, setBrowserHelloV2} from "./BrowserBridgeV2"
 
 describe("browser integration protocol v2", () => {
     it("strictly parses shared fixtures without collapsing ordered headers", () => {
@@ -51,5 +51,20 @@ describe("browser integration protocol v2", () => {
         })).toThrow()
         clearBrowserHelloV2()
         expect(getBrowserHelloV2()).toBeNull()
+    })
+
+    it("validates prepared capture recovery receipts", () => {
+        expect(PreparedCaptureV2Schema.parse({
+            captureId: "capture-1",
+            contextRef: "context-1",
+            state: "PREPARED",
+            expiresAtEpochMs: 120_000,
+        }).state).toBe("PREPARED")
+        expect(() => PreparedCaptureV2Schema.parse({
+            captureId: "capture-1",
+            contextRef: "context-1",
+            state: "RUNNING_WITH_BROWSER_OWNER",
+            expiresAtEpochMs: 120_000,
+        })).toThrow()
     })
 })

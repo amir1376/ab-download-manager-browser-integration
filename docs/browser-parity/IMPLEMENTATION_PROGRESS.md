@@ -63,6 +63,15 @@ schema copies and generated TypeScript types whose hashes are locked by
 - Remaining: transport failure/restart tests, native events/context query,
   prepared-capture calls, and final compatibility gates.
 
+## Phase 1 checkpoint B
+
+- Added native and authenticated-HTTP clients for prepare, browser-release,
+  reconcile/list, and abort operations.
+- Persistent transport now validates and answers native-initiated requests on the
+  correlated native ID; unsupported or failing actions return bounded error shapes.
+- Feature-off policy/context requests fail closed and return no page data.
+- TypeScript passed; extension tests passed 15/15 across four files.
+
 ## Resume instructions
 
 1. Verify both repositories' branches and worktree states.

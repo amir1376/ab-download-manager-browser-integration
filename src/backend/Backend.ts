@@ -10,6 +10,7 @@ import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagin
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
 import {AddressRefreshCandidate} from "~/interfaces/AddressRefresh";
 import {clearBrowserHelloV2, getBrowserHelloV2, setBrowserHelloV2} from "~/protocol/BrowserBridgeV2";
+import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -29,6 +30,16 @@ nativeMessagingTransport.addConnectionListener((connected) => {
     }
     void refreshBrowserHelloV2()
 })
+
+nativeMessagingTransport.addNativeRequestHandler("queryBrowserContextV2", () => ({
+    status: "UNAVAILABLE",
+    reason: browserParityFeatureFlagsV2.twoPhaseCapture ? "NO_MATCHING_CONTEXT" : "FEATURE_NOT_ENABLED",
+}))
+
+nativeMessagingTransport.addNativeRequestHandler("policyChangedV2", async () => ({
+    accepted: false,
+    reason: browserParityFeatureFlagsV2.permissionPolicy ? "POLICY_REFRESH_REQUIRED" : "FEATURE_NOT_ENABLED",
+}))
 
 async function refreshBrowserHelloV2(): Promise<void> {
     if (helloRefresh !== null) return helloRefresh

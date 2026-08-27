@@ -1,6 +1,8 @@
 import {z} from "~/utils/Zod"
 import {BrowserIntegrationCapabilitiesV2Schema} from "./BrowserIntegrationProtocolV2Schema"
 import type {BrowserIntegrationCapabilitiesV2} from "./generated/BrowserIntegrationProtocolV2"
+import type {CaptureProposalV2, PreparedCaptureV2} from "./generated/BrowserIntegrationProtocolV2"
+import {CaptureProposalV2Schema} from "./BrowserIntegrationProtocolV2Schema"
 
 export interface BrowserHttpFallbackV2 {
     baseUrl: string
@@ -24,6 +26,23 @@ export const BrowserHelloResponseV2Schema = z.object({
         headerName: z.literal("X-Api-Key"),
     }),
 })
+
+export const PreparedCaptureV2Schema = z.object({
+    captureId: z.string().min(1).max(128),
+    contextRef: z.string().min(1).max(256),
+    state: z.enum(["PREPARED", "BROWSER_RELEASED", "COMMITTED_TASK", "COMMITTED_REVIEW", "ABORTED", "RECOVERY_REQUIRED"]),
+    expiresAtEpochMs: z.int().min(0),
+})
+
+export const PreparedCaptureListV2Schema = z.array(PreparedCaptureV2Schema).max(5_000)
+
+export function parseCaptureProposalV2(value: unknown): CaptureProposalV2 {
+    return CaptureProposalV2Schema.parse(value) as CaptureProposalV2
+}
+
+export function parsePreparedCaptureV2(value: unknown): PreparedCaptureV2 {
+    return PreparedCaptureV2Schema.parse(value) as PreparedCaptureV2
+}
 
 let currentHello: BrowserHelloResponseV2 | null = null
 
