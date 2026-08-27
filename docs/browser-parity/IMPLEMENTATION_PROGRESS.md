@@ -24,8 +24,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 0. Contracts, fixtures, flags | COMPLETE |
 | 1. Secure transport and compatibility | COMPLETE_LOCAL |
 | 2. Request context and takeover | COMPLETE_LOCAL |
-| 3. FTP/FTPS browser intake | IN_PROGRESS |
-| 4. Permissions, policy, lifecycle | NOT_STARTED |
+| 3. FTP/FTPS browser intake | COMPLETE_LOCAL |
+| 4. Permissions, policy, lifecycle | IN_PROGRESS |
 | 5. Context menus and reviewed batches | NOT_STARTED |
 | 6. Media discovery and panel | NOT_STARTED |
 | 7. Media selection and renewal | NOT_STARTED |
@@ -103,6 +103,21 @@ schema copies and generated TypeScript types whose hashes are locked by
   browser-context/native suites passed.
 - Runtime activation remains gated behind Phase 4 consent and Phase 9 actual-browser
   validation.
+
+## Phase 3 local completion
+
+- Added explicit `ftp://` and `ftps://` context-menu intake. Embedded credentials
+  are removed before handoff; their presence is recorded only as a withheld-field
+  signal so the desktop review must collect them securely.
+- Port 990 is classified as implicit FTPS; other FTPS URLs use explicit FTPS.
+  SFTP is not accepted.
+- FTP intake uses the same durable prepare/release/committed-review protocol as
+  HTTP capture and cannot start a transfer from the extension.
+- Final local receipt: TypeScript passed; 23/23 tests passed; Chrome and Firefox
+  production builds passed. Extension checkpoint:
+  `68939bd7df2c9c2ad223bb9cc1c095d69cc57bc5`.
+- The runtime feature remains off until Phase 4 consent/policy controls and Phase 9
+  installed-browser/native/desktop FTP and FTPS validation are complete.
 
 ## Resume instructions
 
