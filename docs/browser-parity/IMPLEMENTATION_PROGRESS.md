@@ -28,8 +28,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 4. Permissions, policy, lifecycle | COMPLETE_LOCAL |
 | 5. Context menus and reviewed batches | COMPLETE_LOCAL |
 | 6. Media discovery and panel | COMPLETE_LOCAL |
-| 7. Media selection and renewal | IN_PROGRESS |
-| 8. UX, migration, localization, accessibility | NOT_STARTED |
+| 7. Media selection and renewal | COMPLETE_LOCAL |
+| 8. UX, migration, localization, accessibility | IN_PROGRESS |
 | 9. Packaging and browser E2E | NOT_STARTED |
 
 ## Phase 0 checklist
@@ -172,6 +172,23 @@ schema copies and generated TypeScript types whose hashes are locked by
   lock. Checkpoint: `127c057f22f33c27015d08f1c3f328b239a6c904`.
 - Live players, CSP, blobs/MSE, cross-origin frames, adversarial inputs, and layout
   churn remain Phase 9 browser/stress gates.
+
+## Phase 7 local completion
+
+- Media panel actions open a no-default variant/track/container/live-duration
+  chooser. HLS audio, subtitles and variants plus DASH representation IDs are
+  explicit and persist into durable opaque adaptive tasks.
+- Selected media carries protected browser request context through the encrypted
+  desktop vault; ordered duplicate headers are preserved by the native client.
+- Native progressive/HLS/DASH, multi-track assembly, explicit container remuxing,
+  bounded live recording, signed-expiry detection, and refresh-in-place are wired.
+  DRM/ContentProtection and cipher-only URLs remain deliberately unsupported.
+- Address-refresh observers start only under FULL protected-context consent and
+  remove every listener/timer on revocation.
+- Final local receipt: TypeScript; 38/38 tests; Chrome/Firefox builds; protocol v2.4
+  lock. Checkpoint: `f8cc971f0bc0bd020ef7bb184738ce4cf78bce57`.
+- Exact IDM native naming remains blocked on licensed black-box evidence; real
+  authenticated/live/expiry streams and packaged FFmpeg remain Phase 9 gates.
 
 ## Resume instructions
 
