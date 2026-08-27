@@ -22,6 +22,7 @@ import {createRoot} from "react-dom/client";
 import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryType";
 import {BrowserIntegrationPolicySectionV2} from "~/optionsui/BrowserIntegrationPolicySectionV2";
 import {BatchReviewV2} from "~/optionsui/BatchReviewV2";
+import {MediaSelectionV2} from "~/optionsui/MediaSelectionV2";
 
 class ToolsViewModelEvent {
 }
@@ -209,6 +210,8 @@ const App: React.FC<{
     });
     const batchReviewId = new URLSearchParams(location.search).get("batchReview")
     if (batchReviewId) return <BatchReviewV2 reviewId={batchReviewId}/>
+    const mediaSelectionId = new URLSearchParams(location.search).get("mediaSelection")
+    if (mediaSelectionId) return <MediaSelectionV2 selectionId={mediaSelectionId}/>
     return <div data-theme="dark" className="w-96 m-auto">
         <Header/>
         <SettingsSection vm={vm}/>

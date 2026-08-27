@@ -6,7 +6,11 @@ export function installPageMediaInstrumentationV2(generation: number, channel: s
     if (existing) { existing.generation = generation; existing.channel = channel; return }
     const config = {generation, channel}
     scope[marker] = config
-    const emit = (event: Record<string, unknown>) => window.postMessage({source: "abdm-media-v2", channel: config.channel, event: {generation: config.generation, ...event}}, "*")
+    const emit = (event: Record<string, unknown>) => window.postMessage({
+        source: "abdm-media-v2",
+        channel: config.channel,
+        event: {generation: config.generation, ...(event.source === "ADAPTER" ? {groupKey: `adapter:${location.href}`} : {}), ...event},
+    }, "*")
     const classify = (url: string, type = "") => {
         const value = `${url} ${type}`.toLowerCase()
         if (/\.m3u8(?:$|[?#])|mpegurl/.test(value)) return "HLS"
@@ -97,7 +101,14 @@ export function installPageMediaInstrumentationV2(generation: number, channel: s
                         try {
                             const url = new URL(child.replace(/\\u0026/g, "&"), location.href).href
                             const transport = classify(url, key)
-                            if (transport) emit({source: "ADAPTER", url, transport})
+                            const record = value as Record<string, unknown>
+                            if (transport) emit({
+                                source: "ADAPTER", url, transport,
+                                variantId: String(record.id ?? record.itag ?? record.qualityLabel ?? url).slice(0, 256),
+                                width: typeof record.width === "number" ? record.width : undefined,
+                                height: typeof record.height === "number" ? record.height : undefined,
+                                mimeType: typeof record.mimeType === "string" ? record.mimeType : undefined,
+                            })
                         } catch { /* cipher-only and malformed values are ignored, never deciphered */ }
                     } else if (child && typeof child === "object") queue.push(child)
                 }

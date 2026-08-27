@@ -19,6 +19,7 @@ import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserInteg
 import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2";
 import {cancelStagedBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
 import {MediaCandidateRegistryV2} from "~/media/v2/MediaCandidateRegistryV2";
+import {bootAddressRefreshObserverV2} from "~/addressrefresh/AddressRefreshObserverV2";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -97,6 +98,20 @@ export default defineExtensionEntry()
             await BackgroundSharedState.boot()
             await bootBrowserPermissionPolicyV2()
             await new MediaCandidateRegistryV2().boot()
+            let stopAddressRefresh: (() => void) | null = null
+            let addressRefreshGeneration = 0
+            const configureAddressRefresh = async () => {
+                const generation = ++addressRefreshGeneration
+                const policy = Backend.getBrowserPolicyV2()
+                stopAddressRefresh?.(); stopAddressRefresh = null
+                if (policy?.mode === "FULL" && policy.sendProtectedContext) {
+                    const stop = await bootAddressRefreshObserverV2()
+                    if (generation === addressRefreshGeneration) stopAddressRefresh = stop
+                    else stop()
+                }
+            }
+            await configureAddressRefresh()
+            Backend.addBrowserPolicyListener(() => void configureAddressRefresh())
             await initializeOptions()
             receiveMessageFromContentScripts()
             console.log("ab dm extension loaded successfully")

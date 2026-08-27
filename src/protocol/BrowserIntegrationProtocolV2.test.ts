@@ -32,7 +32,7 @@ describe("browser integration protocol v2", () => {
             permissionPolicy: true,
             reviewedBatches: true,
             advancedMediaDiscovery: true,
-            adaptiveMediaTransfer: false,
+            adaptiveMediaTransfer: true,
             uxPolicy: false,
         })
         expect(BrowserProtocolLimitsV2.maxFrameBytes).toBe(256 * 1024)

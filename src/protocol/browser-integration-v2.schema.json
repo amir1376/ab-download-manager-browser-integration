@@ -240,7 +240,13 @@
         "frameId": { "type": "integer" },
         "description": { "type": ["string", "null"], "maxLength": 4096 },
         "suggestedName": { "type": ["string", "null"], "maxLength": 4096 },
-        "contextRef": { "type": ["string", "null"], "maxLength": 256 }
+        "contextRef": { "type": ["string", "null"], "maxLength": 256 },
+        "requestContext": { "anyOf": [{ "$ref": "#/$defs/requestContext" }, { "type": "null" }] },
+        "mediaTransport": { "type": ["string", "null"], "enum": ["PROGRESSIVE", "HLS", "DASH", null] },
+        "variantId": { "type": ["string", "null"], "maxLength": 256 },
+        "trackIds": { "type": "array", "maxItems": 64, "items": { "type": "string", "maxLength": 256 } },
+        "outputContainer": { "type": ["string", "null"], "maxLength": 64 },
+        "liveDurationSeconds": { "type": ["integer", "null"], "minimum": 1, "maximum": 604800 }
       }
     },
     "browserBatch": {

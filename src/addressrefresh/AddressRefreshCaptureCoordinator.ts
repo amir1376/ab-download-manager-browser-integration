@@ -37,6 +37,7 @@ export class AddressRefreshCaptureCoordinator {
     private sessionFetch: Promise<AddressRefreshSession[]> | null = null
     private capturedDownloadUrls = new Map<string, number>()
     private backendUnavailableUntil = 0
+    private readonly cleanupTimers = new Set<ReturnType<typeof setTimeout>>()
 
     async boot() {
         await this.refreshSessions(true).catch(() => [])
@@ -93,7 +94,19 @@ export class AddressRefreshCaptureCoordinator {
     }
 
     forget(requestId: string) {
-        setTimeout(() => this.requests.delete(requestId), 20_000)
+        const timer = setTimeout(() => {
+            this.cleanupTimers.delete(timer)
+            this.requests.delete(requestId)
+        }, 20_000)
+        this.cleanupTimers.add(timer)
+    }
+
+    close() {
+        for (const timer of this.cleanupTimers) clearTimeout(timer)
+        this.cleanupTimers.clear()
+        this.requests.clear()
+        this.sessions = []
+        this.capturedDownloadUrls.clear()
     }
 
     async observeResponse(

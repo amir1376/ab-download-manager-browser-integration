@@ -20,6 +20,6 @@ export const browserParityFeatureFlagsV2: Readonly<BrowserParityFeatureFlagsV2> 
     permissionPolicy: true,
     reviewedBatches: true,
     advancedMediaDiscovery: true,
-    adaptiveMediaTransfer: false,
+    adaptiveMediaTransfer: true,
     uxPolicy: false,
 })

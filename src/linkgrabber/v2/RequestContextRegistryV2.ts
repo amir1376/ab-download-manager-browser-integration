@@ -215,6 +215,26 @@ export class RequestContextRegistryV2 {
         return {kind: "MATCHED", record: candidates[0]}
     }
 
+    async createContextForUrl(
+        url: string,
+        privateContext: boolean,
+        fileName: string | null = null,
+    ): Promise<BrowserRequestContextV2 | null> {
+        this.cleanup()
+        const candidates = [...this.byRequestId.values()].filter(record =>
+            record.finalUrl === url || record.originalUrl === url
+        )
+        if (candidates.length !== 1 || !this.canCapture(candidates[0])) return null
+        return this.createContext(candidates[0], {
+            id: -1,
+            url,
+            filename: fileName ?? "",
+            fileSize: -1,
+            startTime: new Date(candidates[0].createdAtEpochMs).toISOString(),
+            incognito: privateContext,
+        } as Downloads.DownloadItem, true)
+    }
+
     async createContext(
         record: RequestRecordV2,
         download: Downloads.DownloadItem,

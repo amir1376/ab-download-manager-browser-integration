@@ -125,22 +125,43 @@ export class MediaDiscoveryV2 {
     private inspectManifest(rawUrl: unknown, transport: unknown, text: string): void {
         if (typeof rawUrl !== "string") return
         if (transport === "HLS") {
+            const tracks: NonNullable<MediaDiscoveryEventV2["tracks"]> = []
+            const masterPlaylist = text.includes("#EXT-X-STREAM-INF")
             for (const line of text.split(/\r?\n/).slice(0, 20_000)) {
                 const value = line.trim()
-                if (!value || value.startsWith("#")) continue
+                if (value.startsWith("#EXT-X-MEDIA:")) {
+                    const attrs = Object.fromEntries([...value.substring(13).matchAll(/([A-Z0-9-]+)=("[^"]*"|[^,]*)/g)].map(match => [match[1], match[2].replace(/^"|"$/g, "")]))
+                    if (attrs.TYPE === "AUDIO" || attrs.TYPE === "SUBTITLES") tracks.push({
+                        trackId: attrs.NAME || attrs.URI || attrs.LANGUAGE,
+                        role: attrs.TYPE === "AUDIO" ? "AUDIO" : "SUBTITLE",
+                        language: attrs.LANGUAGE || null,
+                        codec: null,
+                    })
+                    continue
+                }
+                if (!value || value.startsWith("#") || !masterPlaylist) continue
                 try {
                     const url = new URL(value, rawUrl).href
-                    this.forward({generation: this.generation, source: "FETCH", url, networkSourceUrl: rawUrl, transport: classifyMediaCandidateV2(url, "") ?? "HLS", title: document.title})
+                    this.forward({generation: this.generation, source: "FETCH", url, networkSourceUrl: rawUrl, transport: classifyMediaCandidateV2(url, "") ?? "HLS", variantId: url, title: document.title})
                 } catch { /* malformed manifest entry */ }
             }
+            this.forward({
+                generation: this.generation, source: "FETCH", url: rawUrl, networkSourceUrl: rawUrl,
+                transport: "HLS", title: document.title, tracks, live: !text.includes("#EXT-X-ENDLIST"),
+            })
         }
         if (transport === "DASH") {
             try {
                 const xml = new DOMParser().parseFromString(text, "application/xml")
+                this.forward({
+                    generation: this.generation, source: "FETCH", url: rawUrl, networkSourceUrl: rawUrl,
+                    transport: "DASH", title: document.title,
+                    live: xml.documentElement.getAttribute("type") === "dynamic",
+                })
                 for (const node of Array.from(xml.querySelectorAll("BaseURL")).slice(0, 2_000)) {
                     if (!node.textContent) continue
                     const url = new URL(node.textContent.trim(), rawUrl).href
-                    this.forward({generation: this.generation, source: "FETCH", url, networkSourceUrl: rawUrl, transport: "DASH", title: document.title})
+                    this.forward({generation: this.generation, source: "FETCH", url, networkSourceUrl: rawUrl, transport: "DASH", variantId: node.closest("Representation")?.getAttribute("id") || url, title: document.title})
                 }
             } catch { /* malformed manifest */ }
         }

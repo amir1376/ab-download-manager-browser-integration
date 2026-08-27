@@ -95,6 +95,12 @@ const BrowserCandidateV2Schema = z.object({
     description: z.string().max(4096).nullable().optional(),
     suggestedName: z.string().max(4096).nullable().optional(),
     contextRef: z.string().max(256).nullable().optional(),
+    requestContext: RequestContext.nullable().optional(),
+    mediaTransport: z.enum(["PROGRESSIVE", "HLS", "DASH"]).nullable().optional(),
+    variantId: z.string().max(256).nullable().optional(),
+    trackIds: z.array(z.string().max(256)).max(64).optional(),
+    outputContainer: z.string().max(64).nullable().optional(),
+    liveDurationSeconds: z.int().min(1).max(604_800).nullable().optional(),
 })
 
 export const BrowserBatchV2Schema = z.object({
