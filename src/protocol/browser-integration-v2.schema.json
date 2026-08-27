@@ -10,6 +10,7 @@
     { "$ref": "#/$defs/captureProposal" },
     { "$ref": "#/$defs/preparedCapture" },
     { "$ref": "#/$defs/browserBatch" },
+    { "$ref": "#/$defs/browserBatchReceipt" },
     { "$ref": "#/$defs/mediaGroup" },
     { "$ref": "#/$defs/ftpCredentials" }
   ],
@@ -83,7 +84,19 @@
         "registeredMimeTypes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "maxLength": 128 } },
         "excludedUrls": { "type": "array", "maxItems": 2048, "items": { "type": "string", "maxLength": 16384 } },
         "forceShortcut": { "type": ["string", "null"], "maxLength": 128 },
-        "bypassShortcut": { "type": ["string", "null"], "maxLength": 128 }
+        "bypassShortcut": { "type": ["string", "null"], "maxLength": 128 },
+        "customMenuActions": { "type": "array", "maxItems": 32, "items": { "$ref": "#/$defs/customMenuAction" } }
+      }
+    },
+    "customMenuAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "scope", "sourceKinds"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "scope": { "enum": ["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"] },
+        "sourceKinds": { "type": "array", "uniqueItems": true, "maxItems": 10, "items": { "enum": ["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"] } }
       }
     },
     "orderedHeader": {
@@ -210,7 +223,7 @@
       "properties": {
         "candidateId": { "type": "string", "maxLength": 128 },
         "url": { "type": "string", "maxLength": 16384 },
-        "sourceKind": { "enum": ["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "MEDIA"] },
+        "sourceKind": { "enum": ["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"] },
         "frameId": { "type": "integer" },
         "description": { "type": ["string", "null"], "maxLength": 4096 },
         "suggestedName": { "type": ["string", "null"], "maxLength": 4096 },
@@ -220,13 +233,30 @@
     "browserBatch": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["operationId", "generation", "chunkIndex", "chunkCount", "candidates"],
+      "required": ["operationId", "generation", "scope", "browserFamily", "privateContext", "chunkIndex", "chunkCount", "candidates"],
       "properties": {
         "operationId": { "type": "string", "maxLength": 128 },
         "generation": { "type": "integer", "minimum": 0 },
+        "scope": { "enum": ["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"] },
+        "browserFamily": { "enum": ["CHROME", "EDGE", "FIREFOX", "OPERA", "CHROMIUM", "BRAVE", "VIVALDI", "UNKNOWN"] },
+        "privateContext": { "type": "boolean" },
         "chunkIndex": { "type": "integer", "minimum": 0 },
         "chunkCount": { "type": "integer", "minimum": 1, "maximum": 50 },
         "candidates": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/browserCandidate" } }
+      }
+    },
+    "browserBatchReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationId", "state", "receivedChunks", "chunkCount", "acceptedCandidates", "rejectedCandidates", "duplicateCandidates"],
+      "properties": {
+        "operationId": { "type": "string", "maxLength": 128 },
+        "state": { "enum": ["RECEIVING", "READY_FOR_REVIEW", "REVIEW_ACCEPTED", "REVIEW_REJECTED", "REJECTED", "CANCELLED"] },
+        "receivedChunks": { "type": "integer", "minimum": 0, "maximum": 50 },
+        "chunkCount": { "type": "integer", "minimum": 1, "maximum": 50 },
+        "acceptedCandidates": { "type": "integer", "minimum": 0, "maximum": 5000 },
+        "rejectedCandidates": { "type": "integer", "minimum": 0, "maximum": 5000 },
+        "duplicateCandidates": { "type": "integer", "minimum": 0, "maximum": 5000 }
       }
     },
     "mediaTrack": {

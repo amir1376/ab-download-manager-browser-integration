@@ -18,7 +18,7 @@ export const browserParityFeatureFlagsV2: Readonly<BrowserParityFeatureFlagsV2> 
     twoPhaseCapture: true,
     ftpCapture: true,
     permissionPolicy: true,
-    reviewedBatches: false,
+    reviewedBatches: true,
     advancedMediaDiscovery: false,
     adaptiveMediaTransfer: false,
     uxPolicy: false,

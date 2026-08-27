@@ -66,7 +66,10 @@ export function BrowserIntegrationPolicySectionV2() {
         try {
             const url = new URL(site.includes("://") ? site : `https://${site}`)
             if (!['http:', 'https:'].includes(url.protocol)) throw new Error("Only HTTP and HTTPS sites are supported")
-            await browser.permissions.request({origins: [`${url.protocol}//${url.host}/*`]})
+            await browser.permissions.request({
+                origins: [`${url.protocol}//${url.host}/*`],
+                permissions: isChrome() ? ["scripting"] as never[] : [],
+            })
             setStatus(await sendMessage(DefinedCommands.RECONCILE_BROWSER_PERMISSIONS_V2, null, "background") as unknown as PolicyStatus)
             setSite("")
         } catch (failure) { setError(failure instanceof Error ? failure.message : "Site permission failed") }
@@ -100,6 +103,14 @@ export function BrowserIntegrationPolicySectionV2() {
         <TextPolicyField label="Captured extensions" value={policy.registeredFileTypes.join(" ")} commit={value => void update({registeredFileTypes: value.toLowerCase().split(/\s+/).filter(Boolean)})}/>
         <TextPolicyField label="Captured MIME types" value={policy.registeredMimeTypes.join("\n")} commit={value => void update({registeredMimeTypes: value.toLowerCase().split(/\s+/).filter(Boolean)})}/>
         <TextPolicyField label="Excluded full-address patterns" value={policy.excludedUrls.join("\n")} commit={value => void update({excludedUrls: value.split("\n").map(item => item.trim()).filter(Boolean)})}/>
+        <TextPolicyField
+            label="Custom menu actions (id | title | scope | source kinds)"
+            value={(policy.customMenuActions ?? []).map(action => `${action.id} | ${action.title} | ${action.scope} | ${action.sourceKinds.join(',')}`).join('\n')}
+            commit={value => void update({customMenuActions: value.split('\n').map(line => line.split('|').map(part => part.trim())).filter(parts => parts.length >= 3 && parts[0] && parts[1]).map(parts => ({
+                id: parts[0], title: parts[1], scope: parts[2].toUpperCase() as "SELECTED" | "ALL" | "PAGE" | "FRAME" | "CUSTOM",
+                sourceKinds: (parts[3] ?? '').split(',').map(kind => kind.trim().toUpperCase()).filter(Boolean) as never[],
+            }))})}
+        />
         <div className="grid grid-cols-2 gap-2">
             <ShortcutPolicyField label="Force key" value={policy.forceShortcut ?? ""} commit={value => void update({forceShortcut: value || null})}/>
             <ShortcutPolicyField label="Bypass key" value={policy.bypassShortcut ?? ""} commit={value => void update({bypassShortcut: value || null})}/>

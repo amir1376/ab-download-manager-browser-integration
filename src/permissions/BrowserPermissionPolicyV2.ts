@@ -93,7 +93,10 @@ export async function removeFullBrowserPermissionsV2(): Promise<boolean> {
 
 export async function requestSiteBrowserPermissionV2(value: string): Promise<boolean> {
     const origin = sitePattern(value)
-    const granted = await browser.permissions.request({origins: [origin]})
+    const granted = await browser.permissions.request({
+        origins: [origin],
+        permissions: isChrome() ? ["scripting"] as never[] : [],
+    })
     return granted
 }
 

@@ -21,6 +21,7 @@ import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import {createRoot} from "react-dom/client";
 import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryType";
 import {BrowserIntegrationPolicySectionV2} from "~/optionsui/BrowserIntegrationPolicySectionV2";
+import {BatchReviewV2} from "~/optionsui/BatchReviewV2";
 
 class ToolsViewModelEvent {
 }
@@ -206,6 +207,8 @@ const App: React.FC<{
         vm.addEventListener(listener)
         return () => vm.removeEventListener(listener)
     });
+    const batchReviewId = new URLSearchParams(location.search).get("batchReview")
+    if (batchReviewId) return <BatchReviewV2 reviewId={batchReviewId}/>
     return <div data-theme="dark" className="w-96 m-auto">
         <Header/>
         <SettingsSection vm={vm}/>

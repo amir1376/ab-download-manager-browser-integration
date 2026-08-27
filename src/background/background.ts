@@ -17,6 +17,7 @@ import {
 } from "~/permissions/BrowserPermissionPolicyV2";
 import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2";
+import {cancelStagedBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -70,6 +71,16 @@ function receiveMessageFromContentScripts() {
     })
     onMessage(DefinedCommands.RECAPTURE_BROWSER_DOWNLOAD_V2, async msg => {
         return typeof msg.data === "number" && await recaptureBrowserDownloadV2(msg.data)
+    })
+    onMessage(DefinedCommands.SUBMIT_STAGED_BROWSER_BATCH_V2, async msg => {
+        const data = msg.data as unknown as {reviewId?: unknown; candidateIds?: unknown}
+        if (typeof data.reviewId !== "string" || !Array.isArray(data.candidateIds)) throw new Error("INVALID_BATCH_REVIEW")
+        return await submitStagedBatchReviewV2(data.reviewId, data.candidateIds.filter((value): value is string => typeof value === "string"))
+    })
+    onMessage(DefinedCommands.CANCEL_STAGED_BROWSER_BATCH_V2, async msg => {
+        if (typeof msg.data !== "string") return false
+        await cancelStagedBatchReviewV2(msg.data)
+        return true
     })
 }
 

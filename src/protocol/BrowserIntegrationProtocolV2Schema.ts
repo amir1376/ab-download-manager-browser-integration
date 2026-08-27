@@ -72,6 +72,38 @@ export const BrowserIntegrationPolicyV2Schema = z.object({
     excludedUrls: z.array(z.string().max(16_384)).max(2048),
     forceShortcut: z.string().max(128).nullable().optional(),
     bypassShortcut: z.string().max(128).nullable().optional(),
+    customMenuActions: z.array(z.object({
+        id: z.string().regex(/^[A-Za-z0-9_-]{1,64}$/),
+        title: z.string().min(1).max(128),
+        scope: z.enum(["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"]),
+        sourceKinds: z.array(z.enum(["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"])).max(10),
+    })).max(32).optional(),
+})
+
+const BrowserCandidateV2Schema = z.object({
+    candidateId: z.string().min(1).max(128),
+    url: z.string().max(16_384),
+    sourceKind: z.enum(["LINK", "IMAGE", "AUDIO", "VIDEO", "TEXT", "INPUT", "SCRIPT", "FRAME", "PAGE", "MEDIA"]),
+    frameId: z.int(),
+    description: z.string().max(4096).nullable().optional(),
+    suggestedName: z.string().max(4096).nullable().optional(),
+    contextRef: z.string().max(256).nullable().optional(),
+})
+
+export const BrowserBatchV2Schema = z.object({
+    operationId: z.string().min(1).max(128), generation: z.int().min(0),
+    scope: z.enum(["SELECTED", "ALL", "PAGE", "FRAME", "CUSTOM"]),
+    browserFamily: z.enum(["CHROME", "EDGE", "FIREFOX", "OPERA", "CHROMIUM", "BRAVE", "VIVALDI", "UNKNOWN"]),
+    privateContext: z.boolean(), chunkIndex: z.int().min(0), chunkCount: z.int().min(1).max(50),
+    candidates: z.array(BrowserCandidateV2Schema).max(100),
+})
+
+export const BrowserBatchReceiptV2Schema = z.object({
+    operationId: z.string().min(1).max(128),
+    state: z.enum(["RECEIVING", "READY_FOR_REVIEW", "REVIEW_ACCEPTED", "REVIEW_REJECTED", "REJECTED", "CANCELLED"]),
+    receivedChunks: z.int().min(0).max(50), chunkCount: z.int().min(1).max(50),
+    acceptedCandidates: z.int().min(0).max(5_000), rejectedCandidates: z.int().min(0).max(5_000),
+    duplicateCandidates: z.int().min(0).max(5_000),
 })
 
 export const CaptureProposalV2Schema = z.object({

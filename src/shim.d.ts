@@ -23,5 +23,7 @@ declare module "webext-bridge" {
         reconcile_browser_permissions_v2: ProtocolWithReturn<null, unknown>;
         set_tab_capture_bypass_v2: ProtocolWithReturn<{tabId: number; bypassed: boolean}, boolean>;
         recapture_browser_download_v2: ProtocolWithReturn<number, boolean>;
+        submit_staged_browser_batch_v2: ProtocolWithReturn<{reviewId: string; candidateIds: string[]}, unknown>;
+        cancel_staged_browser_batch_v2: ProtocolWithReturn<string, boolean>;
     }
 }

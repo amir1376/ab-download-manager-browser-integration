@@ -2,7 +2,7 @@
 // Update only through the canonical desktop schema and lock workflow.
 
 export const BROWSER_INTEGRATION_PROTOCOL_MAJOR = 2 as const
-export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 1 as const
+export const BROWSER_INTEGRATION_PROTOCOL_MINOR = 2 as const
 
 export const BrowserProtocolLimitsV2 = Object.freeze({
     maxFrameBytes: 256 * 1024,
@@ -81,6 +81,14 @@ export interface BrowserIntegrationPolicyV2 {
     excludedUrls: string[]
     forceShortcut?: string | null
     bypassShortcut?: string | null
+    customMenuActions?: BrowserCustomMenuActionV2[]
+}
+
+export interface BrowserCustomMenuActionV2 {
+    id: string
+    title: string
+    scope: BrowserBatchScopeV2
+    sourceKinds: BrowserCandidateSourceV2[]
 }
 
 export interface OrderedHeaderV2 { name: string; value: string }
@@ -162,7 +170,8 @@ export interface CaptureProposalV2 {
 export type PreparedCaptureStateV2 = "PREPARED" | "BROWSER_RELEASED" | "COMMITTED_TASK" | "COMMITTED_REVIEW" | "ABORTED" | "RECOVERY_REQUIRED"
 export interface PreparedCaptureV2 { captureId: string; contextRef: string; state: PreparedCaptureStateV2; expiresAtEpochMs: number }
 
-export type BrowserCandidateSourceV2 = "LINK" | "IMAGE" | "AUDIO" | "VIDEO" | "TEXT" | "INPUT" | "SCRIPT" | "FRAME" | "MEDIA"
+export type BrowserCandidateSourceV2 = "LINK" | "IMAGE" | "AUDIO" | "VIDEO" | "TEXT" | "INPUT" | "SCRIPT" | "FRAME" | "PAGE" | "MEDIA"
+export type BrowserBatchScopeV2 = "SELECTED" | "ALL" | "PAGE" | "FRAME" | "CUSTOM"
 export interface BrowserCandidateV2 {
     candidateId: string
     url: string
@@ -176,9 +185,23 @@ export interface BrowserCandidateV2 {
 export interface BrowserBatchV2 {
     operationId: string
     generation: number
+    scope: BrowserBatchScopeV2
+    browserFamily: BrowserFamilyV2
+    privateContext: boolean
     chunkIndex: number
     chunkCount: number
     candidates: BrowserCandidateV2[]
+}
+
+export type BrowserBatchReceiptStateV2 = "RECEIVING" | "READY_FOR_REVIEW" | "REVIEW_ACCEPTED" | "REVIEW_REJECTED" | "REJECTED" | "CANCELLED"
+export interface BrowserBatchReceiptV2 {
+    operationId: string
+    state: BrowserBatchReceiptStateV2
+    receivedChunks: number
+    chunkCount: number
+    acceptedCandidates: number
+    rejectedCandidates: number
+    duplicateCandidates: number
 }
 
 export type BrowserMediaTrackRoleV2 = "VIDEO" | "AUDIO" | "SUBTITLE"

@@ -30,7 +30,7 @@ describe("browser integration protocol v2", () => {
             twoPhaseCapture: true,
             ftpCapture: true,
             permissionPolicy: true,
-            reviewedBatches: false,
+            reviewedBatches: true,
             advancedMediaDiscovery: false,
             adaptiveMediaTransfer: false,
             uxPolicy: false,

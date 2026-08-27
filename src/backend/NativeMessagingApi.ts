@@ -9,8 +9,8 @@ import {
 } from "~/interfaces/AddressRefresh";
 import {BrowserHelloResponseV2, BrowserHelloResponseV2Schema} from "~/protocol/BrowserBridgeV2";
 import {PreparedCaptureListV2Schema, PreparedCaptureV2Schema} from "~/protocol/BrowserBridgeV2";
-import type {BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
-import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
+import type {BrowserBatchReceiptV2, BrowserBatchV2, BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import {BrowserBatchReceiptV2Schema, BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
 
 
 export class NativeMessagingApi implements IAppApi {
@@ -122,5 +122,16 @@ export class NativeMessagingApi implements IAppApi {
     async abortCaptureV2(captureId: string): Promise<PreparedCaptureV2 | null> {
         const value = await this.transport.requestTyped<unknown>("abortCaptureV2", {captureId})
         return value === null ? null : PreparedCaptureV2Schema.parse(value) as PreparedCaptureV2
+    }
+
+    async submitBatchV2(batch: BrowserBatchV2): Promise<BrowserBatchReceiptV2> {
+        return BrowserBatchReceiptV2Schema.parse(
+            await this.transport.requestTyped<unknown>("submitBatchV2", batch)
+        ) as BrowserBatchReceiptV2
+    }
+
+    async cancelBatchV2(operationId: string): Promise<BrowserBatchReceiptV2 | null> {
+        const value = await this.transport.requestTyped<unknown>("cancelBatchV2", {operationId})
+        return value === null ? null : BrowserBatchReceiptV2Schema.parse(value) as BrowserBatchReceiptV2
     }
 }

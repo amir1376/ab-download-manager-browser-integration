@@ -1,6 +1,6 @@
-import type {BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
+import type {BrowserBatchReceiptV2, BrowserBatchV2, BrowserIntegrationPolicyV2, CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2"
 import {PreparedCaptureListV2Schema, PreparedCaptureV2Schema} from "~/protocol/BrowserBridgeV2"
-import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema"
+import {BrowserBatchReceiptV2Schema, BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema"
 
 export class BrowserHttpBridgeV2 {
     constructor(
@@ -46,6 +46,17 @@ export class BrowserHttpBridgeV2 {
     async abortCapture(captureId: string): Promise<PreparedCaptureV2 | null> {
         const value = await this.request("browser/v2/captures/abort", {captureId})
         return value === null ? null : PreparedCaptureV2Schema.parse(value) as PreparedCaptureV2
+    }
+
+    async submitBatch(batch: BrowserBatchV2): Promise<BrowserBatchReceiptV2> {
+        return BrowserBatchReceiptV2Schema.parse(
+            await this.request("browser/v2/batches/chunk", batch)
+        ) as BrowserBatchReceiptV2
+    }
+
+    async cancelBatch(operationId: string): Promise<BrowserBatchReceiptV2 | null> {
+        const value = await this.request("browser/v2/batches/cancel", {operationId})
+        return value === null ? null : BrowserBatchReceiptV2Schema.parse(value) as BrowserBatchReceiptV2
     }
 
     private async request(path: string, payload: unknown, method: "GET" | "POST" = "POST"): Promise<unknown> {

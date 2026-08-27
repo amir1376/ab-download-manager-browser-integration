@@ -15,4 +15,6 @@ export const DefinedCommands = Object.freeze({
     RECONCILE_BROWSER_PERMISSIONS_V2: "reconcile_browser_permissions_v2",
     SET_TAB_CAPTURE_BYPASS_V2: "set_tab_capture_bypass_v2",
     RECAPTURE_BROWSER_DOWNLOAD_V2: "recapture_browser_download_v2",
+    SUBMIT_STAGED_BROWSER_BATCH_V2: "submit_staged_browser_batch_v2",
+    CANCEL_STAGED_BROWSER_BATCH_V2: "cancel_staged_browser_batch_v2",
 })

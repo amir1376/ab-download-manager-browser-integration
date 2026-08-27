@@ -14,7 +14,7 @@ import {browserParityFeatureFlagsV2} from "~/configs/FeatureFlags";
 import {canUseAutomaticTakeoverV2, classifyBrowserProtocolCompatibility} from "~/backend/ProtocolCompatibility";
 import {BrowserHttpBridgeV2} from "~/backend/BrowserHttpBridgeV2";
 import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
-import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import type {BrowserBatchReceiptV2, BrowserBatchV2, BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
@@ -243,6 +243,14 @@ export async function listPreparedCapturesV2(): Promise<PreparedCaptureV2[]> {
         api => api.listPreparedCapturesV2(),
         api => api.listPreparedCaptures(),
     )
+}
+
+export async function submitBrowserBatchV2(batch: BrowserBatchV2): Promise<BrowserBatchReceiptV2> {
+    return useCaptureBridgeV2(api => api.submitBatchV2(batch), api => api.submitBatch(batch))
+}
+
+export async function cancelBrowserBatchV2(operationId: string): Promise<BrowserBatchReceiptV2 | null> {
+    return useCaptureBridgeV2(api => api.cancelBatchV2(operationId), api => api.cancelBatch(operationId))
 }
 
 function getRefreshApi(): IAppApi {
