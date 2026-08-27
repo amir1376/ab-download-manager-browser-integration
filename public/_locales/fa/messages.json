@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "ادغام مرورگر AB Download Manager"
+  },
+  "extension_description": {
+    "message": "فایل ها را با برنامه دسکتاپ AB Download Manager دانلود کنید"
+  },
+  "selection_popup_download_selected": {
+    "message": "دانلود انتخاب شد"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "هیچ پیوندی شناسایی نشد"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "لطفا ابتدا انتخاب کنید"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "دانلود با AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "لینک های انتخاب شده را با AB DM دانلود کنید"
+  },
+  "browser_action_popup_title": {
+    "message": "تنظیمات سریع AB DM"
+  },
+  "option_ui_title": {
+    "message": "برنامه افزودنی AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "متصل"
+  },
+  "connection_not_connected": {
+    "message": "متصل نیست"
+  },
+  "connection_checking": {
+    "message": "چک کردن"
+  },
+  "config_auto_capture_links": {
+    "message": "لینک های ضبط خودکار"
+  },
+  "config_auto_capture_links_description": {
+    "message": "هنگامی که روی پیوندی در مرورگر خود کلیک می کنید، به طور خودکار توسط برنامه برای دانلود ضبط می شود"
+  },
+  "reset_to_default": {
+    "message": "به حالت پیش فرض بازنشانی کنید"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "هر پسوند فایلی را که می‌خواهید ضبط شود را وارد کنید سپس اینتر را فشار دهید"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "آدرس‌هایی را وارد کنید که نمی‌خواهید ثبت شوند (یکی در هر خط، حروف عام (*) پشتیبانی می‌شود)"
+  },
+  "config_silent_add_download": {
+    "message": "دانلودها را بی صدا اضافه کنید"
+  },
+  "config_silent_add_download_description": {
+    "message": "بدون نمایش پنجره «افزودن دانلود»، دانلودهای گرفته شده را به صورت خودکار به لیست دانلود اضافه کنید"
+  },
+  "config_silent_start_download": {
+    "message": "دانلود را بی صدا شروع کنید"
+  },
+  "config_silent_start_download_description": {
+    "message": "بدون نمایش پنجره «افزودن دانلود»، دانلودهای گرفته شده را به صورت خودکار شروع کنید"
+  },
+  "config_show_popups": {
+    "message": "نمایش پنجره های بازشو"
+  },
+  "config_show_popups_description": {
+    "message": "نمایش پنجره بازشو در انتخاب هایی که دارای پیوند هستند"
+  },
+  "config_native_messaging_host": {
+    "message": "پیام‌رسانی بومی"
+  },
+  "config_native_messaging_host_description": {
+    "message": "هنگامی که برنامه افزودنی دانلود جدیدی را متوقف می کند، به طور خودکار برنامه را راه اندازی می کند حتی اگر قبلاً اجرا نشده باشد."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "میزبان قابل دسترسی است"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "هاست قابل دسترسی نیست"
+  },
+  "config_port": {
+    "message": "بندر"
+  },
+  "config_port_description": {
+    "message": "مطمئن شوید که این پورت و مقدار موجود در برنامه یکسان هستند در غیر این صورت این افزونه به درستی کار نخواهد کرد"
+  },
+  "config_api_key": {
+    "message": "کلید API"
+  },
+  "config_api_key_description": {
+    "message": "اگر احراز هویت کلید API را در تنظیمات برنامه فعال کرده‌اید، کلید API ایجاد شده را در اینجا جای‌گذاری کنید."
+  },
+  "config_port_connection_success": {
+    "message": "موفقیت\nپورت ($port$) متصل است",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "شکست\nپورت ($port$) متصل نیست",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "ارسال کوکی ها"
+  },
+  "config_send_cookies_descrption": {
+    "message": "توجه: اگر در یک محیط غیر قابل اعتماد هستید این را بررسی نکنید"
+  },
+  "browser_action_more_settings": {
+    "message": "تنظیمات بیشتر"
+  },
+  "connection_error_api_error": {
+    "message": "مشکلی در Api برنامه وجود دارد، حتماً برنامه و برنامه افزودنی را به آخرین نسخه به روز کنید"
+  },
+  "connection_error_network_error": {
+    "message": "نمی توان به برنامه متصل شد، لطفاً مطمئن شوید که برنامه نصب شده و در حال اجرا است. همچنین مطمئن شوید که ویژگی یکپارچه سازی مرورگر در تنظیمات برنامه روشن است"
+  },
+  "settings": {
+    "message": "تنظیمات"
+  },
+  "test": {
+    "message": "تست کنید"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "برای اینکه این افزونه به درستی کار کند، مطمئن شوید که AB Download Manager نصب شده است، در صورتی که ..."
+  },
+  "download_abdm_app": {
+    "message": "برنامه را دانلود کنید"
+  },
+  "project_website": {
+    "message": "وب سایت پروژه"
+  },
+  "support_by_rating": {
+    "message": "اگر این کار را دوست دارید، فراموش نکنید که با نظرات / امتیازات خود از من حمایت کنید و همچنین آن را با دوستان خود به اشتراک بگذارید"
+  },
+  "project_source_code": {
+    "message": "کد منبع پروژه"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "دانلود به صورت بی صدا گرفته شد"
+  },
+  "download_media_title": {
+    "message": "دانلود با ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "حداقل اندازه فایل ضبط (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "فقط فایل هایی با اندازه بزرگتر یا مساوی این مقدار بر حسب کیلوبایت ضبط کنید. 0 را برای گرفتن همه اندازه ها تنظیم کنید."
+  },
+  "config_bypass_shortcut": {
+    "message": "دور زدن میانبر"
+  },
+  "config_press_a_key": {
+    "message": "یک کلید را فشار دهید..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "هنگامی که ضبط خودکار لینک های دانلود فعال است، با نگه داشتن کلید میانبر و کلیک بر روی لینک دانلود از روش دانلود مرورگر داخلی استفاده می شود."
+  },
+  "context_menu_download_all_links": {
+    "message": "همه لینک ها را با AB Download Manager دانلود کنید"
+  },
+  "context_menu_download_page": {
+    "message": "صفحه فعلی را با AB Download Manager بارگیری کنید"
+  },
+  "context_menu_download_frame": {
+    "message": "فریم فعلی را با AB Download Manager بارگیری کنید"
+  },
+  "context_menu_bypass_tab": {
+    "message": "عکسبرداری خودکار را در این برگه دور بزنید"
+  },
+  "feedback_no_links": {
+    "message": "هیچ پیوند قابل دانلودی در این انتخاب یا صفحه یافت نشد."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "این مرورگر نمی‌تواند با خیال راحت یک بررسی دسته‌ای خصوصی را حفظ کند."
+  },
+  "feedback_batch_failed": {
+    "message": "بررسی پیوند آماده نشد. دانلودهای متعلق به مرورگر تغییر نکردند."
+  },
+  "batch_review_loading": {
+    "message": "در حال بارگیری بررسی…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "فضای ذخیره بررسی جلسه در دسترس نیست."
+  },
+  "batch_review_expired": {
+    "message": "این بررسی منقضی شد."
+  },
+  "batch_review_title": {
+    "message": "بررسی پیوندهای مرورگر"
+  },
+  "batch_review_summary": {
+    "message": "مجموعه $scope$: نامزدهای منحصر به فرد $count$. تا زمانی که این بررسی ارسال نشده و پذیرفته شود، هیچ کار دسکتاپ وجود ندارد.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "کاندیداها را فیلتر کنید"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "URL، توضیحات یا تایپ را فیلتر کنید"
+  },
+  "batch_review_select_shown": {
+    "message": "نشان داده شده را انتخاب کنید"
+  },
+  "batch_review_clear_shown": {
+    "message": "پاک نشان داده شده است"
+  },
+  "batch_review_submitting": {
+    "message": "در حال ارسال بررسی دسکتاپ رمزگذاری شده…"
+  },
+  "batch_review_ready": {
+    "message": "بررسی دسکتاپ آماده است."
+  },
+  "batch_review_submission_failed": {
+    "message": "ارسال ناموفق بود"
+  },
+  "batch_review_submit_count": {
+    "message": "$count$ را برای بررسی دسکتاپ ارسال کنید",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "لغو"
+  },
+  "close": {
+    "message": "بستن"
+  },
+  "media_selection_loading": {
+    "message": "در حال بارگیری انتخاب های رسانه…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "فضای ذخیره‌سازی ایمن انتخاب جلسه در دسترس نیست."
+  },
+  "media_selection_expired": {
+    "message": "این انتخاب رسانه منقضی شده است."
+  },
+  "media_selection_title": {
+    "message": "انتخاب کیفیت و ترک‌های رسانه"
+  },
+  "media_selection_no_defaults": {
+    "message": "هیچ کیفیت، آهنگ، مدت زمان زنده یا ظرفی از قبل انتخاب نشده است. رسانه محافظت شده/DRM در دسترس نیست."
+  },
+  "media_selection_variant": {
+    "message": "نوع یا کیفیت"
+  },
+  "media_selection_tracks": {
+    "message": "آهنگ های صوتی و زیرنویس"
+  },
+  "media_selection_no_tracks": {
+    "message": "هیچ آهنگ جداگانه ای تبلیغ نشد."
+  },
+  "media_selection_choose_audio": {
+    "message": "یک تراک صوتی را انتخاب کنید."
+  },
+  "media_selection_container": {
+    "message": "ظرف خروجی"
+  },
+  "media_selection_native_container": {
+    "message": "ظرف بومی را نگه دارید"
+  },
+  "media_selection_live_duration": {
+    "message": "مدت زمان ضبط زنده (ثانیه)"
+  },
+  "media_selection_submitting": {
+    "message": "در حال ایجاد بررسی رسانه دسکتاپ رمزگذاری شده…"
+  },
+  "media_selection_failed": {
+    "message": "انتخاب رسانه انجام نشد"
+  },
+  "media_selection_continue": {
+    "message": "به مسیریابی دسکتاپ ادامه دهید"
+  },
+  "choose": {
+    "message": "انتخاب…"
+  },
+  "undetermined": {
+    "message": "نامشخص"
+  },
+  "media": {
+    "message": "رسانه ها"
+  },
+  "media_panel_aria": {
+    "message": "رسانه قابل دانلود شناسایی شد"
+  },
+  "media_panel_title_count": {
+    "message": "دانلود رسانه ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "رد کردن پانل رسانه"
+  },
+  "media_panel_detected": {
+    "message": "رسانه شناسایی شده"
+  },
+  "media_panel_protected": {
+    "message": "رسانه محافظت شده در دسترس نیست"
+  },
+  "policy_title": {
+    "message": "حریم خصوصی و مجوزهای یکپارچه سازی مرورگر"
+  },
+  "policy_description": {
+    "message": "STANDARD فقط اقدامات صریح و واضح را در هر سایت اعطا می کند. FULL برای رهگیری خودکار، زمینه درخواست محافظت شده، بازرسی پیشرفته یا پنجره های خصوصی مورد نیاز است."
+  },
+  "policy_mode": {
+    "message": "حالت یکپارچه سازی"
+  },
+  "policy_automatic": {
+    "message": "رهگیری خودکار"
+  },
+  "policy_protected_context": {
+    "message": "سرصفحه ها، کوکی ها، بدنه ها، ارجاع دهنده ها و زمینه پروکسی محافظت شده را ارسال کنید"
+  },
+  "policy_advanced_media": {
+    "message": "بازرسی رسانه ای پیشرفته"
+  },
+  "policy_private": {
+    "message": "ضبط خصوصی/ناشناس"
+  },
+  "policy_unavailable": {
+    "message": "خط مشی مرورگر دسکتاپ در دسترس نیست. ضبط غیرفعال باقی می ماند."
+  },
+  "policy_update_failed": {
+    "message": "به‌روزرسانی خط‌مشی انجام نشد"
+  },
+  "policy_full_not_granted": {
+    "message": "مجوز کامل مرورگر داده نشد. حالت STANDARD فعال باقی می ماند."
+  },
+  "policy_http_sites_only": {
+    "message": "فقط سایت های HTTP و HTTPS پشتیبانی می شوند"
+  },
+  "policy_site_permission_failed": {
+    "message": "مجوز سایت ناموفق بود"
+  },
+  "policy_site": {
+    "message": "سایت"
+  },
+  "policy_grant_site": {
+    "message": "سایت گرنت"
+  },
+  "policy_extensions": {
+    "message": "پسوندهای ضبط شده"
+  },
+  "policy_mime_types": {
+    "message": "انواع MIME ضبط شده"
+  },
+  "policy_exclusions": {
+    "message": "الگوهای آدرس کامل حذف شدند"
+  },
+  "policy_custom_menus": {
+    "message": "اقدامات منوی سفارشی (شناسه | عنوان | دامنه | انواع منبع)"
+  },
+  "policy_media_adapters": {
+    "message": "آداپتورهای سایت رسانه (شناسه | میزبان | URL regex | انتخابگرها؛ جدا شده | ویژگی ها)"
+  },
+  "policy_force_key": {
+    "message": "کلید اجباری"
+  },
+  "policy_bypass_key": {
+    "message": "کلید دور زدن"
+  },
+  "policy_private_access": {
+    "message": "دسترسی خصوصی مرورگر: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "اقتدار کامل: $authority$; ضبط خودکار: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "سایت های اعطا شده: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "داده نشده ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "خاموش"
+  },
+  "standard": {
+    "message": "استاندارد"
+  },
+  "full": {
+    "message": "کامل"
+  },
+  "allowed": {
+    "message": "مجاز است"
+  },
+  "private_not_allowed": {
+    "message": "مجاز نیست؛ آن را در صفحه جزئیات افزونه مرورگر فعال کنید"
+  },
+  "granted": {
+    "message": "اعطا شد"
+  },
+  "active": {
+    "message": "فعال"
+  },
+  "inactive": {
+    "message": "غیر فعال"
+  },
+  "site_access_missing": {
+    "message": "دسترسی به سایت وجود ندارد"
+  },
+  "none": {
+    "message": "هیچ کدام"
+  },
+  "recent_downloads_title": {
+    "message": "دانلود مجدد مرورگر"
+  },
+  "recent_downloads_added": {
+    "message": "به بررسی دسکتاپ اضافه شد"
+  },
+  "recent_downloads_failed": {
+    "message": "نمی توان دوباره گرفت"
+  },
+  "guidance_native_missing": {
+    "message": "ادغام بومی در دسترس نیست. برنامه دسکتاپ را نصب یا راه اندازی کنید، سپس از تنظیمات بیشتر برای آزمایش مجدد اتصال استفاده کنید."
+  },
+  "guidance_native_old": {
+    "message": "برنامه دسکتاپ قدیمی تر از این افزونه است. دانلودهای صریح همچنان در دسترس هستند. به روز رسانی برنامه دسکتاپ برای فعال کردن یکپارچه سازی خودکار ایمن."
+  },
+  "guidance_policy_off": {
+    "message": "ادغام مرورگر خاموش است. تنظیمات بیشتر را برای انتخاب حالت استاندارد یا کامل باز کنید."
+  },
+  "guidance_permission_missing": {
+    "message": "حالت کامل انتخاب شده است اما اعتبار مرورگر ناقص است. تنظیمات بیشتر را باز کنید و مجوزهای درخواستی را بدهید."
+  },
+  "guidance_ready": {
+    "message": "یکپارچه سازی مرورگر ایمن آماده است."
+  },
+  "guidance_desktop_version": {
+    "message": "رومیزی $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "الگوهای URL نادیده گرفته شده"
+  },
+  "config_custom_no_limit": {
+    "message": "سفارشی / بدون محدودیت"
+  },
+  "config_custom_value": {
+    "message": "ارزش سفارشی:"
+  },
+  "config_enter_kb": {
+    "message": "KB را وارد کنید"
+  },
+  "command_toggle_bypass": {
+    "message": "بای پس گرفتن خودکار را برای برگه فعلی تغییر دهید"
+  },
+  "command_review_page": {
+    "message": "صفحه فعلی را در AB Download Manager مرور کنید"
+  },
+  "diagnostics_title": {
+    "message": "تشخیص ادغام"
+  },
+  "diagnostics_empty": {
+    "message": "هیچ مشکل ادغام اخیر وجود ندارد."
+  },
+  "diagnostics_retry": {
+    "message": "اتصال را دوباره امتحان کنید"
+  },
+  "diagnostics_clear": {
+    "message": "پاک کردن"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "اتصال بومی قطع شد."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "پروتکل یکپارچه سازی دسکتاپ قدیمی تر از افزونه است."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "میزبان دسکتاپ بومی در دسترس نیست."
+  },
+  "diagnostic_batch_failed": {
+    "message": "بررسی پیوند مرورگر آماده نشد."
+  },
+  "diagnostic_unknown": {
+    "message": "مشکل ادغام: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "اتصال را دوباره امتحان کنید؛ اگر باز هم شکست خورد، ادغام دسکتاپ را مجددا راه اندازی یا مجددا نصب کنید."
+  },
+  "recovery_open_settings": {
+    "message": "تنظیمات و مجوزهای یکپارچه سازی مرورگر را مرور کنید."
+  },
+  "recovery_update_desktop": {
+    "message": "AB Download Manager را به روز کنید و یکپارچه سازی مرورگر آن را دوباره نصب کنید."
+  },
+  "recovery_grant_permissions": {
+    "message": "مجوزهای مرورگر درخواستی را اعطا کنید."
+  }
+}

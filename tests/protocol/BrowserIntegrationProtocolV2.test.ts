@@ -33,7 +33,7 @@ describe("browser integration protocol v2", () => {
             reviewedBatches: true,
             advancedMediaDiscovery: true,
             adaptiveMediaTransfer: true,
-            uxPolicy: false,
+            uxPolicy: true,
         })
         expect(BrowserProtocolLimitsV2.maxFrameBytes).toBe(256 * 1024)
         expect(BrowserProtocolLimitsV2.maxBodyBytes).toBe(4 * 1024 * 1024)

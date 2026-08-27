@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "Інтеграція браузера AB Download Manager"
+  },
+  "extension_description": {
+    "message": "Завантажуйте файли за допомогою настільного додатка AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Завантажити вибране"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Посилання не виявлено"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Будь ласка, спочатку зробіть вибір"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Завантажити через AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Завантажити вибрані посилання через AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Швидкі налаштування AB DM"
+  },
+  "option_ui_title": {
+    "message": "Розширення AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Підключено"
+  },
+  "connection_not_connected": {
+    "message": "Не підключено"
+  },
+  "connection_checking": {
+    "message": "Перевірка"
+  },
+  "config_auto_capture_links": {
+    "message": "Автоматичне захоплення посилань"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Коли ви натискаєте на посилання у браузері, воно автоматично буде захоплене для завантаження додатком"
+  },
+  "reset_to_default": {
+    "message": "Скинути до стандартних"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Введіть кожне розширення файлу, яке ви хочете захоплювати, і натисніть Enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Введіть URL-адреси, які не потрібно захоплювати (по одній на рядок, підтримуються шаблони (*))"
+  },
+  "config_silent_add_download": {
+    "message": "Додавати завантаження без сповіщень"
+  },
+  "config_silent_add_download_description": {
+    "message": "Автоматично додавати захоплені завантаження до списку завантажень без показу вікна \"Додати завантаження\""
+  },
+  "config_silent_start_download": {
+    "message": "Почати завантаження без сповіщень"
+  },
+  "config_silent_start_download_description": {
+    "message": "Автоматично запускати захоплені завантаження без показу вікна \"Додати завантаження\""
+  },
+  "config_show_popups": {
+    "message": "Показувати спливаючі вікна"
+  },
+  "config_show_popups_description": {
+    "message": "Показувати спливаюче вікно при виділенні посилань"
+  },
+  "config_native_messaging_host": {
+    "message": "Рідне повідомлення"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Коли розширення перехоплює нове завантаження, воно автоматично запустить додаток, навіть якщо він ще не запущений."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Хост доступний"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Хост недоступний"
+  },
+  "config_port": {
+    "message": "Порт"
+  },
+  "config_port_description": {
+    "message": "Переконайтеся, що цей порт і значення в додатку збігаються, інакше це розширення не працюватиме належним чином"
+  },
+  "config_api_key": {
+    "message": "API ключ"
+  },
+  "config_api_key_description": {
+    "message": "Якщо ви увімкнули автентифікацію за API ключем у налаштуваннях додатку, вставте сюди згенерований API ключ."
+  },
+  "config_port_connection_success": {
+    "message": "Успіх\nПорт ($port$) підключено",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Помилка\nПорт ($port$) не підключено",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Надсилати куки"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Примітка: НЕ відмічайте це, якщо ви перебуваєте у ненадійному середовищі"
+  },
+  "browser_action_more_settings": {
+    "message": "Більше налаштувань"
+  },
+  "connection_error_api_error": {
+    "message": "Сталася проблема з API додатку, переконайтеся, що оновили як додаток, так і розширення до останньої версії"
+  },
+  "connection_error_network_error": {
+    "message": "Не вдається підключитися до додатку, переконайтеся, що додаток встановлено і запущено. Також перевірте, чи ввімкнено функцію інтеграції браузера у налаштуваннях додатку"
+  },
+  "settings": {
+    "message": "Налаштування"
+  },
+  "test": {
+    "message": "Тест"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Щоб це розширення працювало належним чином, переконайтеся, що встановлено AB Download Manager, якщо ні..."
+  },
+  "download_abdm_app": {
+    "message": "Завантажити додаток"
+  },
+  "project_website": {
+    "message": "Вебсайт проекту"
+  },
+  "support_by_rating": {
+    "message": "Якщо вам подобається ця робота, не забудьте підтримати мене своїми коментарями/оцінками та поділитися нею з друзями"
+  },
+  "project_source_code": {
+    "message": "Вихідний код проекту"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Завантажити приховано"
+  },
+  "download_media_title": {
+    "message": "Завантажити за допомогою ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Мінімальний розмір захопленого файлу (КБ)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Захоплюйте лише файли, розмір яких більший або дорівнює цьому значенню в кілобайтах. Встановіть 0, щоб захоплювати файли будь-якого розміру."
+  },
+  "config_bypass_shortcut": {
+    "message": "Обхід ярлика"
+  },
+  "config_press_a_key": {
+    "message": "Натисніть клавішу..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Коли автоматичне захоплення посилань для завантаження увімкнено, утримання клавіші ярлика та клацання на посиланні для завантаження використовує метод завантаження внутрішнім браузером."
+  },
+  "context_menu_download_all_links": {
+    "message": "Завантажити всі посилання за допомогою AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Завантажити поточну сторінку за допомогою AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Завантажити поточний кадр за допомогою AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Обійти автоматичне захоплення на цій вкладці"
+  },
+  "feedback_no_links": {
+    "message": "У цьому виділенні або на сторінці не знайдено завантажуваних посилань."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Цей браузер не може безпечно зберегти приватний пакетний перегляд."
+  },
+  "feedback_batch_failed": {
+    "message": "Не вдалося підготувати перегляд посилання. Завантаження, керовані браузером, не були змінені."
+  },
+  "batch_review_loading": {
+    "message": "Завантаження відгуку…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Сховище відгуків сесії недоступне."
+  },
+  "batch_review_expired": {
+    "message": "Цей відгук минув."
+  },
+  "batch_review_title": {
+    "message": "Переглянути посилання браузера"
+  },
+  "batch_review_summary": {
+    "message": "Колекція $scope$: унікальні кандидати $count$. Завдання для робочого столу не існує, доки цей відгук не буде надіслано та прийнято.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Фільтрувати кандидатів"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Фільтрувати URL, опис або тип"
+  },
+  "batch_review_select_shown": {
+    "message": "Вибрати показане"
+  },
+  "batch_review_clear_shown": {
+    "message": "Очистити показане"
+  },
+  "batch_review_submitting": {
+    "message": "Надсилання зашифрованого відгуку для робочого столу…"
+  },
+  "batch_review_ready": {
+    "message": "Відгук для робочого столу готовий."
+  },
+  "batch_review_submission_failed": {
+    "message": "Надсилання не вдалося"
+  },
+  "batch_review_submit_count": {
+    "message": "Надіслати $count$ для відгуку робочого столу",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Скасувати"
+  },
+  "close": {
+    "message": "Закрити"
+  },
+  "media_selection_loading": {
+    "message": "Завантаження варіантів медіа…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Сховище безпечного вибору сесії недоступне."
+  },
+  "media_selection_expired": {
+    "message": "Цей вибір медіа минув."
+  },
+  "media_selection_title": {
+    "message": "Вибрати якість і доріжки медіа"
+  },
+  "media_selection_no_defaults": {
+    "message": "Жодна якість, доріжка, тривалість в прямому ефірі або контейнер не вибрані заздалегідь. Захищені/DRM медіа недоступні."
+  },
+  "media_selection_variant": {
+    "message": "Варіант або якість"
+  },
+  "media_selection_tracks": {
+    "message": "Аудіо- та субтитрівні доріжки"
+  },
+  "media_selection_no_tracks": {
+    "message": "Окремі доріжки не були анонсовані."
+  },
+  "media_selection_choose_audio": {
+    "message": "Виберіть одну аудіо-доріжку."
+  },
+  "media_selection_container": {
+    "message": "Контейнер виводу"
+  },
+  "media_selection_native_container": {
+    "message": "Зберегти рідний контейнер"
+  },
+  "media_selection_live_duration": {
+    "message": "Тривалість живого запису (секунди)"
+  },
+  "media_selection_submitting": {
+    "message": "Створення зашифрованого перегляду медіафайлів на робочому столі…"
+  },
+  "media_selection_failed": {
+    "message": "Не вдалося вибрати медіа"
+  },
+  "media_selection_continue": {
+    "message": "Продовжити маршрутизацію на робочому столі"
+  },
+  "choose": {
+    "message": "Вибрати…"
+  },
+  "undetermined": {
+    "message": "невизначено"
+  },
+  "media": {
+    "message": "Медіа"
+  },
+  "media_panel_aria": {
+    "message": "Виявлено завантажуване медіа"
+  },
+  "media_panel_title_count": {
+    "message": "Завантажити медіа ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Закрити панель медіа"
+  },
+  "media_panel_detected": {
+    "message": "Виявлено медіа"
+  },
+  "media_panel_protected": {
+    "message": "Захищене медіа недоступне"
+  },
+  "policy_title": {
+    "message": "Конфіденційність та дозволи інтеграції з браузером"
+  },
+  "policy_description": {
+    "message": "СТАНДАРТ надає лише явні дії для кожного сайту. ПОВНИЙ доступ потрібен для автоматичного перехоплення, захищеного контексту запитів, розширеної перевірки або приватних вікон."
+  },
+  "policy_mode": {
+    "message": "Режим інтеграції"
+  },
+  "policy_automatic": {
+    "message": "Автоматичне перехоплення"
+  },
+  "policy_protected_context": {
+    "message": "Надсилайте захищені заголовки, файли cookie, тіла, реферери та контекст проксі"
+  },
+  "policy_advanced_media": {
+    "message": "Розширена інспекція носія"
+  },
+  "policy_private": {
+    "message": "Приватний/інкогніто захоплення"
+  },
+  "policy_unavailable": {
+    "message": "Політика десктопного браузера недоступна; Захоплення залишається вимкненим."
+  },
+  "policy_update_failed": {
+    "message": "Оновлення політики не вдалося"
+  },
+  "policy_full_not_granted": {
+    "message": "Повний повноваження браузера не надано; Режим STANDARD залишається активним."
+  },
+  "policy_http_sites_only": {
+    "message": "Підтримуються лише HTTP- та HTTPS-сайти"
+  },
+  "policy_site_permission_failed": {
+    "message": "Дозвіл на сайт не було отримано"
+  },
+  "policy_site": {
+    "message": "Місце"
+  },
+  "policy_grant_site": {
+    "message": "Грантова ділянка"
+  },
+  "policy_extensions": {
+    "message": "Захоплені розширення"
+  },
+  "policy_mime_types": {
+    "message": "Захоплені типи MIME"
+  },
+  "policy_exclusions": {
+    "message": "Виключені повноадресні патерни"
+  },
+  "policy_custom_menus": {
+    "message": "Кастомні дії меню (id | title | scope | source types)"
+  },
+  "policy_media_adapters": {
+    "message": "Адаптери медіасайтів (id | хост | URL regex | селектори; розділені | атрибути)"
+  },
+  "policy_force_key": {
+    "message": "Силовий ключ"
+  },
+  "policy_bypass_key": {
+    "message": "Ключ обходу"
+  },
+  "policy_private_access": {
+    "message": "Приватний доступ до браузера: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Повна авторизація: $authority$; автоматичне захоплення: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Надані сайти: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "не надано ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Вимкнено"
+  },
+  "standard": {
+    "message": "Стандартний"
+  },
+  "full": {
+    "message": "Повний"
+  },
+  "allowed": {
+    "message": "дозволено"
+  },
+  "private_not_allowed": {
+    "message": "не дозволено; увімкніть це на сторінці деталей розширення браузера"
+  },
+  "granted": {
+    "message": "надано"
+  },
+  "active": {
+    "message": "активний"
+  },
+  "inactive": {
+    "message": "неактивний"
+  },
+  "site_access_missing": {
+    "message": "доступ до сайту відсутній"
+  },
+  "none": {
+    "message": "немає"
+  },
+  "recent_downloads_title": {
+    "message": "Повторно захопити завантаження з браузера"
+  },
+  "recent_downloads_added": {
+    "message": "Додано до перегляду на робочому столі"
+  },
+  "recent_downloads_failed": {
+    "message": "Не вдалося повторно захопити"
+  },
+  "guidance_native_missing": {
+    "message": "Нативна інтеграція недоступна. Встановіть або запустіть десктопний додаток, потім використайте «Більше налаштувань», щоб повторно перевірити з'єднання."
+  },
+  "guidance_native_old": {
+    "message": "Десктопний додаток старший за це розширення. Явні завантаження залишаються доступними; оновіть десктопний додаток, щоб увімкнути безпечну автоматичну інтеграцію."
+  },
+  "guidance_policy_off": {
+    "message": "Інтеграція браузера вимкнена. Відкрийте «Більше налаштувань», щоб вибрати режим Стандарт або Повний."
+  },
+  "guidance_permission_missing": {
+    "message": "Вибрано повний режим, але авторизація браузера неповна. Відкрийте «Більше налаштувань» і надайте запитані дозволи."
+  },
+  "guidance_ready": {
+    "message": "Інтеграція захищеного браузера готова."
+  },
+  "guidance_desktop_version": {
+    "message": "Настільний $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Ігноровані шаблони URL"
+  },
+  "config_custom_no_limit": {
+    "message": "Користувацьке / Без обмежень"
+  },
+  "config_custom_value": {
+    "message": "Користувацьке значення:"
+  },
+  "config_enter_kb": {
+    "message": "Введіть KB"
+  },
+  "command_toggle_bypass": {
+    "message": "Увімкнути/вимкнути автоматичне обходження захоплення для поточної вкладки"
+  },
+  "command_review_page": {
+    "message": "Перегляньте поточну сторінку в AB Download Manager"
+  },
+  "diagnostics_title": {
+    "message": "Діагностика інтеграції"
+  },
+  "diagnostics_empty": {
+    "message": "Немає останніх проблем з інтеграцією."
+  },
+  "diagnostics_retry": {
+    "message": "Спробувати повторне підключення"
+  },
+  "diagnostics_clear": {
+    "message": "Очистити"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Рідне з’єднання було перервано."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Протокол інтеграції настільного додатку старіший за розширення."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Рідний хост настільного додатку недоступний."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Не вдалося підготувати огляд посилання браузера."
+  },
+  "diagnostic_unknown": {
+    "message": "Проблема інтеграції: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Спробуйте повторне підключення; якщо воно знову не вдасться, перезапустіть або перевстановіть інтеграцію настільного додатку."
+  },
+  "recovery_open_settings": {
+    "message": "Перевірте налаштування інтеграції браузера та дозволи."
+  },
+  "recovery_update_desktop": {
+    "message": "Оновіть AB Download Manager та перевстановіть його інтеграцію з браузером."
+  },
+  "recovery_grant_permissions": {
+    "message": "Надати запитувані дозволи для браузера."
+  }
+}

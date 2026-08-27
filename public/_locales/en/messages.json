@@ -1,4 +1,6 @@
 {
+  "extension_name": {"message": "AB Download Manager Browser Integration"},
+  "extension_description": {"message": "Download files with the AB Download Manager desktop app"},
   "selection_popup_download_selected": {
     "message": "Download selected"
   },
@@ -163,5 +165,110 @@
   },
   "config_bypass_shortcut_description": {
     "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
-  }
+  },
+  "context_menu_download_all_links": {"message": "Download all links with AB Download Manager"},
+  "context_menu_download_page": {"message": "Download current page with AB Download Manager"},
+  "context_menu_download_frame": {"message": "Download current frame with AB Download Manager"},
+  "context_menu_bypass_tab": {"message": "Bypass automatic capture in this tab"},
+  "feedback_no_links": {"message": "No downloadable links were found in this selection or page."},
+  "feedback_session_storage_unavailable": {"message": "This browser cannot safely retain a private batch review."},
+  "feedback_batch_failed": {"message": "The link review could not be prepared. Browser-owned downloads were not changed."},
+  "batch_review_loading": {"message": "Loading review…"},
+  "batch_review_storage_unavailable": {"message": "Session review storage is unavailable."},
+  "batch_review_expired": {"message": "This review expired."},
+  "batch_review_title": {"message": "Review browser links"},
+  "batch_review_summary": {"message": "$scope$ collection: $count$ unique candidates. No desktop task exists until this review is submitted and accepted.", "placeholders": {"scope": {"content": "$1"}, "count": {"content": "$2"}}},
+  "batch_review_filter": {"message": "Filter candidates"},
+  "batch_review_filter_placeholder": {"message": "Filter URL, description, or type"},
+  "batch_review_select_shown": {"message": "Select shown"},
+  "batch_review_clear_shown": {"message": "Clear shown"},
+  "batch_review_submitting": {"message": "Submitting encrypted desktop review…"},
+  "batch_review_ready": {"message": "Desktop review is ready."},
+  "batch_review_submission_failed": {"message": "Submission failed"},
+  "batch_review_submit_count": {"message": "Submit $count$ for desktop review", "placeholders": {"count": {"content": "$1"}}},
+  "cancel": {"message": "Cancel"},
+  "close": {"message": "Close"},
+  "media_selection_loading": {"message": "Loading media choices…"},
+  "media_selection_storage_unavailable": {"message": "Secure session selection storage is unavailable."},
+  "media_selection_expired": {"message": "This media selection expired."},
+  "media_selection_title": {"message": "Choose media quality and tracks"},
+  "media_selection_no_defaults": {"message": "No quality, track, live duration, or container is preselected. Protected/DRM media is unavailable."},
+  "media_selection_variant": {"message": "Variant or quality"},
+  "media_selection_tracks": {"message": "Audio and subtitle tracks"},
+  "media_selection_no_tracks": {"message": "No separate tracks were advertised."},
+  "media_selection_choose_audio": {"message": "Choose one audio track."},
+  "media_selection_container": {"message": "Output container"},
+  "media_selection_native_container": {"message": "Keep native container"},
+  "media_selection_live_duration": {"message": "Live recording duration (seconds)"},
+  "media_selection_submitting": {"message": "Creating encrypted desktop media review…"},
+  "media_selection_failed": {"message": "Media selection failed"},
+  "media_selection_continue": {"message": "Continue to desktop routing"},
+  "choose": {"message": "Choose…"},
+  "undetermined": {"message": "undetermined"},
+  "media": {"message": "Media"},
+  "media_panel_aria": {"message": "Detected downloadable media"},
+  "media_panel_title_count": {"message": "Download media ($count$)", "placeholders": {"count": {"content": "$1"}}},
+  "media_panel_dismiss": {"message": "Dismiss media panel"},
+  "media_panel_detected": {"message": "Detected media"},
+  "media_panel_protected": {"message": "Protected media is unavailable"},
+  "policy_title": {"message": "Browser integration privacy and permissions"},
+  "policy_description": {"message": "STANDARD grants only explicit, per-site actions. FULL is required for automatic interception, protected request context, advanced inspection, or private windows."},
+  "policy_mode": {"message": "Integration mode"},
+  "policy_automatic": {"message": "Automatic interception"},
+  "policy_protected_context": {"message": "Send protected headers, cookies, bodies, referrers, and proxy context"},
+  "policy_advanced_media": {"message": "Advanced media inspection"},
+  "policy_private": {"message": "Private/incognito capture"},
+  "policy_unavailable": {"message": "Desktop browser policy is unavailable; capture remains disabled."},
+  "policy_update_failed": {"message": "Policy update failed"},
+  "policy_full_not_granted": {"message": "Full browser authority was not granted; STANDARD mode remains active."},
+  "policy_http_sites_only": {"message": "Only HTTP and HTTPS sites are supported"},
+  "policy_site_permission_failed": {"message": "Site permission failed"},
+  "policy_site": {"message": "Site"},
+  "policy_grant_site": {"message": "Grant site"},
+  "policy_extensions": {"message": "Captured extensions"},
+  "policy_mime_types": {"message": "Captured MIME types"},
+  "policy_exclusions": {"message": "Excluded full-address patterns"},
+  "policy_custom_menus": {"message": "Custom menu actions (id | title | scope | source kinds)"},
+  "policy_media_adapters": {"message": "Media site adapters (id | host | URL regex | selectors ; separated | attributes)"},
+  "policy_force_key": {"message": "Force key"},
+  "policy_bypass_key": {"message": "Bypass key"},
+  "policy_private_access": {"message": "Browser private access: $state$", "placeholders": {"state": {"content": "$1"}}},
+  "policy_authority_status": {"message": "Full authority: $authority$; automatic capture: $capture$", "placeholders": {"authority": {"content": "$1"}, "capture": {"content": "$2"}}},
+  "policy_granted_sites": {"message": "Granted sites: $sites$", "placeholders": {"sites": {"content": "$1"}}},
+  "not_granted_details": {"message": "not granted ($details$)", "placeholders": {"details": {"content": "$1"}}},
+  "off": {"message": "Off"}, "standard": {"message": "Standard"}, "full": {"message": "Full"},
+  "allowed": {"message": "allowed"}, "private_not_allowed": {"message": "not allowed; enable it on the browser extension details page"},
+  "granted": {"message": "granted"}, "active": {"message": "active"}, "inactive": {"message": "inactive"},
+  "site_access_missing": {"message": "site access missing"}, "none": {"message": "none"},
+  "recent_downloads_title": {"message": "Recapture a browser download"},
+  "recent_downloads_added": {"message": "Added to desktop review"},
+  "recent_downloads_failed": {"message": "Could not recapture"},
+  "guidance_native_missing": {"message": "Native integration is unavailable. Install or start the desktop app, then use More settings to retest the connection."},
+  "guidance_native_old": {"message": "The desktop app is older than this extension. Explicit downloads remain available; update the desktop app to enable secure automatic integration."},
+  "guidance_policy_off": {"message": "Browser integration is Off. Open More settings to choose Standard or Full mode."},
+  "guidance_permission_missing": {"message": "Full mode is selected but browser authority is incomplete. Open More settings and grant the requested permissions."},
+  "guidance_ready": {"message": "Secure browser integration is ready."},
+  "guidance_desktop_version": {
+    "message": "Desktop $version$",
+    "placeholders": {"version": {"content": "$1"}}
+  },
+  "config_ignored_url_patterns": {"message": "Ignored URL patterns"},
+  "config_custom_no_limit": {"message": "Custom / No limit"},
+  "config_custom_value": {"message": "Custom value:"},
+  "config_enter_kb": {"message": "Enter KB"},
+  "command_toggle_bypass": {"message": "Toggle automatic capture bypass for the current tab"},
+  "command_review_page": {"message": "Review the current page in AB Download Manager"}
+  ,"diagnostics_title": {"message": "Integration diagnostics"}
+  ,"diagnostics_empty": {"message": "No recent integration problems."}
+  ,"diagnostics_retry": {"message": "Retry connection"}
+  ,"diagnostics_clear": {"message": "Clear"}
+  ,"diagnostic_native_disconnected": {"message": "The native connection was interrupted."}
+  ,"diagnostic_desktop_legacy": {"message": "The desktop integration protocol is older than the extension."}
+  ,"diagnostic_native_unavailable": {"message": "The native desktop host is unavailable."}
+  ,"diagnostic_batch_failed": {"message": "A browser link review could not be prepared."}
+  ,"diagnostic_unknown": {"message": "Integration problem: $code$", "placeholders": {"code": {"content": "$1"}}}
+  ,"recovery_retry": {"message": "Retry the connection; if it still fails, restart or reinstall the desktop integration."}
+  ,"recovery_open_settings": {"message": "Review browser-integration settings and permissions."}
+  ,"recovery_update_desktop": {"message": "Update AB Download Manager and reinstall its browser integration."}
+  ,"recovery_grant_permissions": {"message": "Grant the requested browser permissions."}
 }

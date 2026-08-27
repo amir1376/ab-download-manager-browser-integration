@@ -23,6 +23,8 @@ import OptionUiEntryType from "~/utils/EntryPointTypes/OptionUi/OptionUiEntryTyp
 import {BrowserIntegrationPolicySectionV2} from "~/optionsui/BrowserIntegrationPolicySectionV2";
 import {BatchReviewV2} from "~/optionsui/BatchReviewV2";
 import {MediaSelectionV2} from "~/optionsui/MediaSelectionV2";
+import {t} from "~/i18n/t";
+import {DiagnosticsSectionV2} from "~/optionsui/DiagnosticsSectionV2";
 
 class ToolsViewModelEvent {
 }
@@ -263,6 +265,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
         <div className="p-4 bg-base-200 shadow">
             <BrowserIntegrationPolicySectionV2/>
             <Divider/>
+            <DiagnosticsSectionV2/>
+            <Divider/>
             <AutoCaptureSection
                 value={vm.autoCaptureLinks}
                 toggle={(v) => vm.setAutoCaptureLinks(v)}
@@ -481,17 +485,17 @@ function AutoCaptureSection(
                 />
                 {
                     canBeResetTypes && (
-                        <div
+                        <button type="button"
                             onClick={() => props.setFileTypes(props.defaultFileTypes)}
-                            className="link">
+                            className="link text-left">
                             {browser.i18n.getMessage("reset_to_default")}
-                        </div>
+                        </button>
                     )
                 }
                 <div className="mt-2"/>
                 <div>{browser.i18n.getMessage("config_auto_capture_links_file_extensions_description")}</div>
                 <div className="mt-3"/>
-                <div>Ignored Url patterns</div>
+                <div>{t("config_ignored_url_patterns", "Ignored URL patterns")}</div>
                 <div className="mt-2"/>
                 <AutoGrowingTextarea
                     className="textarea"
@@ -502,11 +506,11 @@ function AutoCaptureSection(
                 />
                 {
                     canBeResetBlacklistedUrls && (
-                        <div
+                        <button type="button"
                             onClick={() => props.setBlacklistedUrls(props.defaultBlacklistedUrls)}
-                            className="link">
+                            className="link text-left">
                             {browser.i18n.getMessage("reset_to_default")}
-                        </div>
+                        </button>
                     )
                 }
                 <div className="mt-2"/>
@@ -520,18 +524,18 @@ function AutoCaptureSection(
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value))}
                             className="select select-sm flex-1"
                         >
-                            <option value={0}>Custom / No limit</option>
+                            <option value={0}>{t("config_custom_no_limit", "Custom / No limit")}</option>
                             <option value={102400}>100 MB</option>
                             <option value={512000}>500 MB</option>
                             <option value={1048576}>1 GB</option>
                         </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="text-sm">Custom value:</label>
+                        <label className="text-sm">{t("config_custom_value", "Custom value:")}</label>
                         <input
                             type="number"
                             min={0}
-                            placeholder="Enter KB"
+                            placeholder={t("config_enter_kb", "Enter KB")}
                             value={props.captureFileSizeMinimumKb}
                             onChange={(e) => props.setCaptureFileSizeMinimumKb(Number(e.target.value || 0))}
                             className="input input-sm w-40"
@@ -598,11 +602,11 @@ function ShortcutCapture(
         </div>
         {
             canBeReset && (
-                <div
+                <button type="button"
                     onClick={() => props.defaultValue !== undefined && props.onChange(props.defaultValue)}
-                    className="link">
+                    className="link text-left">
                     {browser.i18n.getMessage("reset_to_default")}
-                </div>
+                </button>
             )
         }
     </div>

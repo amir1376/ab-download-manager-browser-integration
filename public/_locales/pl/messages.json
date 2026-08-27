@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "Integracja przeglądarki z AB Download Manager"
+  },
+  "extension_description": {
+    "message": "Pobieraj pliki za pomocą aplikacji desktopowej AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Pobierz wybrane"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Nie wykryto linków"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Najpierw dokonaj wyboru"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Pobierz z AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Pobierz wybrane linki za pomocą AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Szybkie ustawienia AB DM"
+  },
+  "option_ui_title": {
+    "message": "Rozszerzenie AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Połączono"
+  },
+  "connection_not_connected": {
+    "message": "Brak połączenia"
+  },
+  "connection_checking": {
+    "message": "Sprawdzanie"
+  },
+  "config_auto_capture_links": {
+    "message": "Automatyczne przechwytywanie linków"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Po kliknięciu linku w przeglądarce zostanie on automatycznie przechwycony do pobrania przez aplikację"
+  },
+  "reset_to_default": {
+    "message": "Przywróć domyślne"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Wpisz każde rozszerzenie pliku, które chcesz przechwycić, a następnie naciśnij Enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Wpisz adresy URL, których nie chcesz przechwytywać (jeden w wierszu, obsługiwane znaki wieloznaczne *)"
+  },
+  "config_silent_add_download": {
+    "message": "Ciche dodawanie pobierania"
+  },
+  "config_silent_add_download_description": {
+    "message": "Automatycznie dodawaj przechwycone pobrania do listy pobierania bez wyświetlania okna \"Dodaj pobieranie\""
+  },
+  "config_silent_start_download": {
+    "message": "Rozpocznij pobieranie w trybie cichym"
+  },
+  "config_silent_start_download_description": {
+    "message": "Automatycznie uruchamiaj pobrane pliki bez pokazywania okna \"Dodaj pobieranie\""
+  },
+  "config_show_popups": {
+    "message": "Pokaż wyskakujące okienka"
+  },
+  "config_show_popups_description": {
+    "message": "Pokaż wyskakujące okienko przy zaznaczeniach, które zawierają linki"
+  },
+  "config_native_messaging_host": {
+    "message": "Native Messaging"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Gdy rozszerzenie przechwyci nowe pobieranie, automatycznie uruchomi aplikację, nawet jeśli nie jest ona jeszcze uruchomiona."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Host jest osiągalny"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Host jest nieosiągalny"
+  },
+  "config_port": {
+    "message": "Port"
+  },
+  "config_port_description": {
+    "message": "Upewnij się, że ten port i wartość w aplikacji są takie same, w przeciwnym razie rozszerzenie nie będzie działać poprawnie"
+  },
+  "config_api_key": {
+    "message": "Klucz API"
+  },
+  "config_api_key_description": {
+    "message": "Jeśli w ustawieniach aplikacji włączyłeś uwierzytelnianie kluczem API, wklej tutaj wygenerowany klucz API."
+  },
+  "config_port_connection_success": {
+    "message": "Sukces\nPort ($port$) jest połączony",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Niepowodzenie\nPort ($port$) nie jest połączony",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Wyślij ciasteczka"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Uwaga: NIE zaznaczaj tego, jeśli jesteś w niezaufanym środowisku"
+  },
+  "browser_action_more_settings": {
+    "message": "Więcej ustawień"
+  },
+  "connection_error_api_error": {
+    "message": "Wystąpił problem z API aplikacji, upewnij się, że zarówno aplikacja, jak i rozszerzenie są zaktualizowane do najnowszej wersji"
+  },
+  "connection_error_network_error": {
+    "message": "Nie można połączyć się z aplikacją, upewnij się, że aplikacja jest zainstalowana i uruchomiona. Upewnij się także, że funkcja Integracji Przeglądarki jest włączona w ustawieniach aplikacji"
+  },
+  "settings": {
+    "message": "Ustawienia"
+  },
+  "test": {
+    "message": "Test"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Aby to rozszerzenie działało poprawnie, upewnij się, że AB Download Manager jest zainstalowany, jeśli nie..."
+  },
+  "download_abdm_app": {
+    "message": "Pobierz aplikację"
+  },
+  "project_website": {
+    "message": "Strona projektu"
+  },
+  "support_by_rating": {
+    "message": "Jeśli podoba Ci się ta praca, nie zapomnij mnie wspierać swoimi komentarzami/ocenami, a także udostępnij ją swoim znajomym"
+  },
+  "project_source_code": {
+    "message": "Kod źródłowy projektu"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Pobierz przechwycone cicho"
+  },
+  "download_media_title": {
+    "message": "Pobierz z ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Minimalny rozmiar pliku do przechwycenia (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Przechwycaj tylko pliki o rozmiarze większym lub równym tej wartości w kilobajtach. Ustaw 0, aby przechwycić wszystkie rozmiary."
+  },
+  "config_bypass_shortcut": {
+    "message": "Pomiń skrót"
+  },
+  "config_press_a_key": {
+    "message": "Naciśnij klawisz..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Gdy automatyczne przechwytywanie linków do pobrania jest włączone, przytrzymanie klawisza skrótu i kliknięcie w link do pobrania używa wewnętrznej metody pobierania przeglądarki."
+  },
+  "context_menu_download_all_links": {
+    "message": "Pobierz wszystkie linki za pomocą AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Pobierz bieżącą stronę za pomocą AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Pobierz bieżącą ramkę za pomocą AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Pomiń automatyczne przechwytywanie w tej karcie"
+  },
+  "feedback_no_links": {
+    "message": "Nie znaleziono żadnych linków do pobrania w tym zaznaczeniu lub na stronie."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Ta przeglądarka nie może bezpiecznie przechowywać prywatnej partii przeglądu."
+  },
+  "feedback_batch_failed": {
+    "message": "Nie udało się przygotować przeglądu linku. Pobrane pliki zarządzane przez przeglądarkę nie zostały zmienione."
+  },
+  "batch_review_loading": {
+    "message": "Ładowanie recenzji…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Przechowywanie przeglądu sesji jest niedostępne."
+  },
+  "batch_review_expired": {
+    "message": "Ta recenzja wygasła."
+  },
+  "batch_review_title": {
+    "message": "Przejrzyj łącza przeglądarki"
+  },
+  "batch_review_summary": {
+    "message": "Kolekcja $scope$: $count$ unikalnych kandydatów. Nie ma zadania na pulpicie, dopóki ta recenzja nie zostanie przesłana i zaakceptowana.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Filtruj kandydatów"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Filtruj według URL, opisu lub typu"
+  },
+  "batch_review_select_shown": {
+    "message": "Zaznacz pokazane"
+  },
+  "batch_review_clear_shown": {
+    "message": "Wyczyść pokazane"
+  },
+  "batch_review_submitting": {
+    "message": "Przesyłanie zaszyfrowanej recenzji na pulpit…"
+  },
+  "batch_review_ready": {
+    "message": "Recenzja na pulpit jest gotowa."
+  },
+  "batch_review_submission_failed": {
+    "message": "Przesyłanie nie powiodło się"
+  },
+  "batch_review_submit_count": {
+    "message": "Prześlij $count$ do recenzji na pulpit",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Anuluj"
+  },
+  "close": {
+    "message": "Zamknij"
+  },
+  "media_selection_loading": {
+    "message": "Ładowanie opcji mediów…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Przechowywanie wyboru sesji zabezpieczonej jest niedostępne."
+  },
+  "media_selection_expired": {
+    "message": "Ten wybór mediów wygasł."
+  },
+  "media_selection_title": {
+    "message": "Wybierz jakość i ścieżki multimediów"
+  },
+  "media_selection_no_defaults": {
+    "message": "Nie wybrano domyślnie żadnej jakości, ścieżki, czasu trwania na żywo ani kontenera. Media chronione/DRM są niedostępne."
+  },
+  "media_selection_variant": {
+    "message": "Wariant lub jakość"
+  },
+  "media_selection_tracks": {
+    "message": "Ścieżki audio i napisów"
+  },
+  "media_selection_no_tracks": {
+    "message": "Nie reklamowano oddzielnych ścieżek."
+  },
+  "media_selection_choose_audio": {
+    "message": "Wybierz jedną ścieżkę audio."
+  },
+  "media_selection_container": {
+    "message": "Kontener wyjściowy"
+  },
+  "media_selection_native_container": {
+    "message": "Zachowaj natywny kontener"
+  },
+  "media_selection_live_duration": {
+    "message": "Czas trwania nagrania na żywo (sekundy)"
+  },
+  "media_selection_submitting": {
+    "message": "Tworzenie zaszyfrowanej recenzji mediów na komputerze..."
+  },
+  "media_selection_failed": {
+    "message": "Nie udało się wybrać mediów"
+  },
+  "media_selection_continue": {
+    "message": "Kontynuuj trasowanie do komputera"
+  },
+  "choose": {
+    "message": "Wybierz…"
+  },
+  "undetermined": {
+    "message": "nieokreślone"
+  },
+  "media": {
+    "message": "Media"
+  },
+  "media_panel_aria": {
+    "message": "Wykryto możliwe do pobrania media"
+  },
+  "media_panel_title_count": {
+    "message": "Pobierz media ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Zamknij panel mediów"
+  },
+  "media_panel_detected": {
+    "message": "Wykryto media"
+  },
+  "media_panel_protected": {
+    "message": "Media chronione są niedostępne"
+  },
+  "policy_title": {
+    "message": "Prywatność i uprawnienia integracji przeglądarki"
+  },
+  "policy_description": {
+    "message": "STANDARD udziela tylko jawnych działań dla poszczególnych witryn. FULL jest wymagany do automatycznego przechwytywania, chronionego kontekstu żądań, zaawansowanej inspekcji lub prywatnych okien."
+  },
+  "policy_mode": {
+    "message": "Tryb integracji"
+  },
+  "policy_automatic": {
+    "message": "Automatyczne przechwytywanie"
+  },
+  "policy_protected_context": {
+    "message": "Wyślij chronione nagłówki, ciasteczka, treści, referrery i kontekst proxy"
+  },
+  "policy_advanced_media": {
+    "message": "Zaawansowana inspekcja mediów"
+  },
+  "policy_private": {
+    "message": "Prywatne/incognito przechwytywanie"
+  },
+  "policy_unavailable": {
+    "message": "Polityka przeglądarki na komputerze jest niedostępna; przechwytywanie pozostaje wyłączone."
+  },
+  "policy_update_failed": {
+    "message": "Aktualizacja polityki nie powiodła się"
+  },
+  "policy_full_not_granted": {
+    "message": "Nie przyznano pełnych uprawnień przeglądarki; tryb STANDARD pozostaje aktywny."
+  },
+  "policy_http_sites_only": {
+    "message": "Obsługiwane są tylko strony HTTP i HTTPS"
+  },
+  "policy_site_permission_failed": {
+    "message": "Nie udało się przyznać uprawnień dla strony"
+  },
+  "policy_site": {
+    "message": "Strona"
+  },
+  "policy_grant_site": {
+    "message": "Przyznaj uprawnienia stronie"
+  },
+  "policy_extensions": {
+    "message": "Przechwycone rozszerzenia"
+  },
+  "policy_mime_types": {
+    "message": "Przechwycone typy MIME"
+  },
+  "policy_exclusions": {
+    "message": "Wyłączone wzorce pełnych adresów"
+  },
+  "policy_custom_menus": {
+    "message": "Niższe akcje w menu (id | tytuł | zakres | rodzaje źródła)"
+  },
+  "policy_media_adapters": {
+    "message": "Adaptery mediów dla stron (id | host | wyrażenie regularne URL | selektory ; oddzielone | atrybuty)"
+  },
+  "policy_force_key": {
+    "message": "Wymuś klucz"
+  },
+  "policy_bypass_key": {
+    "message": "Pomiń klucz"
+  },
+  "policy_private_access": {
+    "message": "Prywatny dostęp przeglądarki: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Pełne uprawnienia: $authority$; automatyczne przechwytywanie: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Przyznane witryny: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "nieprzyznane ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Wyłączone"
+  },
+  "standard": {
+    "message": "Standardowy"
+  },
+  "full": {
+    "message": "Pełny"
+  },
+  "allowed": {
+    "message": "dozwolone"
+  },
+  "private_not_allowed": {
+    "message": "niedozwolone; włącz je na stronie szczegółów rozszerzenia przeglądarki"
+  },
+  "granted": {
+    "message": "przyznane"
+  },
+  "active": {
+    "message": "aktywne"
+  },
+  "inactive": {
+    "message": "nieaktywne"
+  },
+  "site_access_missing": {
+    "message": "brak dostępu do witryny"
+  },
+  "none": {
+    "message": "brak"
+  },
+  "recent_downloads_title": {
+    "message": "Ponownie przechwyć pobieranie z przeglądarki"
+  },
+  "recent_downloads_added": {
+    "message": "Dodano do przeglądu pulpitu"
+  },
+  "recent_downloads_failed": {
+    "message": "Nie udało się ponownie przechwycić"
+  },
+  "guidance_native_missing": {
+    "message": "Natywna integracja jest niedostępna. Zainstaluj lub uruchom aplikację na komputerze, a następnie użyj Więcej ustawień, aby ponownie przetestować połączenie."
+  },
+  "guidance_native_old": {
+    "message": "Aplikacja na komputerze jest starsza niż to rozszerzenie. Wyraźne pobierania pozostają dostępne; zaktualizuj aplikację na komputerze, aby włączyć bezpieczną automatyczną integrację."
+  },
+  "guidance_policy_off": {
+    "message": "Integracja przeglądarki jest wyłączona. Otwórz Więcej ustawień, aby wybrać tryb Standardowy lub Pełny."
+  },
+  "guidance_permission_missing": {
+    "message": "Wybrano tryb Pełny, ale uprawnienia przeglądarki są niekompletne. Otwórz Więcej ustawień i przyznaj żądane uprawnienia."
+  },
+  "guidance_ready": {
+    "message": "Integracja bezpiecznej przeglądarki jest gotowa."
+  },
+  "guidance_desktop_version": {
+    "message": "Pulpit $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Ignorowane wzorce URL"
+  },
+  "config_custom_no_limit": {
+    "message": "Niestandardowe / Bez ograniczeń"
+  },
+  "config_custom_value": {
+    "message": "Wartość niestandardowa:"
+  },
+  "config_enter_kb": {
+    "message": "Wprowadź KB"
+  },
+  "command_toggle_bypass": {
+    "message": "Przełącz automatyczne pomijanie przechwytywania dla bieżącej karty"
+  },
+  "command_review_page": {
+    "message": "Przejrzyj bieżącą stronę w Menedżerze pobierania AB"
+  },
+  "diagnostics_title": {
+    "message": "Diagnostyka integracji"
+  },
+  "diagnostics_empty": {
+    "message": "Brak ostatnich problemów z integracją."
+  },
+  "diagnostics_retry": {
+    "message": "Ponów połączenie"
+  },
+  "diagnostics_clear": {
+    "message": "Wyczyść"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Natywne połączenie zostało przerwane."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Protokół integracji pulpitu jest starszy niż rozszerzenie."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Natywny host pulpitu jest niedostępny."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Nie można przygotować przeglądu linków przeglądarki."
+  },
+  "diagnostic_unknown": {
+    "message": "Problem z integracją: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Ponów połączenie; jeśli nadal będzie nieudane, uruchom ponownie lub przeinstaluj integrację pulpitu."
+  },
+  "recovery_open_settings": {
+    "message": "Sprawdź ustawienia i uprawnienia integracji przeglądarki."
+  },
+  "recovery_update_desktop": {
+    "message": "Zaktualizuj Menedżera pobierania AB i ponownie zainstaluj jego integrację z przeglądarką."
+  },
+  "recovery_grant_permissions": {
+    "message": "Przyznaj żądane uprawnienia przeglądarki."
+  }
+}

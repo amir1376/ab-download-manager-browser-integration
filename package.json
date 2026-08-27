@@ -20,6 +20,7 @@
     "pack:chrome": "npm run build:chrome && web-ext build --source-dir ./dist/chrome --artifacts-dir ./dist --filename chrome.zip",
     "pack": "npm run pack:chrome && npm run pack:firefox && npm run pack:src",
     "test": "vitest run",
+    "generate:locales": "node scripts/generate-locale-fallbacks.mjs",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "verify:protocol": "node scripts/verify-protocol-lock.mjs",
     "serve:firefox": "web-ext run --firefox-profile default-release --start-url \"about:debugging#/runtime/this-firefox\"  --source-dir ./dist/firefox --devtools",

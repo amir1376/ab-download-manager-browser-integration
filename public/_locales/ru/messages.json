@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "AB Download Manager Интеграция с браузером"
+  },
+  "extension_description": {
+    "message": "Скачивайте файлы с помощью настольного приложения AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Скачать выбранное"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Ссылки не обнаружены"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Пожалуйста, сначала сделайте выбор"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Скачать с AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Скачать выбранные ссылки с AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Быстрые настройки AB DM"
+  },
+  "option_ui_title": {
+    "message": "Расширение AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Подключено"
+  },
+  "connection_not_connected": {
+    "message": "Не подключено"
+  },
+  "connection_checking": {
+    "message": "Проверка"
+  },
+  "config_auto_capture_links": {
+    "message": "Автоматический захват ссылок"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Когда вы кликаете по ссылке в вашем браузере, она автоматически будет захвачена для загрузки приложением"
+  },
+  "reset_to_default": {
+    "message": "Сбросить по умолчанию"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Введите каждое расширение файла, которое вы хотите захватывать, затем нажмите Enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Введите URL-адреса, которые вы не хотите захватывать (по одному в строке, поддерживаются подстановочные знаки (*))"
+  },
+  "config_silent_add_download": {
+    "message": "Добавлять загрузки тихо"
+  },
+  "config_silent_add_download_description": {
+    "message": "Автоматически добавляйте захваченные загрузки в список загрузок без показа окна \"Добавить загрузку\""
+  },
+  "config_silent_start_download": {
+    "message": "Начать загрузку тихо"
+  },
+  "config_silent_start_download_description": {
+    "message": "Автоматически запускать перехваченные загрузки без отображения окна \"Добавить загрузку\""
+  },
+  "config_show_popups": {
+    "message": "Показывать всплывающие окна"
+  },
+  "config_show_popups_description": {
+    "message": "Показывать всплывающее окно при выборе элементов с ссылками"
+  },
+  "config_native_messaging_host": {
+    "message": "Нативные сообщения"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Когда расширение перехватывает новую загрузку, оно автоматически запустит приложение, даже если оно еще не работает."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Хост доступен"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Хост недоступен"
+  },
+  "config_port": {
+    "message": "Порт"
+  },
+  "config_port_description": {
+    "message": "Убедитесь, что этот порт и значение в приложении совпадают, иначе это расширение не будет работать правильно"
+  },
+  "config_api_key": {
+    "message": "API ключ"
+  },
+  "config_api_key_description": {
+    "message": "Если вы включили аутентификацию с помощью API ключа в настройках приложения, вставьте сгенерированный API ключ здесь."
+  },
+  "config_port_connection_success": {
+    "message": "Успех\nПорт ($port$) подключен",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Ошибка\nПорт ($port$) не подключен",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Отправлять куки"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Примечание: НЕ отмечайте этот пункт, если вы находитесь в ненадежной среде"
+  },
+  "browser_action_more_settings": {
+    "message": "Дополнительные настройки"
+  },
+  "connection_error_api_error": {
+    "message": "Есть проблема с API приложения, убедитесь, что обновили как приложение, так и расширение до последней версии"
+  },
+  "connection_error_network_error": {
+    "message": "Не удается подключиться к приложению, пожалуйста, убедитесь, что приложение установлено и запущено. Также убедитесь, что функция интеграции с браузером включена в настройках приложения"
+  },
+  "settings": {
+    "message": "Настройки"
+  },
+  "test": {
+    "message": "Тест"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Чтобы это расширение работало правильно, убедитесь, что установлен AB Download Manager, если нет..."
+  },
+  "download_abdm_app": {
+    "message": "Скачать приложение"
+  },
+  "project_website": {
+    "message": "Веб-сайт проекта"
+  },
+  "support_by_rating": {
+    "message": "Если вам нравится эта работа, не забудьте поддержать меня своими комментариями/оценками и также поделиться с друзьями"
+  },
+  "project_source_code": {
+    "message": "Исходный код проекта"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Скачать незаметно"
+  },
+  "download_media_title": {
+    "message": "Скачать с ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Минимальный размер захватываемого файла (КБ)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Захватывать только файлы размером больше или равно этому значению в килобайтах. Установите 0, чтобы захватывать все размеры."
+  },
+  "config_bypass_shortcut": {
+    "message": "Обход комбинации клавиш"
+  },
+  "config_press_a_key": {
+    "message": "Нажмите клавишу..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Когда включен автозахват ссылок на загрузку, удерживание клавиши быстрого доступа и клик по ссылке на загрузку использует метод загрузки через внутренний браузер."
+  },
+  "context_menu_download_all_links": {
+    "message": "Скачать все ссылки с помощью AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Скачать текущую страницу с помощью AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Скачать текущий фрейм с помощью AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Обойти автоматический захват на этой вкладке"
+  },
+  "feedback_no_links": {
+    "message": "В этой выборке или на этой странице не найдено ссылок для загрузки."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Этот браузер не может безопасно сохранить приватный пакетный просмотр."
+  },
+  "feedback_batch_failed": {
+    "message": "Обзор ссылок не удалось подготовить. Загрузки, управляемые браузером, не были изменены."
+  },
+  "batch_review_loading": {
+    "message": "Загрузка обзора…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Хранилище обзоров сеанса недоступно."
+  },
+  "batch_review_expired": {
+    "message": "Срок действия этого обзора истек."
+  },
+  "batch_review_title": {
+    "message": "Проверить ссылки браузера"
+  },
+  "batch_review_summary": {
+    "message": "Коллекция $scope$: уникальные кандидаты $count$. Задача для рабочего стола отсутствует, пока этот обзор не будет отправлен и принят.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Фильтровать кандидатов"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Фильтровать URL, описание или тип"
+  },
+  "batch_review_select_shown": {
+    "message": "Выбрать отображаемое"
+  },
+  "batch_review_clear_shown": {
+    "message": "Очистить отображаемое"
+  },
+  "batch_review_submitting": {
+    "message": "Отправка зашифрованного обзора для рабочего стола…"
+  },
+  "batch_review_ready": {
+    "message": "Обзор для рабочего стола готов."
+  },
+  "batch_review_submission_failed": {
+    "message": "Отправка не удалась"
+  },
+  "batch_review_submit_count": {
+    "message": "Отправить $count$ для обзора на рабочем столе",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Отмена"
+  },
+  "close": {
+    "message": "Закрыть"
+  },
+  "media_selection_loading": {
+    "message": "Загрузка выбора медиа…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Хранилище выбора защищенного сеанса недоступно."
+  },
+  "media_selection_expired": {
+    "message": "Срок действия этого выбора медиа истек."
+  },
+  "media_selection_title": {
+    "message": "Выбрать качество и дорожки медиа"
+  },
+  "media_selection_no_defaults": {
+    "message": "Качество, дорожка, длительность в реальном времени или контейнер не выбраны. Защищенные/DRM медиа недоступны."
+  },
+  "media_selection_variant": {
+    "message": "Вариант или качество"
+  },
+  "media_selection_tracks": {
+    "message": "Аудио- и субтитрированные дорожки"
+  },
+  "media_selection_no_tracks": {
+    "message": "Отдельные дорожки не рекламировались."
+  },
+  "media_selection_choose_audio": {
+    "message": "Выберите одну аудиодорожку."
+  },
+  "media_selection_container": {
+    "message": "Выходной контейнер"
+  },
+  "media_selection_native_container": {
+    "message": "Сохранить родной контейнер"
+  },
+  "media_selection_live_duration": {
+    "message": "Длительность живой записи (в секундах)"
+  },
+  "media_selection_submitting": {
+    "message": "Создание зашифрованного обзора медиа на рабочем столе…"
+  },
+  "media_selection_failed": {
+    "message": "Выбор медиа не удался"
+  },
+  "media_selection_continue": {
+    "message": "Продолжить маршрутизацию на рабочий стол"
+  },
+  "choose": {
+    "message": "Выбрать…"
+  },
+  "undetermined": {
+    "message": "не определено"
+  },
+  "media": {
+    "message": "Медиа"
+  },
+  "media_panel_aria": {
+    "message": "Обнаружены загружаемые медиа"
+  },
+  "media_panel_title_count": {
+    "message": "Скачать медиа ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Закрыть панель медиа"
+  },
+  "media_panel_detected": {
+    "message": "Обнаружено медиа"
+  },
+  "media_panel_protected": {
+    "message": "Защищённые медиа недоступны"
+  },
+  "policy_title": {
+    "message": "Интеграция браузера: конфиденциальность и разрешения"
+  },
+  "policy_description": {
+    "message": "STANDARD предоставляет только явные, по-сайтовые действия. Для автоматического перехвата, защищённого контекста запроса, расширенной проверки или приватных окон требуется FULL."
+  },
+  "policy_mode": {
+    "message": "Режим интеграции"
+  },
+  "policy_automatic": {
+    "message": "Автоматический перехват"
+  },
+  "policy_protected_context": {
+    "message": "Отправка защищённых заголовков, cookies, тел, рефереров и прокси-контекста"
+  },
+  "policy_advanced_media": {
+    "message": "Расширенная проверка медиа"
+  },
+  "policy_private": {
+    "message": "Приватное/инкогнито захватывание"
+  },
+  "policy_unavailable": {
+    "message": "Политика настольного браузера недоступна; захват остаётся отключённым."
+  },
+  "policy_update_failed": {
+    "message": "Обновление политики не выполнено"
+  },
+  "policy_full_not_granted": {
+    "message": "Полные полномочия браузера не предоставлены; режим STANDARD остаётся активным."
+  },
+  "policy_http_sites_only": {
+    "message": "Поддерживаются только сайты HTTP и HTTPS"
+  },
+  "policy_site_permission_failed": {
+    "message": "Предоставление разрешения для сайта не выполнено"
+  },
+  "policy_site": {
+    "message": "Сайт"
+  },
+  "policy_grant_site": {
+    "message": "Предоставить доступ к сайту"
+  },
+  "policy_extensions": {
+    "message": "Захваченные расширения"
+  },
+  "policy_mime_types": {
+    "message": "Захваченные MIME-типы"
+  },
+  "policy_exclusions": {
+    "message": "Исключённые шаблоны полных адресов"
+  },
+  "policy_custom_menus": {
+    "message": "Пользовательские действия меню (id | название | область | типы источников)"
+  },
+  "policy_media_adapters": {
+    "message": "Адаптеры медиа-сайтов (id | хост | regex URL | селекторы ; разделены | атрибуты)"
+  },
+  "policy_force_key": {
+    "message": "Принудительный ключ"
+  },
+  "policy_bypass_key": {
+    "message": "Обходной ключ"
+  },
+  "policy_private_access": {
+    "message": "Приватный доступ браузера: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Полные полномочия: $authority$; автоматическое захватывание: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Предоставленные сайты: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "не предоставлено ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Выключено"
+  },
+  "standard": {
+    "message": "Стандартный"
+  },
+  "full": {
+    "message": "Полный"
+  },
+  "allowed": {
+    "message": "разрешено"
+  },
+  "private_not_allowed": {
+    "message": "не разрешено; включите это на странице деталей расширения браузера"
+  },
+  "granted": {
+    "message": "предоставлено"
+  },
+  "active": {
+    "message": "активно"
+  },
+  "inactive": {
+    "message": "неактивно"
+  },
+  "site_access_missing": {
+    "message": "доступ к сайту отсутствует"
+  },
+  "none": {
+    "message": "нет"
+  },
+  "recent_downloads_title": {
+    "message": "Повторно захватить загрузку браузера"
+  },
+  "recent_downloads_added": {
+    "message": "Добавлено для обзора на рабочем столе"
+  },
+  "recent_downloads_failed": {
+    "message": "Не удалось повторно захватить"
+  },
+  "guidance_native_missing": {
+    "message": "Родная интеграция недоступна. Установите или запустите настольное приложение, затем используйте Подробнее настройки для повторной проверки соединения."
+  },
+  "guidance_native_old": {
+    "message": "Настольное приложение старее этого расширения. Явные загрузки остаются доступными; обновите настольное приложение, чтобы включить безопасную автоматическую интеграцию."
+  },
+  "guidance_policy_off": {
+    "message": "Интеграция с браузером выключена. Откройте Подробнее настройки, чтобы выбрать режим Стандартный или Полный."
+  },
+  "guidance_permission_missing": {
+    "message": "Выбран полный режим, но полномочия браузера неполные. Откройте Подробнее настройки и предоставьте требуемые разрешения."
+  },
+  "guidance_ready": {
+    "message": "Интеграция безопасного браузера готова."
+  },
+  "guidance_desktop_version": {
+    "message": "Рабочий стол $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Игнорируемые шаблоны URL"
+  },
+  "config_custom_no_limit": {
+    "message": "Пользовательский / без ограничения"
+  },
+  "config_custom_value": {
+    "message": "Пользовательское значение:"
+  },
+  "config_enter_kb": {
+    "message": "Введите KB"
+  },
+  "command_toggle_bypass": {
+    "message": "Переключить обход автоматического захвата для текущей вкладки"
+  },
+  "command_review_page": {
+    "message": "Просмотреть текущую страницу в AB Download Manager"
+  },
+  "diagnostics_title": {
+    "message": "Диагностика интеграции"
+  },
+  "diagnostics_empty": {
+    "message": "Недавних проблем с интеграцией нет."
+  },
+  "diagnostics_retry": {
+    "message": "Повторить подключение"
+  },
+  "diagnostics_clear": {
+    "message": "Очистить"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Прерывание нативного соединения."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Протокол интеграции рабочего стола старше расширения."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Нативный хост рабочего стола недоступен."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Обзор ссылки браузера не может быть подготовлен."
+  },
+  "diagnostic_unknown": {
+    "message": "Проблема интеграции: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Повторите подключение; если оно всё ещё не удаётся, перезапустите или переустановите интеграцию рабочего стола."
+  },
+  "recovery_open_settings": {
+    "message": "Просмотрите настройки интеграции браузера и разрешения."
+  },
+  "recovery_update_desktop": {
+    "message": "Обновите AB Download Manager и переустановите его интеграцию с браузером."
+  },
+  "recovery_grant_permissions": {
+    "message": "Предоставьте запрошенные разрешения для браузера."
+  }
+}

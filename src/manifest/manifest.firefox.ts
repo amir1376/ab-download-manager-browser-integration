@@ -18,6 +18,11 @@ export function getManifestForFirefox(): ManifestV2 {
         browser_specific_settings: {
             gecko: {
                 id: "firefox-integration@abdownloadmanager.com",
+                strict_min_version: "140.0",
+                data_collection_permissions: {
+                    required: ["none"],
+                    optional: ["browsingActivity", "websiteContent", "authenticationInfo"],
+                },
             }
         },
         browser_action: getBrowserActionInfo(),
@@ -28,6 +33,6 @@ export function getManifestForFirefox(): ManifestV2 {
             ...getHostPermissions(),
             ...getOptionalPermissions(),
         ],
-        incognito: "split",
+        incognito: "spanning",
     } as unknown as ManifestV2
 }

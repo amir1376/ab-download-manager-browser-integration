@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "Integrace prohlížeče AB Download Manager"
+  },
+  "extension_description": {
+    "message": "Stahujte soubory pomocí desktopové aplikace AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Stáhnout vybrané"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Nebyly zjištěny žádné odkazy"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Nejprve prosím proveďte výběr"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Stáhnout s AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Stáhněte si vybrané odkazy s AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Rychlé nastavení AB DM"
+  },
+  "option_ui_title": {
+    "message": "Rozšíření AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Připojeno"
+  },
+  "connection_not_connected": {
+    "message": "Nepřipojeno"
+  },
+  "connection_checking": {
+    "message": "Kontrola"
+  },
+  "config_auto_capture_links": {
+    "message": "Automatické zachycení odkazů"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Když kliknete na odkaz ve vašem prohlížeči, bude automaticky zachycen ke stažení aplikací"
+  },
+  "reset_to_default": {
+    "message": "Obnovit výchozí"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Zadejte každou příponu souboru, kterou chcete zachytit, a stiskněte klávesu Enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Zadejte adresy URL, které nechcete zachytit (jedna na řádek, podporovány zástupné znaky (*))"
+  },
+  "config_silent_add_download": {
+    "message": "Tiše přidávejte stažené soubory"
+  },
+  "config_silent_add_download_description": {
+    "message": "Automaticky přidávejte zachycená stahování do seznamu stažených souborů bez zobrazení okna „Přidat stahování“."
+  },
+  "config_silent_start_download": {
+    "message": "Spusťte stahování tiše"
+  },
+  "config_silent_start_download_description": {
+    "message": "Automaticky spouštět zaznamenané stahování bez zobrazení okna \"Přidat stahování\"."
+  },
+  "config_show_popups": {
+    "message": "Zobrazit vyskakovací okna"
+  },
+  "config_show_popups_description": {
+    "message": "Zobrazit vyskakovací okno u výběrů, které obsahují odkazy"
+  },
+  "config_native_messaging_host": {
+    "message": "Nativní zasílání zpráv"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Když rozšíření zachytí nové stahování, automaticky spustí aplikaci, i když ještě není spuštěna."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Hostitel je dosažitelný"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Hostitel není dosažitelný"
+  },
+  "config_port": {
+    "message": "Port"
+  },
+  "config_port_description": {
+    "message": "Ujistěte se, že tento port a hodnota v aplikaci jsou stejné, jinak toto rozšíření nebude fungovat správně"
+  },
+  "config_api_key": {
+    "message": "Klíč API"
+  },
+  "config_api_key_description": {
+    "message": "Pokud jste v nastavení aplikace povolili ověřování pomocí klíče API, vložte vygenerovaný klíč API sem."
+  },
+  "config_port_connection_success": {
+    "message": "Úspěch\nPort ($port$) Je připojen",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Selhání\nPort ($port$) není připojen",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Odeslat soubory cookie"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Poznámka: Toto nezaškrtávejte, pokud se nacházíte v nedůvěryhodném prostředí"
+  },
+  "browser_action_more_settings": {
+    "message": "Další nastavení"
+  },
+  "connection_error_api_error": {
+    "message": "Došlo k problému s rozhraním API aplikace, nezapomeňte aktualizovat aplikaci i rozšíření na nejnovější verzi"
+  },
+  "connection_error_network_error": {
+    "message": "Nelze se připojit k aplikaci, zkontrolujte, zda je aplikace nainstalována a spuštěna. Také se ujistěte, že je v nastavení aplikace zapnuta funkce Integrace prohlížeče"
+  },
+  "settings": {
+    "message": "Nastavení"
+  },
+  "test": {
+    "message": "Test"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Aby toto rozšíření fungovalo správně, ujistěte se, že je nainstalován AB Download Manager, pokud ne..."
+  },
+  "download_abdm_app": {
+    "message": "Stáhněte si aplikaci"
+  },
+  "project_website": {
+    "message": "Web projektu"
+  },
+  "support_by_rating": {
+    "message": "Pokud se vám tato práce líbí, nezapomeňte mě podpořit svými komentáři/hodnocením a také ji sdílet se svými přáteli"
+  },
+  "project_source_code": {
+    "message": "Zdrojový kód projektu"
+  },
+  "abdm_notification_title": {
+    "message": "Správce stahování AB"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Stáhnout zachyceno tiše"
+  },
+  "download_media_title": {
+    "message": "Stáhnout s ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Minimální velikost souboru záznamu (kB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Zachycujte pouze soubory s velikostí větší nebo rovnou této hodnotě v kilobajtech. Nastavte 0 pro zachycení všech velikostí."
+  },
+  "config_bypass_shortcut": {
+    "message": "Zkratka pro přemostění"
+  },
+  "config_press_a_key": {
+    "message": "Stiskněte klávesu..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Když je povoleno automatické zachytávání odkazů ke stažení, podržením klávesové zkratky a kliknutím na odkaz ke stažení se použije interní metoda stahování v prohlížeči."
+  },
+  "context_menu_download_all_links": {
+    "message": "Stáhněte si všechny odkazy pomocí AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Stáhněte si aktuální stránku pomocí AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Stáhněte si aktuální snímek pomocí AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Na této kartě vynechejte automatické snímání"
+  },
+  "feedback_no_links": {
+    "message": "V tomto výběru nebo na stránce nebyly nalezeny žádné odkazy ke stažení."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Tento prohlížeč nemůže bezpečně uchovat soukromou dávkovou kontrolu."
+  },
+  "feedback_batch_failed": {
+    "message": "Recenzi odkazu se nepodařilo připravit. Stahování vlastněné prohlížečem se nezměnilo."
+  },
+  "batch_review_loading": {
+    "message": "Načítání recenze…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Úložiště kontroly relace není k dispozici."
+  },
+  "batch_review_expired": {
+    "message": "Platnost této recenze vypršela."
+  },
+  "batch_review_title": {
+    "message": "Zkontrolovat odkazy prohlížeče"
+  },
+  "batch_review_summary": {
+    "message": "Kolekce $scope$: Jedineční kandidáti $count$. Dokud nebude tato recenze odeslána a přijata, neexistuje žádná úloha na ploše.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Filtrujte kandidáty"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Filtrujte URL, popis nebo typ"
+  },
+  "batch_review_select_shown": {
+    "message": "Vyberte zobrazeno"
+  },
+  "batch_review_clear_shown": {
+    "message": "Jasně zobrazeno"
+  },
+  "batch_review_submitting": {
+    "message": "Odesílání zašifrované kontroly počítače…"
+  },
+  "batch_review_ready": {
+    "message": "Desktopová recenze je připravena."
+  },
+  "batch_review_submission_failed": {
+    "message": "Odeslání se nezdařilo"
+  },
+  "batch_review_submit_count": {
+    "message": "Odeslat $count$ ke kontrole na počítači",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Zrušit"
+  },
+  "close": {
+    "message": "Zavřít"
+  },
+  "media_selection_loading": {
+    "message": "Načítání možností médií…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Zabezpečené úložiště výběru relace není k dispozici."
+  },
+  "media_selection_expired": {
+    "message": "Platnost tohoto výběru médií vypršela."
+  },
+  "media_selection_title": {
+    "message": "Vyberte kvalitu médií a stopy"
+  },
+  "media_selection_no_defaults": {
+    "message": "Není předem vybrána žádná kvalita, stopa, délka živého vysílání ani kontejner. Médium s ochranou/DRM není k dispozici."
+  },
+  "media_selection_variant": {
+    "message": "Varianta nebo kvalita"
+  },
+  "media_selection_tracks": {
+    "message": "Zvukové a titulkové stopy"
+  },
+  "media_selection_no_tracks": {
+    "message": "Nebyly inzerovány žádné samostatné skladby."
+  },
+  "media_selection_choose_audio": {
+    "message": "Vyberte jednu zvukovou stopu."
+  },
+  "media_selection_container": {
+    "message": "Výstupní kontejner"
+  },
+  "media_selection_native_container": {
+    "message": "Ponechte si nativní nádobu"
+  },
+  "media_selection_live_duration": {
+    "message": "Délka živého záznamu (sekundy)"
+  },
+  "media_selection_submitting": {
+    "message": "Vytváření recenze šifrovaných médií pro stolní počítače…"
+  },
+  "media_selection_failed": {
+    "message": "Výběr média se nezdařil"
+  },
+  "media_selection_continue": {
+    "message": "Pokračujte na směrování plochy"
+  },
+  "choose": {
+    "message": "Vybrat…"
+  },
+  "undetermined": {
+    "message": "neurčeno"
+  },
+  "media": {
+    "message": "Média"
+  },
+  "media_panel_aria": {
+    "message": "Zjištěná média ke stažení"
+  },
+  "media_panel_title_count": {
+    "message": "Stáhnout média ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Zavřít panel médií"
+  },
+  "media_panel_detected": {
+    "message": "Zjištěná média"
+  },
+  "media_panel_protected": {
+    "message": "Chráněné médium není k dispozici"
+  },
+  "policy_title": {
+    "message": "Soukromí a oprávnění integrace prohlížeče"
+  },
+  "policy_description": {
+    "message": "STANDARD uděluje pouze explicitní akce pro jednotlivé stránky. FULL je vyžadováno pro automatické zachycení, kontext chráněného požadavku, pokročilou kontrolu nebo soukromá okna."
+  },
+  "policy_mode": {
+    "message": "Režim integrace"
+  },
+  "policy_automatic": {
+    "message": "Automatické odposlechy"
+  },
+  "policy_protected_context": {
+    "message": "Odesílejte chráněná záhlaví, soubory cookie, těla, referrery a kontext proxy"
+  },
+  "policy_advanced_media": {
+    "message": "Pokročilá kontrola médií"
+  },
+  "policy_private": {
+    "message": "Soukromé/anonymní zachycení"
+  },
+  "policy_unavailable": {
+    "message": "Zásady prohlížeče pro stolní počítače jsou nedostupné; zachycení zůstane zakázáno."
+  },
+  "policy_update_failed": {
+    "message": "Aktualizace zásad se nezdařila"
+  },
+  "policy_full_not_granted": {
+    "message": "Nebylo uděleno plné oprávnění prohlížeče; Režim STANDARD zůstává aktivní."
+  },
+  "policy_http_sites_only": {
+    "message": "Podporovány jsou pouze weby HTTP a HTTPS"
+  },
+  "policy_site_permission_failed": {
+    "message": "Oprávnění webu se nezdařilo"
+  },
+  "policy_site": {
+    "message": "místo"
+  },
+  "policy_grant_site": {
+    "message": "Grantové místo"
+  },
+  "policy_extensions": {
+    "message": "Zachycená rozšíření"
+  },
+  "policy_mime_types": {
+    "message": "Zachycené typy MIME"
+  },
+  "policy_exclusions": {
+    "message": "Vzory s úplnou adresou jsou vyloučeny"
+  },
+  "policy_custom_menus": {
+    "message": "Vlastní akce nabídky (id | název | rozsah | druhy zdrojů)"
+  },
+  "policy_media_adapters": {
+    "message": "Adaptéry mediálního webu (id | hostitel | regulární výraz URL | selektory ; oddělené | atributy)"
+  },
+  "policy_force_key": {
+    "message": "Vynutit klíč"
+  },
+  "policy_bypass_key": {
+    "message": "Přemosťovací klíč"
+  },
+  "policy_private_access": {
+    "message": "Soukromý přístup prohlížeče: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Plná autorita: $authority$; automatické snímání: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Udělená místa: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "není uděleno ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Vypnuto"
+  },
+  "standard": {
+    "message": "Standardní"
+  },
+  "full": {
+    "message": "Plný"
+  },
+  "allowed": {
+    "message": "povoleno"
+  },
+  "private_not_allowed": {
+    "message": "není povoleno; povolit na stránce s podrobnostmi o rozšíření prohlížeče"
+  },
+  "granted": {
+    "message": "uděleno"
+  },
+  "active": {
+    "message": "aktivní"
+  },
+  "inactive": {
+    "message": "neaktivní"
+  },
+  "site_access_missing": {
+    "message": "chybí přístup na stránky"
+  },
+  "none": {
+    "message": "žádný"
+  },
+  "recent_downloads_title": {
+    "message": "Znovu zachyťte stahování prohlížeče"
+  },
+  "recent_downloads_added": {
+    "message": "Přidáno do recenze na ploše"
+  },
+  "recent_downloads_failed": {
+    "message": "Nepodařilo se znovu zachytit"
+  },
+  "guidance_native_missing": {
+    "message": "Nativní integrace není k dispozici. Nainstalujte nebo spusťte aplikaci pro stolní počítače a poté znovu otestujte připojení pomocí nastavení Další."
+  },
+  "guidance_native_old": {
+    "message": "Desktopová aplikace je starší než toto rozšíření. Explicitní stahování zůstává k dispozici; aktualizujte desktopovou aplikaci, abyste umožnili zabezpečenou automatickou integraci."
+  },
+  "guidance_policy_off": {
+    "message": "Integrace prohlížeče je vypnutá. Otevřete Další nastavení a vyberte Standardní nebo Úplný režim."
+  },
+  "guidance_permission_missing": {
+    "message": "Je vybrán úplný režim, ale oprávnění prohlížeče je neúplné. Otevřete Další nastavení a udělte požadovaná oprávnění."
+  },
+  "guidance_ready": {
+    "message": "Bezpečná integrace prohlížeče je připravena."
+  },
+  "guidance_desktop_version": {
+    "message": "Stolní $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Ignorované vzory adres URL"
+  },
+  "config_custom_no_limit": {
+    "message": "Vlastní / Bez omezení"
+  },
+  "config_custom_value": {
+    "message": "Vlastní hodnota:"
+  },
+  "config_enter_kb": {
+    "message": "Zadejte KB"
+  },
+  "command_toggle_bypass": {
+    "message": "Přepnout automatické vynechání snímání pro aktuální kartu"
+  },
+  "command_review_page": {
+    "message": "Zkontrolujte aktuální stránku v AB Download Manager"
+  },
+  "diagnostics_title": {
+    "message": "Integrační diagnostika"
+  },
+  "diagnostics_empty": {
+    "message": "Žádné nedávné problémy s integrací."
+  },
+  "diagnostics_retry": {
+    "message": "Opakujte připojení"
+  },
+  "diagnostics_clear": {
+    "message": "Jasný"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Nativní spojení bylo přerušeno."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Protokol integrace desktopu je starší než rozšíření."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Nativní hostitel počítače není k dispozici."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Nebylo možné připravit recenzi odkazu prohlížeče."
+  },
+  "diagnostic_unknown": {
+    "message": "Problém s integrací: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Zkuste znovu připojení; pokud stále selže, restartujte nebo přeinstalujte integraci plochy."
+  },
+  "recovery_open_settings": {
+    "message": "Zkontrolujte nastavení a oprávnění integrace prohlížeče."
+  },
+  "recovery_update_desktop": {
+    "message": "Aktualizujte AB Download Manager a znovu nainstalujte jeho integraci do prohlížeče."
+  },
+  "recovery_grant_permissions": {
+    "message": "Udělte požadovaná oprávnění prohlížeče."
+  }
+}

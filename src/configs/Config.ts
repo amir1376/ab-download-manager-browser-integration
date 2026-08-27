@@ -84,6 +84,55 @@ const ConfigType = z.object({
 
 export type Config = z.infer<typeof ConfigType>
 export const configKeys: ReadonlyArray<keyof Config> = ConfigType.keyof().options
+export const CONFIG_STORAGE_SCHEMA_VERSION = 2
+export const CONFIG_STORAGE_SCHEMA_KEY = "__abdmConfigSchemaVersion"
+export const CONFIG_MIGRATION_HISTORY_KEY = "__abdmConfigMigrationHistory"
+
+export interface ConfigMigrationResult {
+    records: Record<string, unknown>
+    writes: Record<string, unknown>
+    applied: string[]
+}
+
+export function migrateConfigRecords(input: Record<string, unknown>): ConfigMigrationResult {
+    const records = {...input}
+    const writes: Record<string, unknown> = {}
+    const applied: string[] = []
+    let version = typeof records[CONFIG_STORAGE_SCHEMA_KEY] === "number"
+        ? Math.trunc(records[CONFIG_STORAGE_SCHEMA_KEY] as number)
+        : 0
+    if (version < 1) {
+        if (records.sendHeaders === undefined && typeof records.sendCookies === "boolean") {
+            records.sendHeaders = records.sendCookies
+            writes.sendHeaders = records.sendCookies
+        }
+        if (typeof records.registeredFileTypes === "string") {
+            const value = records.registeredFileTypes.split(/[\s,]+/).map(item => item.replace(/^\./, "").toLowerCase()).filter(Boolean)
+            records.registeredFileTypes = value
+            writes.registeredFileTypes = value
+        }
+        applied.push("v0-to-v1-normalize-legacy-keys")
+        version = 1
+    }
+    if (version < 2) {
+        // v2 keeps legacy transport settings for the one-release compatibility bridge;
+        // authoritative capture behavior is negotiated from desktop policy.
+        applied.push("v1-to-v2-authoritative-policy-bridge")
+        version = 2
+    }
+    if (version !== CONFIG_STORAGE_SCHEMA_VERSION) {
+        throw new Error(`Unsupported future config schema ${version}`)
+    }
+    records[CONFIG_STORAGE_SCHEMA_KEY] = version
+    if (input[CONFIG_STORAGE_SCHEMA_KEY] !== version) writes[CONFIG_STORAGE_SCHEMA_KEY] = version
+    if (applied.length) {
+        const previous = Array.isArray(input[CONFIG_MIGRATION_HISTORY_KEY])
+            ? (input[CONFIG_MIGRATION_HISTORY_KEY] as unknown[]).filter(value => typeof value === "string").slice(-30)
+            : []
+        writes[CONFIG_MIGRATION_HISTORY_KEY] = [...previous, ...applied].slice(-32)
+    }
+    return {records, writes, applied}
+}
 
 const _defaultConfig = lazy(() => {
     return ConfigType.parse({})
@@ -95,8 +144,15 @@ export function getDefaultConfig() {
 
 async function getConfigsFromStorageOrDefault(): Promise<Config> {
     try {
-        const records = await browser.storage.local.get([...configKeys]);
-        return ConfigType.parse(records);
+        const raw = await browser.storage.local.get([
+            ...configKeys,
+            CONFIG_STORAGE_SCHEMA_KEY,
+            CONFIG_MIGRATION_HISTORY_KEY,
+            "sendCookies",
+        ]) as Record<string, unknown>
+        const migration = migrateConfigRecords(raw)
+        if (Object.keys(migration.writes).length) await browser.storage.local.set(migration.writes)
+        return ConfigType.parse(migration.records);
     } catch (e) {
         console.error("fail to parse config from the browser storage", e)
         return getDefaultConfig();

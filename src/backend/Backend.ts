@@ -16,6 +16,8 @@ import {BrowserHttpBridgeV2} from "~/backend/BrowserHttpBridgeV2";
 import type {CaptureProposalV2, PreparedCaptureV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import type {BrowserBatchReceiptV2, BrowserBatchV2, BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import {BrowserIntegrationPolicyV2Schema} from "~/protocol/BrowserIntegrationProtocolV2Schema";
+import browser from "webextension-polyfill";
+import {reportSafeDiagnosticV2} from "~/diagnostics/DiagnosticsV2";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -35,6 +37,7 @@ nativeMessagingTransport.addConnectionListener((connected) => {
         clearBrowserHelloV2()
         currentPolicyV2 = null
         for (const listener of policyListeners) listener(null)
+        void reportSafeDiagnosticV2("NATIVE_DISCONNECTED", "WARNING", "RETRY_CONNECTION")
         return
     }
     void refreshBrowserHelloV2()
@@ -103,12 +106,17 @@ export async function boot() {
             await refreshBrowserHelloV2()
             if (getBrowserHelloV2() === null) throw new Error("Protocol v2 unavailable")
             await refreshBrowserPolicyV2()
+            await migrateLegacyCaptureSettingsToPolicyV2().catch(error => {
+                console.warn("Legacy browser settings migration was deferred", error)
+            })
         } catch {
             clearBrowserHelloV2()
             console.log("Browser integration protocol v2 is unavailable; legacy compatibility is active")
+            void reportSafeDiagnosticV2("DESKTOP_PROTOCOL_LEGACY", "WARNING", "UPDATE_DESKTOP")
         }
     } else {
         console.log("Native messaging is not available!")
+        void reportSafeDiagnosticV2("NATIVE_UNAVAILABLE", "ERROR", "RETRY_CONNECTION")
     }
 
     Configs.onChanged.addEventListener((event) => {
@@ -151,6 +159,28 @@ function getApi(): IAppApi {
     )
 }
 
+async function migrateLegacyCaptureSettingsToPolicyV2(): Promise<void> {
+    const marker = "__abdmPolicyMigrationVersion"
+    const stored = await browser.storage.local.get(marker)
+    if (stored[marker] === 1) return
+    const policy = currentPolicyV2
+    if (policy?.revision === 0 && policy.mode === "STANDARD") {
+        const legacy = Configs.getLatestConfig()
+        await updateBrowserPolicyV2({
+            ...policy,
+            registeredFileTypes: legacy.registeredFileTypes,
+            excludedUrls: legacy.blacklistedUrls,
+            bypassShortcut: legacy.bypassShortcut,
+            // Privacy-sensitive legacy toggles are never promoted to FULL automatically.
+            automaticInterception: false,
+            advancedMediaInspection: false,
+            privateBrowsing: false,
+            sendProtectedContext: false,
+        })
+    }
+    await browser.storage.local.set({[marker]: 1})
+}
+
 export function getBrowserProtocolCompatibilityMode() {
     return classifyBrowserProtocolCompatibility(isNativeMessagingSupported(), getBrowserHelloV2())
 }
@@ -167,6 +197,10 @@ export function canUseAutomaticTakeover(): boolean {
 
 export function getBrowserPolicyV2(): BrowserIntegrationPolicyV2 | null {
     return currentPolicyV2
+}
+
+export function getBrowserDesktopVersionV2(): string | null {
+    return getBrowserHelloV2()?.capabilities.desktopVersion ?? null
 }
 
 export function addBrowserPolicyListener(listener: (policy: BrowserIntegrationPolicyV2 | null) => void): () => void {

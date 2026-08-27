@@ -40,6 +40,11 @@ describe("privacy-first permission policy", () => {
         expect(chrome.optional_host_permissions).toEqual(["http://*/*", "https://*/*"])
         expect(firefox.permissions).not.toContain("http://*/*")
         expect(firefox.optional_permissions).toContain("https://*/*")
+        expect(firefox.browser_specific_settings.gecko.strict_min_version).toBe("140.0")
+        expect(firefox.browser_specific_settings.gecko.data_collection_permissions).toEqual({
+            required: ["none"],
+            optional: ["browsingActivity", "websiteContent", "authenticationInfo"],
+        })
     })
 
     it("restores modifier and per-tab bypass state after an MV3 worker restart", async () => {

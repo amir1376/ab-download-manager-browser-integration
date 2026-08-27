@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "AB 다운로드 관리자 브라우저 통합"
+  },
+  "extension_description": {
+    "message": "AB Download Manager 데스크톱 앱으로 파일 다운로드"
+  },
+  "selection_popup_download_selected": {
+    "message": "선택한 다운로드"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "링크가 감지되지 않았습니다."
+  },
+  "popup_alert_nothing_selected": {
+    "message": "먼저 선택해주세요."
+  },
+  "context_menu_download_with_abdm": {
+    "message": "AB DM으로 다운로드"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "AB DM으로 선택한 링크 다운로드"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM 빠른 설정"
+  },
+  "option_ui_title": {
+    "message": "AB 다운로드 관리자 확장"
+  },
+  "connection_connected": {
+    "message": "연결됨"
+  },
+  "connection_not_connected": {
+    "message": "연결되지 않음"
+  },
+  "connection_checking": {
+    "message": "확인 중"
+  },
+  "config_auto_capture_links": {
+    "message": "자동 캡처 링크"
+  },
+  "config_auto_capture_links_description": {
+    "message": "브라우저에서 링크를 클릭하면 앱에서 다운로드할 수 있도록 자동으로 캡처됩니다."
+  },
+  "reset_to_default": {
+    "message": "기본값으로 재설정"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "캡처하려는 각 파일 확장자를 입력한 다음 Enter를 누르세요."
+  },
+  "config_blacklisted_urls_description": {
+    "message": "캡처하고 싶지 않은 URL을 입력하세요(한 줄에 하나씩, 와일드카드(*) 지원)."
+  },
+  "config_silent_add_download": {
+    "message": "자동으로 다운로드 추가"
+  },
+  "config_silent_add_download_description": {
+    "message": "\"다운로드 추가\" 창을 표시하지 않고 캡처된 다운로드를 다운로드 목록에 자동으로 추가합니다."
+  },
+  "config_silent_start_download": {
+    "message": "자동으로 다운로드 시작"
+  },
+  "config_silent_start_download_description": {
+    "message": "\"다운로드 추가\" 창을 표시하지 않고 캡처된 다운로드를 자동으로 시작합니다."
+  },
+  "config_show_popups": {
+    "message": "팝업 표시"
+  },
+  "config_show_popups_description": {
+    "message": "링크가 있는 선택 항목에 팝업 표시"
+  },
+  "config_native_messaging_host": {
+    "message": "기본 메시징"
+  },
+  "config_native_messaging_host_description": {
+    "message": "확장 프로그램이 새 다운로드를 가로채면 앱이 아직 실행되고 있지 않더라도 자동으로 앱이 시작됩니다."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "호스트에 접근 가능"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "호스트에 연결할 수 없습니다"
+  },
+  "config_port": {
+    "message": "항구"
+  },
+  "config_port_description": {
+    "message": "이 포트와 앱의 값이 동일한지 확인하세요. 그렇지 않으면 이 확장 프로그램이 제대로 작동하지 않습니다."
+  },
+  "config_api_key": {
+    "message": "API 키"
+  },
+  "config_api_key_description": {
+    "message": "앱 설정에서 API 키 인증을 활성화한 경우 생성된 API 키를 여기에 붙여넣으세요."
+  },
+  "config_port_connection_success": {
+    "message": "성공\n포트($port$)가 연결됨",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "실패\n포트($port$)가 연결되지 않음",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "쿠키 보내기"
+  },
+  "config_send_cookies_descrption": {
+    "message": "참고: 신뢰할 수 없는 환경에서는 이 항목을 선택하지 마세요."
+  },
+  "browser_action_more_settings": {
+    "message": "추가 설정"
+  },
+  "connection_error_api_error": {
+    "message": "앱 API에 문제가 있습니다. 앱과 확장 프로그램을 모두 최신 버전으로 업데이트하세요."
+  },
+  "connection_error_network_error": {
+    "message": "애플리케이션에 연결할 수 없습니다. 앱이 설치되어 실행되고 있는지 확인하세요. 또한 애플리케이션 설정에서 브라우저 통합 기능이 켜져 있는지 확인하세요."
+  },
+  "settings": {
+    "message": "설정"
+  },
+  "test": {
+    "message": "테스트"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "이 확장 프로그램이 제대로 작동하려면 AB 다운로드 관리자가 설치되어 있는지 확인하세요."
+  },
+  "download_abdm_app": {
+    "message": "앱 다운로드"
+  },
+  "project_website": {
+    "message": "프로젝트 웹사이트"
+  },
+  "support_by_rating": {
+    "message": "이 작품이 마음에 들면 댓글/평가로 저를 지지하고 친구들과 공유하는 것도 잊지 마세요."
+  },
+  "project_source_code": {
+    "message": "프로젝트 소스 코드"
+  },
+  "abdm_notification_title": {
+    "message": "AB 다운로드 관리자"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "자동으로 캡처된 다운로드"
+  },
+  "download_media_title": {
+    "message": "ABDM으로 다운로드"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "캡처 파일 크기 최소(KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "이 값(KB)보다 크거나 같은 크기의 파일만 캡처합니다. 모든 크기를 캡처하려면 0을 설정합니다."
+  },
+  "config_bypass_shortcut": {
+    "message": "우회 단축키"
+  },
+  "config_press_a_key": {
+    "message": "아무 키나 누르세요..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "다운로드 링크 자동 캡처가 활성화된 경우 단축키를 누른 채 다운로드 링크를 클릭하면 내부 브라우저 다운로드 방법이 사용됩니다."
+  },
+  "context_menu_download_all_links": {
+    "message": "AB 다운로드 관리자로 모든 링크 다운로드"
+  },
+  "context_menu_download_page": {
+    "message": "AB 다운로드 관리자로 현재 페이지 다운로드"
+  },
+  "context_menu_download_frame": {
+    "message": "AB 다운로드 관리자로 현재 프레임 다운로드"
+  },
+  "context_menu_bypass_tab": {
+    "message": "이 탭에서 자동 캡처를 우회합니다."
+  },
+  "feedback_no_links": {
+    "message": "이 선택 항목이나 페이지에서 다운로드 가능한 링크를 찾을 수 없습니다."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "이 브라우저는 비공개 일괄 검토를 안전하게 보관할 수 없습니다."
+  },
+  "feedback_batch_failed": {
+    "message": "링크 검토를 준비할 수 없습니다. 브라우저 소유 다운로드는 변경되지 않았습니다."
+  },
+  "batch_review_loading": {
+    "message": "리뷰 로드 중…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "세션 검토 저장소를 사용할 수 없습니다."
+  },
+  "batch_review_expired": {
+    "message": "이 리뷰는 만료되었습니다."
+  },
+  "batch_review_title": {
+    "message": "브라우저 링크 검토"
+  },
+  "batch_review_summary": {
+    "message": "$scope$ 컬렉션: $count$ 고유 후보. 이 검토가 제출되고 승인될 때까지는 데스크톱 작업이 존재하지 않습니다.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "후보자 필터링"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "URL, 설명 또는 유형 필터링"
+  },
+  "batch_review_select_shown": {
+    "message": "표시된 항목을 선택하세요."
+  },
+  "batch_review_clear_shown": {
+    "message": "명확하게 표시됨"
+  },
+  "batch_review_submitting": {
+    "message": "암호화된 데스크톱 리뷰 제출 중…"
+  },
+  "batch_review_ready": {
+    "message": "데스크톱 검토가 준비되었습니다."
+  },
+  "batch_review_submission_failed": {
+    "message": "제출 실패"
+  },
+  "batch_review_submit_count": {
+    "message": "데스크톱 검토를 위해 $count$ 제출",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "취소"
+  },
+  "close": {
+    "message": "닫기"
+  },
+  "media_selection_loading": {
+    "message": "미디어 선택 로드 중…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "보안 세션 선택 저장소를 사용할 수 없습니다."
+  },
+  "media_selection_expired": {
+    "message": "이 미디어 선택이 만료되었습니다."
+  },
+  "media_selection_title": {
+    "message": "미디어 품질 및 트랙 선택"
+  },
+  "media_selection_no_defaults": {
+    "message": "품질, 트랙, 라이브 기간 또는 컨테이너가 미리 선택되어 있지 않습니다. 보호된/DRM 미디어를 사용할 수 없습니다."
+  },
+  "media_selection_variant": {
+    "message": "변형 또는 품질"
+  },
+  "media_selection_tracks": {
+    "message": "오디오 및 자막 트랙"
+  },
+  "media_selection_no_tracks": {
+    "message": "별도의 트랙은 광고되지 않았습니다."
+  },
+  "media_selection_choose_audio": {
+    "message": "하나의 오디오 트랙을 선택하세요."
+  },
+  "media_selection_container": {
+    "message": "출력 컨테이너"
+  },
+  "media_selection_native_container": {
+    "message": "기본 컨테이너 유지"
+  },
+  "media_selection_live_duration": {
+    "message": "실시간 녹화 기간(초)"
+  },
+  "media_selection_submitting": {
+    "message": "암호화된 데스크톱 미디어 리뷰 생성 중…"
+  },
+  "media_selection_failed": {
+    "message": "미디어 선택 실패"
+  },
+  "media_selection_continue": {
+    "message": "데스크톱 라우팅으로 계속"
+  },
+  "choose": {
+    "message": "선택…"
+  },
+  "undetermined": {
+    "message": "미정"
+  },
+  "media": {
+    "message": "미디어"
+  },
+  "media_panel_aria": {
+    "message": "다운로드 가능한 미디어가 감지되었습니다."
+  },
+  "media_panel_title_count": {
+    "message": "미디어 다운로드($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "미디어 패널 닫기"
+  },
+  "media_panel_detected": {
+    "message": "감지된 미디어"
+  },
+  "media_panel_protected": {
+    "message": "보호된 미디어를 사용할 수 없습니다."
+  },
+  "policy_title": {
+    "message": "브라우저 통합 개인정보 보호 및 권한"
+  },
+  "policy_description": {
+    "message": "STANDARD는 명시적인 사이트별 작업만 허용합니다. 자동 가로채기, 보호된 요청 컨텍스트, 고급 검사 또는 개인 창에는 FULL이 필요합니다."
+  },
+  "policy_mode": {
+    "message": "통합 모드"
+  },
+  "policy_automatic": {
+    "message": "자동 차단"
+  },
+  "policy_protected_context": {
+    "message": "보호된 헤더, 쿠키, 본문, 리퍼러 및 프록시 컨텍스트 보내기"
+  },
+  "policy_advanced_media": {
+    "message": "고급 미디어 검사"
+  },
+  "policy_private": {
+    "message": "비공개/시크릿 캡처"
+  },
+  "policy_unavailable": {
+    "message": "데스크톱 브라우저 정책을 사용할 수 없습니다. 캡처는 비활성화된 상태로 유지됩니다."
+  },
+  "policy_update_failed": {
+    "message": "정책 업데이트 실패"
+  },
+  "policy_full_not_granted": {
+    "message": "전체 브라우저 권한이 부여되지 않았습니다. STANDARD 모드는 활성 상태로 유지됩니다."
+  },
+  "policy_http_sites_only": {
+    "message": "HTTP 및 HTTPS 사이트만 지원됩니다."
+  },
+  "policy_site_permission_failed": {
+    "message": "사이트 권한 실패"
+  },
+  "policy_site": {
+    "message": "사이트"
+  },
+  "policy_grant_site": {
+    "message": "보조금 사이트"
+  },
+  "policy_extensions": {
+    "message": "캡처된 확장 프로그램"
+  },
+  "policy_mime_types": {
+    "message": "캡처된 MIME 유형"
+  },
+  "policy_exclusions": {
+    "message": "제외된 전체 주소 패턴"
+  },
+  "policy_custom_menus": {
+    "message": "맞춤 메뉴 작업(ID | 제목 | 범위 | 소스 종류)"
+  },
+  "policy_media_adapters": {
+    "message": "미디어 사이트 어댑터(id | 호스트 | URL 정규식 | 선택기 ; 분리된 | 속성)"
+  },
+  "policy_force_key": {
+    "message": "강제 키"
+  },
+  "policy_bypass_key": {
+    "message": "바이패스 키"
+  },
+  "policy_private_access": {
+    "message": "브라우저 비공개 액세스: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "전체 권한: $authority$; 자동 캡처: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "승인된 사이트: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "부여되지 않음 ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "끔"
+  },
+  "standard": {
+    "message": "표준"
+  },
+  "full": {
+    "message": "전체"
+  },
+  "allowed": {
+    "message": "허용됨"
+  },
+  "private_not_allowed": {
+    "message": "허용되지 않음; 브라우저 확장 세부정보 페이지에서 활성화하세요."
+  },
+  "granted": {
+    "message": "부여됨"
+  },
+  "active": {
+    "message": "활성"
+  },
+  "inactive": {
+    "message": "비활성"
+  },
+  "site_access_missing": {
+    "message": "사이트 액세스가 누락되었습니다"
+  },
+  "none": {
+    "message": "없음"
+  },
+  "recent_downloads_title": {
+    "message": "브라우저 다운로드 다시 캡처"
+  },
+  "recent_downloads_added": {
+    "message": "데스크톱 검토에 추가됨"
+  },
+  "recent_downloads_failed": {
+    "message": "다시 캡처할 수 없습니다."
+  },
+  "guidance_native_missing": {
+    "message": "기본 통합을 사용할 수 없습니다. 데스크톱 앱을 설치하거나 시작한 다음 추가 설정을 사용하여 연결을 다시 테스트하세요."
+  },
+  "guidance_native_old": {
+    "message": "데스크톱 앱이 이 확장 프로그램보다 오래되었습니다. 명시적 다운로드는 계속 사용할 수 있습니다. 안전한 자동 통합을 활성화하려면 데스크톱 앱을 업데이트하세요."
+  },
+  "guidance_policy_off": {
+    "message": "브라우저 통합이 꺼져 있습니다. 추가 설정을 열어 표준 또는 전체 모드를 선택하세요."
+  },
+  "guidance_permission_missing": {
+    "message": "전체 모드를 선택했지만 브라우저 권한이 불완전합니다. 추가 설정을 열고 요청된 권한을 부여하세요."
+  },
+  "guidance_ready": {
+    "message": "보안 브라우저 통합이 준비되었습니다."
+  },
+  "guidance_desktop_version": {
+    "message": "데스크탑 $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "무시된 URL 패턴"
+  },
+  "config_custom_no_limit": {
+    "message": "맞춤형 / 제한 없음"
+  },
+  "config_custom_value": {
+    "message": "맞춤 값:"
+  },
+  "config_enter_kb": {
+    "message": "KB를 입력하세요."
+  },
+  "command_toggle_bypass": {
+    "message": "현재 탭에 대한 자동 캡처 우회 전환"
+  },
+  "command_review_page": {
+    "message": "AB 다운로드 관리자에서 현재 페이지를 검토하세요."
+  },
+  "diagnostics_title": {
+    "message": "통합진단"
+  },
+  "diagnostics_empty": {
+    "message": "최근 통합 문제가 없습니다."
+  },
+  "diagnostics_retry": {
+    "message": "연결 재시도"
+  },
+  "diagnostics_clear": {
+    "message": "지우기"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "기본 연결이 중단되었습니다."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "데스크톱 통합 프로토콜이 확장보다 오래되었습니다."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "기본 데스크톱 호스트를 사용할 수 없습니다."
+  },
+  "diagnostic_batch_failed": {
+    "message": "브라우저 링크 검토를 준비할 수 없습니다."
+  },
+  "diagnostic_unknown": {
+    "message": "통합 문제: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "연결을 다시 시도하십시오. 그래도 실패하면 데스크톱 통합을 다시 시작하거나 다시 설치하세요."
+  },
+  "recovery_open_settings": {
+    "message": "브라우저 통합 설정 및 권한을 검토합니다."
+  },
+  "recovery_update_desktop": {
+    "message": "AB 다운로드 관리자를 업데이트하고 브라우저 통합을 다시 설치하세요."
+  },
+  "recovery_grant_permissions": {
+    "message": "요청된 브라우저 권한을 부여합니다."
+  }
+}

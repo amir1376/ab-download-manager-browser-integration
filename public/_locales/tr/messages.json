@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "AB İndirme Yöneticisi Tarayıcı Entegrasyonu"
+  },
+  "extension_description": {
+    "message": "Dosyaları AB İndirme Yöneticisi masaüstü uygulamasıyla indir"
+  },
+  "selection_popup_download_selected": {
+    "message": "Seçilenleri indir"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Bağlantı tespit edilmedi"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Lütfen önce bir seçim yapın"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "AB DM ile indir"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Seçilen bağlantıları AB DM ile indir"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM Hızlı Ayarlar"
+  },
+  "option_ui_title": {
+    "message": "AB İndirme Yöneticisi Eklentisi"
+  },
+  "connection_connected": {
+    "message": "Bağlandı"
+  },
+  "connection_not_connected": {
+    "message": "Bağlı değil"
+  },
+  "connection_checking": {
+    "message": "Kontrol ediliyor"
+  },
+  "config_auto_capture_links": {
+    "message": "Otomatik Bağlantı Yakalama"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Tarayıcınızda bir bağlantıya tıkladığınızda, uygulama tarafından otomatik olarak indirilecek şekilde yakalanır"
+  },
+  "reset_to_default": {
+    "message": "Varsayılanlara sıfırla"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Yakalanmasını istediğiniz her dosya uzantısını girin ve ardından Enter tuşuna basın"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Yakalanmasını istemediğiniz URL'leri girin (her satıra bir URL, joker karakter (*) desteklenir)"
+  },
+  "config_silent_add_download": {
+    "message": "İndirmeleri sessizce ekle"
+  },
+  "config_silent_add_download_description": {
+    "message": "Yakalanan indirmeleri \"İndirme Ekle\" penceresini göstermeden indirme listesine otomatik olarak ekle"
+  },
+  "config_silent_start_download": {
+    "message": "İndirmeyi sessizce başlat"
+  },
+  "config_silent_start_download_description": {
+    "message": "Yakalanan indirmeleri \"İndirme Ekle\" penceresini göstermeden otomatik başlat"
+  },
+  "config_show_popups": {
+    "message": "Pop-up'ları göster"
+  },
+  "config_show_popups_description": {
+    "message": "Bağlantı içeren seçimlerde pop-up göster"
+  },
+  "config_native_messaging_host": {
+    "message": "Yerel Mesajlaşma"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Uzantı yeni bir indirme yakaladığında, uygulama zaten çalışmıyor olsa bile otomatik olarak başlatılacaktır."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Ana Bilgisayar Ulaşılabilir"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Ana Bilgisayar Ulaşılamıyor"
+  },
+  "config_port": {
+    "message": "Port"
+  },
+  "config_port_description": {
+    "message": "Bu port ile uygulamadaki değerin aynı olduğundan emin olun, aksi takdirde bu uzantı düzgün çalışmaz"
+  },
+  "config_api_key": {
+    "message": "API Anahtarı"
+  },
+  "config_api_key_description": {
+    "message": "Uygulama ayarlarında API anahtarı doğrulamasını etkinleştirdiyseniz, burada üretilen API anahtarını yapıştırın."
+  },
+  "config_port_connection_success": {
+    "message": "Başarılı\nPort ($port$) bağlı",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Başarısız\nPort ($port$) bağlı değil",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Çerezleri Gönder"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Not: Güvenilmeyen bir ortamdaysanız bunu işaretlemeyin"
+  },
+  "browser_action_more_settings": {
+    "message": "Daha fazla ayar"
+  },
+  "connection_error_api_error": {
+    "message": "Uygulamanın API'sinde bir sorun var, hem uygulamayı hem de uzantıyı en son sürüme güncellediğinizden emin olun"
+  },
+  "connection_error_network_error": {
+    "message": "Uygulamaya bağlanılamıyor, lütfen uygulamanın yüklü ve çalışır durumda olduğundan emin olun. Ayrıca uygulama ayarlarında Tarayıcı Entegrasyonu özelliğinin Açık olduğundan emin olun"
+  },
+  "settings": {
+    "message": "Ayarlar"
+  },
+  "test": {
+    "message": "Test"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Bu uzantının düzgün çalışabilmesi için AB Download Manager'ın yüklü olduğundan emin olun, eğer değilse..."
+  },
+  "download_abdm_app": {
+    "message": "Uygulamayı İndir"
+  },
+  "project_website": {
+    "message": "Proje Web Sitesi"
+  },
+  "support_by_rating": {
+    "message": "Bu çalışmayı beğendiyseniz, yorumlarınız ve puanlarınızla beni desteklemeyi unutmayın ve ayrıca arkadaşlarınızla paylaşın"
+  },
+  "project_source_code": {
+    "message": "Proje Kaynak Kodu"
+  },
+  "abdm_notification_title": {
+    "message": "AB Download Manager"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Sessizce yakalanan dosyayı indir"
+  },
+  "download_media_title": {
+    "message": "ABDM ile İndir"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Minimum dosya boyutunu yakala (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Sadece bu boyuta eşit veya daha büyük boyuttaki dosyaları kilobayt cinsinden yakalayın. Tüm boyutları yakalamak için 0 yapın."
+  },
+  "config_bypass_shortcut": {
+    "message": "Kısayolu Atla"
+  },
+  "config_press_a_key": {
+    "message": "Bir tuşa basın..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "İndirme linklerinin otomatik yakalanması etkinleştirildiğinde, kısayol tuşuna basılı tutup indirme bağlantısına tıklamak dahili tarayıcı indirme yöntemini kullanır."
+  },
+  "context_menu_download_all_links": {
+    "message": "Tüm bağlantıları AB Download Manager ile indir"
+  },
+  "context_menu_download_page": {
+    "message": "Mevcut sayfayı AB Download Manager ile indir"
+  },
+  "context_menu_download_frame": {
+    "message": "Mevcut çerçeveyi AB Download Manager ile indir"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Bu sekmede otomatik yakalamayı atla"
+  },
+  "feedback_no_links": {
+    "message": "Bu seçimde veya sayfada indirilebilir bağlantı bulunamadı."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Bu tarayıcı güvenli bir şekilde özel toplu incelemeyi saklayamaz."
+  },
+  "feedback_batch_failed": {
+    "message": "Bağlantı incelemesi hazırlanamadı. Tarayıcıya ait indirmeler değiştirilmedi."
+  },
+  "batch_review_loading": {
+    "message": "Yorum yükleniyor…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Oturum yorumu depolaması kullanılamıyor."
+  },
+  "batch_review_expired": {
+    "message": "Bu yorumun süresi doldu."
+  },
+  "batch_review_title": {
+    "message": "Tarayıcı bağlantılarını incele"
+  },
+  "batch_review_summary": {
+    "message": "$scope$ koleksiyonu: $count$ benzersiz adaylar. Bu yorum gönderilip kabul edilene kadar masaüstü görevi mevcut değil.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Adayları filtrele"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "URL, açıklama veya türü filtrele"
+  },
+  "batch_review_select_shown": {
+    "message": "Gösterilenleri seç"
+  },
+  "batch_review_clear_shown": {
+    "message": "Gösterilenleri temizle"
+  },
+  "batch_review_submitting": {
+    "message": "Şifreli masaüstü yorumu gönderiliyor…"
+  },
+  "batch_review_ready": {
+    "message": "Masaüstü yorumu hazır."
+  },
+  "batch_review_submission_failed": {
+    "message": "Gönderim başarısız"
+  },
+  "batch_review_submit_count": {
+    "message": "$count$'i masaüstü yorumu için gönder",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "İptal"
+  },
+  "close": {
+    "message": "Kapat"
+  },
+  "media_selection_loading": {
+    "message": "Medya seçenekleri yükleniyor…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Güvenli oturum seçim depolaması kullanılamıyor."
+  },
+  "media_selection_expired": {
+    "message": "Bu medya seçimi süresi doldu."
+  },
+  "media_selection_title": {
+    "message": "Medya kalitesini ve parçaları seç"
+  },
+  "media_selection_no_defaults": {
+    "message": "Hiçbir kalite, parça, canlı süre veya kapsayıcı önceden seçilmedi. Korunan/DRM medyası kullanılamıyor."
+  },
+  "media_selection_variant": {
+    "message": "Varyant veya kalite"
+  },
+  "media_selection_tracks": {
+    "message": "Ses ve altyazı parçaları"
+  },
+  "media_selection_no_tracks": {
+    "message": "Ayrı parçalar reklam edilmedi."
+  },
+  "media_selection_choose_audio": {
+    "message": "Bir ses parçası seçin."
+  },
+  "media_selection_container": {
+    "message": "Çıkış kabı"
+  },
+  "media_selection_native_container": {
+    "message": "Yerel kabı koru"
+  },
+  "media_selection_live_duration": {
+    "message": "Canlı kaydın süresi (saniye)"
+  },
+  "media_selection_submitting": {
+    "message": "Şifreli masaüstü medya incelemesi oluşturuluyor…"
+  },
+  "media_selection_failed": {
+    "message": "Medya seçimi başarısız oldu"
+  },
+  "media_selection_continue": {
+    "message": "Masaüstü yönlendirmeye devam et"
+  },
+  "choose": {
+    "message": "Seç…"
+  },
+  "undetermined": {
+    "message": "belirsiz"
+  },
+  "media": {
+    "message": "Medya"
+  },
+  "media_panel_aria": {
+    "message": "İndirilebilir medya tespit edildi"
+  },
+  "media_panel_title_count": {
+    "message": "Medya indir ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Medya panelini kapat"
+  },
+  "media_panel_detected": {
+    "message": "Medya tespit edildi"
+  },
+  "media_panel_protected": {
+    "message": "Korunan medya kullanılamıyor"
+  },
+  "policy_title": {
+    "message": "Tarayıcı entegrasyonu gizlilik ve izinler"
+  },
+  "policy_description": {
+    "message": "STANDART yalnızca açık, siteye özel işlemler verir. OTOMATİK müdahale, korumalı istek bağlamı, gelişmiş denetim veya özel pencereler için TAM gereklidir."
+  },
+  "policy_mode": {
+    "message": "Entegrasyon modu"
+  },
+  "policy_automatic": {
+    "message": "Otomatik müdahale"
+  },
+  "policy_protected_context": {
+    "message": "Korunan başlıkları, çerezleri, gövdeleri, yönlendirenleri ve proxy bağlamını gönder"
+  },
+  "policy_advanced_media": {
+    "message": "Gelişmiş medya incelemesi"
+  },
+  "policy_private": {
+    "message": "Özel/gizli yakalama"
+  },
+  "policy_unavailable": {
+    "message": "Masaüstü tarayıcı politikası kullanılamıyor; yakalama kapalı kalıyor."
+  },
+  "policy_update_failed": {
+    "message": "Politika güncellemesi başarısız"
+  },
+  "policy_full_not_granted": {
+    "message": "Tam tarayıcı yetkisi verilmedi; STANDART modu aktif kalıyor."
+  },
+  "policy_http_sites_only": {
+    "message": "Sadece HTTP ve HTTPS siteleri desteklenir"
+  },
+  "policy_site_permission_failed": {
+    "message": "Site izin verilemedi"
+  },
+  "policy_site": {
+    "message": "Site"
+  },
+  "policy_grant_site": {
+    "message": "Siteyi yetkilendir"
+  },
+  "policy_extensions": {
+    "message": "Yakalanan uzantılar"
+  },
+  "policy_mime_types": {
+    "message": "Yakalanan MIME türleri"
+  },
+  "policy_exclusions": {
+    "message": "Hariç tutulmuş tam adres desenleri"
+  },
+  "policy_custom_menus": {
+    "message": "Özel menü eylemleri (id | başlık | kapsam | kaynak türleri)"
+  },
+  "policy_media_adapters": {
+    "message": "Medya site adaptörleri (id | host | URL regex | seçiciler ; ayrılmış | nitelikler)"
+  },
+  "policy_force_key": {
+    "message": "Zorla anahtar"
+  },
+  "policy_bypass_key": {
+    "message": "Atla anahtar"
+  },
+  "policy_private_access": {
+    "message": "Tarayıcı özel erişimi: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Tam yetki: $authority$; otomatik yakalama: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Verilen siteler: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "verilmedi ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Kapalı"
+  },
+  "standard": {
+    "message": "Standart"
+  },
+  "full": {
+    "message": "Tam"
+  },
+  "allowed": {
+    "message": "izinli"
+  },
+  "private_not_allowed": {
+    "message": "izinli değil; tarayıcı uzantısı ayrıntılar sayfasında etkinleştirin"
+  },
+  "granted": {
+    "message": "verildi"
+  },
+  "active": {
+    "message": "aktif"
+  },
+  "inactive": {
+    "message": "pasif"
+  },
+  "site_access_missing": {
+    "message": "tarayıcı erişimi eksik"
+  },
+  "none": {
+    "message": "yok"
+  },
+  "recent_downloads_title": {
+    "message": "Tarayıcı indirmesini yeniden yakala"
+  },
+  "recent_downloads_added": {
+    "message": "Masaüstü incelemesine eklendi"
+  },
+  "recent_downloads_failed": {
+    "message": "Yeniden yakalanamadı"
+  },
+  "guidance_native_missing": {
+    "message": "Yerel entegrasyon kullanılamıyor. Masaüstü uygulamasını yükleyin veya başlatın, ardından Bağlantıyı yeniden test etmek için Daha fazla ayar bölümünü kullanın."
+  },
+  "guidance_native_old": {
+    "message": "Masaüstü uygulaması bu uzantıdan eski. Açık indirmeler kullanılabilir durumda; güvenli otomatik entegrasyonu etkinleştirmek için masaüstü uygulamasını güncelleyin."
+  },
+  "guidance_policy_off": {
+    "message": "Tarayıcı entegrasyonu Kapalı. Standart veya Tam modu seçmek için Daha fazla ayar bölümünü açın."
+  },
+  "guidance_permission_missing": {
+    "message": "Tam mod seçildi ancak tarayıcı yetkisi eksik. Daha fazla ayar bölümünü açın ve istenen izinleri verin."
+  },
+  "guidance_ready": {
+    "message": "Güvenli tarayıcı entegrasyonu hazır."
+  },
+  "guidance_desktop_version": {
+    "message": "Masaüstü $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Yoksayılan URL kalıpları"
+  },
+  "config_custom_no_limit": {
+    "message": "Özel / Sınır yok"
+  },
+  "config_custom_value": {
+    "message": "Özel değer:"
+  },
+  "config_enter_kb": {
+    "message": "KB girin"
+  },
+  "command_toggle_bypass": {
+    "message": "Mevcut sekme için otomatik yakalama baypasını değiştir"
+  },
+  "command_review_page": {
+    "message": "AB Download Manager'da mevcut sayfayı incele"
+  },
+  "diagnostics_title": {
+    "message": "Entegrasyon teşhisleri"
+  },
+  "diagnostics_empty": {
+    "message": "Son entegrasyon sorunu yok."
+  },
+  "diagnostics_retry": {
+    "message": "Bağlantıyı yeniden dene"
+  },
+  "diagnostics_clear": {
+    "message": "Temizle"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Yerel bağlantı kesildi."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Masaüstü entegrasyon protokolü, uzantıdan daha eski."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Yerel masaüstü sunucusu kullanılamıyor."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Bir tarayıcı bağlantı incelemesi hazırlanamadı."
+  },
+  "diagnostic_unknown": {
+    "message": "Entegrasyon sorunu: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Bağlantıyı yeniden deneyin; hala başarısız olursa, masaüstü entegrasyonunu yeniden başlatın veya yeniden yükleyin."
+  },
+  "recovery_open_settings": {
+    "message": "Tarayıcı entegrasyon ayarlarını ve izinlerini inceleyin."
+  },
+  "recovery_update_desktop": {
+    "message": "AB Download Manager'ı güncelleyin ve tarayıcı entegrasyonunu yeniden yükleyin."
+  },
+  "recovery_grant_permissions": {
+    "message": "İstenen tarayıcı izinlerini verin."
+  }
+}

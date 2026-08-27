@@ -8,6 +8,7 @@ const CONTENT_SCRIPT_ID = "abdm-parity-v2-content"
 const CONTENT_SCRIPT_FILE = "src/entrypoint/ContentScript.js"
 const ALL_ORIGINS = ["http://*/*", "https://*/*"]
 const FULL_PERMISSIONS = ["webRequest", "cookies", "tabs"]
+const FIREFOX_DATA_COLLECTION = ["browsingActivity", "websiteContent", "authenticationInfo"]
 const STATUS_KEY = "browser-permission-status-v2"
 
 export interface BrowserPermissionStatusV2 {
@@ -47,7 +48,11 @@ async function applyPolicy(): Promise<BrowserPermissionStatusV2> {
     const policy = Backend.getBrowserPolicyV2()
     const granted = await browser.permissions.getAll()
     const grantedOrigins = normalizeOrigins(granted.origins ?? [])
-    const missingPermissions = requiredFullPermissions().filter(value => !(granted.permissions ?? []).includes(value))
+    const grantedData = ((granted as unknown as {data_collection?: string[]}).data_collection ?? [])
+    const missingPermissions = [
+        ...requiredFullPermissions().filter(value => !(granted.permissions ?? []).includes(value)),
+        ...(!isChrome() ? FIREFOX_DATA_COLLECTION.filter(value => !grantedData.includes(value)).map(value => `data:${value}`) : []),
+    ]
     const fullOrigins = ALL_ORIGINS.every(origin => grantedOrigins.includes(origin))
     const fullAuthority = fullOrigins && missingPermissions.length === 0
     const privateAllowed = await isPrivateAllowed()
@@ -89,7 +94,8 @@ export async function requestFullBrowserPermissionsV2(): Promise<boolean> {
     const granted = await browser.permissions.request({
         origins: ALL_ORIGINS,
         permissions: requiredFullPermissions() as never[],
-    })
+        ...(!isChrome() ? {data_collection: FIREFOX_DATA_COLLECTION} : {}),
+    } as never)
     return granted
 }
 
@@ -97,7 +103,8 @@ export async function removeFullBrowserPermissionsV2(): Promise<boolean> {
     const removed = await browser.permissions.remove({
         origins: ALL_ORIGINS,
         permissions: requiredFullPermissions() as never[],
-    })
+        ...(!isChrome() ? {data_collection: FIREFOX_DATA_COLLECTION} : {}),
+    } as never)
     return removed
 }
 
@@ -106,11 +113,14 @@ export async function requestSiteBrowserPermissionV2(value: string): Promise<boo
     const granted = await browser.permissions.request({
         origins: [origin],
         permissions: isChrome() ? ["scripting"] as never[] : [],
-    })
+        ...(!isChrome() ? {data_collection: FIREFOX_DATA_COLLECTION} : {}),
+    } as never)
     return granted
 }
 
 export async function removeSiteBrowserPermissionV2(value: string): Promise<boolean> {
+    // Firefox data-collection consent is extension-wide. Removing one site must
+    // not revoke consent still needed by other granted sites or FULL mode.
     const removed = await browser.permissions.remove({origins: [sitePattern(value)]})
     return removed
 }

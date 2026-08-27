@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill"
 import type {MediaPanelCandidateV2} from "./MediaCandidateRegistryV2"
+import {t} from "~/i18n/t"
 
 export class MediaPanelV2 {
     private host: HTMLDivElement | null = null
@@ -59,19 +60,19 @@ export class MediaPanelV2 {
         const panel = document.createElement("section")
         panel.className = "panel"
         panel.setAttribute("role", "dialog")
-        panel.setAttribute("aria-label", "Detected downloadable media")
+        panel.setAttribute("aria-label", t("media_panel_aria", "Detected downloadable media"))
         const head = document.createElement("div"); head.className = "head"
-        const title = document.createElement("span"); title.className = "title"; title.textContent = `Download media (${this.candidates.length})`
-        const close = document.createElement("button"); close.className = "close"; close.textContent = "×"; close.setAttribute("aria-label", "Dismiss media panel")
+        const title = document.createElement("span"); title.className = "title"; title.textContent = t("media_panel_title_count", "Download media ($1)", String(this.candidates.length))
+        const close = document.createElement("button"); close.className = "close"; close.textContent = "×"; close.setAttribute("aria-label", t("media_panel_dismiss", "Dismiss media panel"))
         close.onclick = () => { this.dismissedGeneration = this.generation; this.removeHost() }
         head.append(title, close); panel.appendChild(head)
         const list = document.createElement("div"); list.className = "list"
         for (const candidate of this.candidates) {
             const button = document.createElement("button"); button.className = "item"
             button.disabled = candidate.protectedMedia === true
-            button.textContent = candidate.title || fileName(candidate.networkSourceUrl || candidate.url) || "Detected media"
+            button.textContent = candidate.title || fileName(candidate.networkSourceUrl || candidate.url) || t("media_panel_detected", "Detected media")
             const meta = document.createElement("span"); meta.className = "meta"
-            meta.textContent = [candidate.transport, dimensions(candidate), candidate.mimeType, candidate.codecs?.join(", "), candidate.protectedMedia ? "Protected media is unavailable" : null].filter(Boolean).join(" · ")
+            meta.textContent = [candidate.transport, dimensions(candidate), candidate.mimeType, candidate.codecs?.join(", "), candidate.protectedMedia ? t("media_panel_protected", "Protected media is unavailable") : null].filter(Boolean).join(" · ")
             button.appendChild(meta)
             button.onclick = () => {
                 if (!button.disabled) void browser.runtime.sendMessage({action: "openMediaSelectionV2", candidateId: candidate.candidateId})

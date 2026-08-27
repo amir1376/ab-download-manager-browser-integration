@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "Integrazione del browser AB Download Manager"
+  },
+  "extension_description": {
+    "message": "Scarica file con l'app desktop AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Scarica selezionato"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Nessun collegamento rilevato"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Effettuare prima una selezione"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Scarica con AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Scarica i link selezionati con AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM Impostazioni rapide"
+  },
+  "option_ui_title": {
+    "message": "Estensione AB Download Manager"
+  },
+  "connection_connected": {
+    "message": "Connesso"
+  },
+  "connection_not_connected": {
+    "message": "Non connesso"
+  },
+  "connection_checking": {
+    "message": "Controllo"
+  },
+  "config_auto_capture_links": {
+    "message": "Collegamenti di acquisizione automatica"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Quando fai clic su un collegamento nel tuo browser, questo verrà automaticamente acquisito per il download dall'app"
+  },
+  "reset_to_default": {
+    "message": "Ripristina le impostazioni predefinite"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Inserisci ciascuna estensione di file che desideri acquisire, quindi premi Invio"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Inserisci gli URL che non desideri vengano acquisiti (uno per riga, caratteri jolly (*) supportati)"
+  },
+  "config_silent_add_download": {
+    "message": "Aggiungi download in modo silenzioso"
+  },
+  "config_silent_add_download_description": {
+    "message": "Aggiungi automaticamente i download acquisiti all'elenco dei download senza mostrare la finestra \"Aggiungi download\"."
+  },
+  "config_silent_start_download": {
+    "message": "Avvia il download in silenzio"
+  },
+  "config_silent_start_download_description": {
+    "message": "Avvia automaticamente i download acquisiti senza mostrare la finestra \"Aggiungi download\"."
+  },
+  "config_show_popups": {
+    "message": "Mostra popup"
+  },
+  "config_show_popups_description": {
+    "message": "Mostra popup sulle selezioni che contengono collegamenti"
+  },
+  "config_native_messaging_host": {
+    "message": "Messaggistica nativa"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Quando l'estensione intercetta un nuovo download, avvierà automaticamente l'app anche se non è già in esecuzione."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "L'host è raggiungibile"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "L'host non è raggiungibile"
+  },
+  "config_port": {
+    "message": "Porto"
+  },
+  "config_port_description": {
+    "message": "Assicurati che questa porta e il valore nell'app siano gli stessi, altrimenti questa estensione non funzionerà correttamente"
+  },
+  "config_api_key": {
+    "message": "Chiave API"
+  },
+  "config_api_key_description": {
+    "message": "Se hai abilitato l'autenticazione della chiave API nelle impostazioni dell'app, incolla qui la chiave API generata."
+  },
+  "config_port_connection_success": {
+    "message": "Successo\nPorta ($port$) Collegata",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Fallimento\nPorta ($port$) non collegata",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Invia cookie"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Nota: NON selezionare questa opzione se ti trovi in un ambiente non affidabile"
+  },
+  "browser_action_more_settings": {
+    "message": "Più impostazioni"
+  },
+  "connection_error_api_error": {
+    "message": "Si è verificato un problema con l'API dell'app, assicurati di aggiornare sia l'app che l'estensione alla versione più recente"
+  },
+  "connection_error_network_error": {
+    "message": "Impossibile connettersi all'applicazione, assicurati che l'app sia installata e in esecuzione. Assicurati inoltre che la funzione Integrazione del browser sia attivata nelle impostazioni dell'applicazione"
+  },
+  "settings": {
+    "message": "Impostazioni"
+  },
+  "test": {
+    "message": "Prova"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Affinché questa estensione funzioni correttamente, assicurati che AB Download Manager sia installato, in caso contrario..."
+  },
+  "download_abdm_app": {
+    "message": "Scarica l'app"
+  },
+  "project_website": {
+    "message": "Sito web del progetto"
+  },
+  "support_by_rating": {
+    "message": "Se ti piace questo lavoro, non dimenticare di supportarmi con i tuoi commenti/voti e di condividerlo anche con i tuoi amici"
+  },
+  "project_source_code": {
+    "message": "Codice sorgente del progetto"
+  },
+  "abdm_notification_title": {
+    "message": "Gestore download AB"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Scarica catturato in silenzio"
+  },
+  "download_media_title": {
+    "message": "Scarica con ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Dimensione minima del file di acquisizione (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Acquisisci solo file con dimensioni maggiori o uguali a questo valore in kilobyte. Imposta 0 per acquisire tutte le dimensioni."
+  },
+  "config_bypass_shortcut": {
+    "message": "Ignora la scorciatoia"
+  },
+  "config_press_a_key": {
+    "message": "Premi un tasto..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Quando l'acquisizione automatica dei collegamenti di download è abilitata, tenendo premuto il tasto di scelta rapida e facendo clic sul collegamento di download viene utilizzato il metodo di download del browser interno."
+  },
+  "context_menu_download_all_links": {
+    "message": "Scarica tutti i collegamenti con AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Scarica la pagina corrente con AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Scarica il frame corrente con AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Ignora l'acquisizione automatica in questa scheda"
+  },
+  "feedback_no_links": {
+    "message": "Nessun collegamento scaricabile trovato in questa selezione o pagina."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Questo browser non può conservare in modo sicuro una revisione batch privata."
+  },
+  "feedback_batch_failed": {
+    "message": "Non è stato possibile preparare la revisione del collegamento. I download di proprietà del browser non sono stati modificati."
+  },
+  "batch_review_loading": {
+    "message": "Caricamento recensione..."
+  },
+  "batch_review_storage_unavailable": {
+    "message": "L'archiviazione della revisione della sessione non è disponibile."
+  },
+  "batch_review_expired": {
+    "message": "Questa recensione è scaduta."
+  },
+  "batch_review_title": {
+    "message": "Rivedi i collegamenti del browser"
+  },
+  "batch_review_summary": {
+    "message": "Collezione $scope$: candidati unici $count$. Non esiste alcuna attività desktop finché questa recensione non viene inviata e accettata.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Filtra i candidati"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Filtra URL, descrizione o tipo"
+  },
+  "batch_review_select_shown": {
+    "message": "Seleziona mostrato"
+  },
+  "batch_review_clear_shown": {
+    "message": "Chiaro mostrato"
+  },
+  "batch_review_submitting": {
+    "message": "Invio revisione desktop crittografata…"
+  },
+  "batch_review_ready": {
+    "message": "La revisione desktop è pronta."
+  },
+  "batch_review_submission_failed": {
+    "message": "Invio non riuscito"
+  },
+  "batch_review_submit_count": {
+    "message": "Invia $count$ per la revisione sul desktop",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Annulla"
+  },
+  "close": {
+    "message": "Chiudi"
+  },
+  "media_selection_loading": {
+    "message": "Caricamento delle scelte multimediali…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "L'archiviazione sicura della selezione della sessione non è disponibile."
+  },
+  "media_selection_expired": {
+    "message": "Questa selezione multimediale è scaduta."
+  },
+  "media_selection_title": {
+    "message": "Scegli qualità e tracce multimediali"
+  },
+  "media_selection_no_defaults": {
+    "message": "Nessuna qualità, traccia, durata live o contenitore è preselezionato. Il supporto protetto/DRM non è disponibile."
+  },
+  "media_selection_variant": {
+    "message": "Variante o qualità"
+  },
+  "media_selection_tracks": {
+    "message": "Tracce audio e sottotitoli"
+  },
+  "media_selection_no_tracks": {
+    "message": "Non sono state pubblicizzate tracce separate."
+  },
+  "media_selection_choose_audio": {
+    "message": "Scegli una traccia audio."
+  },
+  "media_selection_container": {
+    "message": "Contenitore di uscita"
+  },
+  "media_selection_native_container": {
+    "message": "Mantieni il contenitore nativo"
+  },
+  "media_selection_live_duration": {
+    "message": "Durata della registrazione dal vivo (secondi)"
+  },
+  "media_selection_submitting": {
+    "message": "Creazione della revisione multimediale desktop crittografata…"
+  },
+  "media_selection_failed": {
+    "message": "La selezione del supporto non è riuscita"
+  },
+  "media_selection_continue": {
+    "message": "Continua con il routing desktop"
+  },
+  "choose": {
+    "message": "Scegli…"
+  },
+  "undetermined": {
+    "message": "indeterminato"
+  },
+  "media": {
+    "message": "Media"
+  },
+  "media_panel_aria": {
+    "message": "Supporti scaricabili rilevati"
+  },
+  "media_panel_title_count": {
+    "message": "Scarica contenuti multimediali ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Ignora il pannello multimediale"
+  },
+  "media_panel_detected": {
+    "message": "Supporti rilevati"
+  },
+  "media_panel_protected": {
+    "message": "Il supporto protetto non è disponibile"
+  },
+  "policy_title": {
+    "message": "Privacy e autorizzazioni di integrazione del browser"
+  },
+  "policy_description": {
+    "message": "STANDARD garantisce solo azioni esplicite per sito. FULL è richiesto per l'intercettazione automatica, il contesto della richiesta protetta, l'ispezione avanzata o le finestre private."
+  },
+  "policy_mode": {
+    "message": "Modalità di integrazione"
+  },
+  "policy_automatic": {
+    "message": "Intercettazione automatica"
+  },
+  "policy_protected_context": {
+    "message": "Invia intestazioni, cookie, corpi, referrer e contesto proxy protetti"
+  },
+  "policy_advanced_media": {
+    "message": "Ispezione avanzata dei media"
+  },
+  "policy_private": {
+    "message": "Acquisizione privata/in incognito"
+  },
+  "policy_unavailable": {
+    "message": "Il criterio del browser desktop non è disponibile; l'acquisizione rimane disabilitata."
+  },
+  "policy_update_failed": {
+    "message": "Aggiornamento della politica non riuscito"
+  },
+  "policy_full_not_granted": {
+    "message": "Non è stata concessa l'autorità completa del browser; La modalità STANDARD rimane attiva."
+  },
+  "policy_http_sites_only": {
+    "message": "Sono supportati solo i siti HTTP e HTTPS"
+  },
+  "policy_site_permission_failed": {
+    "message": "Autorizzazione del sito non riuscita"
+  },
+  "policy_site": {
+    "message": "Sito"
+  },
+  "policy_grant_site": {
+    "message": "Sito di concessione"
+  },
+  "policy_extensions": {
+    "message": "Estensioni catturate"
+  },
+  "policy_mime_types": {
+    "message": "Tipi MIME catturati"
+  },
+  "policy_exclusions": {
+    "message": "Modelli di indirizzo completo esclusi"
+  },
+  "policy_custom_menus": {
+    "message": "Azioni del menu personalizzato (id | titolo | ambito | tipi di origine)"
+  },
+  "policy_media_adapters": {
+    "message": "Adattatori del sito multimediale (id | host | URL regex | selettori; separati | attributi)"
+  },
+  "policy_force_key": {
+    "message": "Tasto Forza"
+  },
+  "policy_bypass_key": {
+    "message": "Chiave di bypass"
+  },
+  "policy_private_access": {
+    "message": "Accesso privato al browser: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Autorità completa: $authority$; acquisizione automatica: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Siti concessi: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "non concesso ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Disattivato"
+  },
+  "standard": {
+    "message": "Standard"
+  },
+  "full": {
+    "message": "Completo"
+  },
+  "allowed": {
+    "message": "consentito"
+  },
+  "private_not_allowed": {
+    "message": "non consentito; abilitalo nella pagina dei dettagli dell'estensione del browser"
+  },
+  "granted": {
+    "message": "concesso"
+  },
+  "active": {
+    "message": "attivo"
+  },
+  "inactive": {
+    "message": "inattivo"
+  },
+  "site_access_missing": {
+    "message": "accesso al sito mancante"
+  },
+  "none": {
+    "message": "nessuno"
+  },
+  "recent_downloads_title": {
+    "message": "Riacquisisci un download del browser"
+  },
+  "recent_downloads_added": {
+    "message": "Aggiunto alla revisione desktop"
+  },
+  "recent_downloads_failed": {
+    "message": "Impossibile riconquistare"
+  },
+  "guidance_native_missing": {
+    "message": "L'integrazione nativa non è disponibile. Installa o avvia l'app desktop, quindi utilizza Altre impostazioni per testare nuovamente la connessione."
+  },
+  "guidance_native_old": {
+    "message": "L'app desktop è precedente a questa estensione. I download espliciti rimangono disponibili; aggiornare l'app desktop per abilitare l'integrazione automatica sicura."
+  },
+  "guidance_policy_off": {
+    "message": "L'integrazione del browser è disattivata. Apri Altre impostazioni per scegliere la modalità Standard o Completa."
+  },
+  "guidance_permission_missing": {
+    "message": "È selezionata la modalità completa ma l'autorità del browser è incompleta. Apri Altre impostazioni e concedi le autorizzazioni richieste."
+  },
+  "guidance_ready": {
+    "message": "L'integrazione sicura del browser è pronta."
+  },
+  "guidance_desktop_version": {
+    "message": "Scrivania $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Pattern URL ignorati"
+  },
+  "config_custom_no_limit": {
+    "message": "Personalizzato/Nessun limite"
+  },
+  "config_custom_value": {
+    "message": "Valore personalizzato:"
+  },
+  "config_enter_kb": {
+    "message": "InserisciKB"
+  },
+  "command_toggle_bypass": {
+    "message": "Attiva/disattiva il bypass automatico dell'acquisizione per la scheda corrente"
+  },
+  "command_review_page": {
+    "message": "Esamina la pagina corrente in AB Download Manager"
+  },
+  "diagnostics_title": {
+    "message": "Diagnostica dell'integrazione"
+  },
+  "diagnostics_empty": {
+    "message": "Nessun problema di integrazione recente."
+  },
+  "diagnostics_retry": {
+    "message": "Riprovare la connessione"
+  },
+  "diagnostics_clear": {
+    "message": "Chiaro"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "La connessione nativa è stata interrotta."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Il protocollo di integrazione desktop è precedente all'estensione."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "L'host desktop nativo non è disponibile."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Non è stato possibile preparare una revisione del collegamento del browser."
+  },
+  "diagnostic_unknown": {
+    "message": "Problema di integrazione: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Riprovare la connessione; se il problema persiste, riavvia o reinstalla l'integrazione desktop."
+  },
+  "recovery_open_settings": {
+    "message": "Esamina le impostazioni e le autorizzazioni dell'integrazione del browser."
+  },
+  "recovery_update_desktop": {
+    "message": "Aggiorna AB Download Manager e reinstalla l'integrazione del browser."
+  },
+  "recovery_grant_permissions": {
+    "message": "Concedere i permessi del browser richiesti."
+  }
+}

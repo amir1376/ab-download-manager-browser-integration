@@ -17,4 +17,7 @@ export const DefinedCommands = Object.freeze({
     RECAPTURE_BROWSER_DOWNLOAD_V2: "recapture_browser_download_v2",
     SUBMIT_STAGED_BROWSER_BATCH_V2: "submit_staged_browser_batch_v2",
     CANCEL_STAGED_BROWSER_BATCH_V2: "cancel_staged_browser_batch_v2",
+    GET_INTEGRATION_DIAGNOSTICS_V2: "get_integration_diagnostics_v2",
+    GET_SAFE_DIAGNOSTICS_V2: "get_safe_diagnostics_v2",
+    CLEAR_SAFE_DIAGNOSTICS_V2: "clear_safe_diagnostics_v2",
 })

@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "AB 下载管理器浏览器集成"
+  },
+  "extension_description": {
+    "message": "使用 AB 下载管理器桌面应用下载文件"
+  },
+  "selection_popup_download_selected": {
+    "message": "下载所选内容"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "未检测到链接"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "请先进行选择"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "使用 AB DM 下载"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "使用 AB DM 下载所选链接"
+  },
+  "browser_action_popup_title": {
+    "message": "AB DM 快速设置"
+  },
+  "option_ui_title": {
+    "message": "AB 下载管理器扩展"
+  },
+  "connection_connected": {
+    "message": "已连接"
+  },
+  "connection_not_connected": {
+    "message": "未连接"
+  },
+  "connection_checking": {
+    "message": "正在检查"
+  },
+  "config_auto_capture_links": {
+    "message": "自动捕获链接"
+  },
+  "config_auto_capture_links_description": {
+    "message": "当您在浏览器中点击链接时，应用会自动捕获该链接以便下载"
+  },
+  "reset_to_default": {
+    "message": "恢复默认设置"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "输入您希望被捕获的每个文件扩展名，然后按回车"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "输入您不希望被捕获的 URL（每行一个，支持通配符(*)）"
+  },
+  "config_silent_add_download": {
+    "message": "静默添加下载"
+  },
+  "config_silent_add_download_description": {
+    "message": "自动将捕获的下载添加到下载列表，而不显示“添加下载”窗口"
+  },
+  "config_silent_start_download": {
+    "message": "静默开始下载"
+  },
+  "config_silent_start_download_description": {
+    "message": "自动开始捕获的下载而不显示“添加下载”窗口"
+  },
+  "config_show_popups": {
+    "message": "显示弹出窗口"
+  },
+  "config_show_popups_description": {
+    "message": "在包含链接的选择上显示弹出窗口"
+  },
+  "config_native_messaging_host": {
+    "message": "本地消息传递"
+  },
+  "config_native_messaging_host_description": {
+    "message": "当扩展拦截到新的下载时，即使应用程序未运行，也会自动启动应用程序。"
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "主机可达"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "主机不可达"
+  },
+  "config_port": {
+    "message": "端口"
+  },
+  "config_port_description": {
+    "message": "确保此端口与应用中的值相同，否则此扩展无法正常工作"
+  },
+  "config_api_key": {
+    "message": "API 密钥"
+  },
+  "config_api_key_description": {
+    "message": "如果您在应用设置中启用了 API 密钥认证，请在此处粘贴生成的 API 密钥。"
+  },
+  "config_port_connection_success": {
+    "message": "成功\n端口 ($port$) 已连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "失败\n端口 ($port$) 未连接",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "发送 Cookie"
+  },
+  "config_send_cookies_descrption": {
+    "message": "注意：如果您处于非受信环境中，请不要勾选此项"
+  },
+  "browser_action_more_settings": {
+    "message": "更多设置"
+  },
+  "connection_error_api_error": {
+    "message": "应用 API 出现问题，请确保应用和扩展都更新到最新版本"
+  },
+  "connection_error_network_error": {
+    "message": "无法连接到应用，请确保应用已安装并正在运行。同时确保在应用设置中启用了浏览器集成功能"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "test": {
+    "message": "测试"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "为了使此扩展正常工作，请确保已安装 AB 下载管理器，如果没有..."
+  },
+  "download_abdm_app": {
+    "message": "下载应用程序"
+  },
+  "project_website": {
+    "message": "项目网站"
+  },
+  "support_by_rating": {
+    "message": "如果您喜欢这个作品，不要忘记通过评论/评分来支持我，并分享给您的朋友"
+  },
+  "project_source_code": {
+    "message": "项目源代码"
+  },
+  "abdm_notification_title": {
+    "message": "AB 下载管理器"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "静默下载捕获的文件"
+  },
+  "download_media_title": {
+    "message": "使用 ABDM 下载"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "捕获文件的最小大小（KB）"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "仅捕获大小大于或等于此值的文件。设置为 0 以捕获所有大小。"
+  },
+  "config_bypass_shortcut": {
+    "message": "绕过快捷键"
+  },
+  "config_press_a_key": {
+    "message": "按一个键..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "启用下载链接自动捕获时，按住快捷键并点击下载链接将使用内部浏览器下载方式。"
+  },
+  "context_menu_download_all_links": {
+    "message": "使用 AB 下载管理器下载所有链接"
+  },
+  "context_menu_download_page": {
+    "message": "使用 AB 下载管理器下载当前页面"
+  },
+  "context_menu_download_frame": {
+    "message": "使用 AB 下载管理器下载当前框架"
+  },
+  "context_menu_bypass_tab": {
+    "message": "在此标签页中绕过自动捕获"
+  },
+  "feedback_no_links": {
+    "message": "在此选择或页面中未找到可下载的链接。"
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "此浏览器无法安全地保留私人批量审查。"
+  },
+  "feedback_batch_failed": {
+    "message": "链接审查无法准备。浏览器拥有的下载未被更改。"
+  },
+  "batch_review_loading": {
+    "message": "正在加载评论…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "会话评论存储不可用。"
+  },
+  "batch_review_expired": {
+    "message": "此评论已过期。"
+  },
+  "batch_review_title": {
+    "message": "检查浏览器链接"
+  },
+  "batch_review_summary": {
+    "message": "$scope$ 集合：$count$ 唯一候选项。在此评论提交并被接受之前不存在桌面任务。",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "筛选候选项"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "筛选 URL、描述或类型"
+  },
+  "batch_review_select_shown": {
+    "message": "选择显示项"
+  },
+  "batch_review_clear_shown": {
+    "message": "清除显示项"
+  },
+  "batch_review_submitting": {
+    "message": "正在提交加密的桌面评论…"
+  },
+  "batch_review_ready": {
+    "message": "桌面评论已准备好。"
+  },
+  "batch_review_submission_failed": {
+    "message": "提交失败"
+  },
+  "batch_review_submit_count": {
+    "message": "提交 $count$ 以进行桌面评论",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "close": {
+    "message": "关闭"
+  },
+  "media_selection_loading": {
+    "message": "正在加载媒体选项…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "安全会话选择存储不可用。"
+  },
+  "media_selection_expired": {
+    "message": "此媒体选择已过期。"
+  },
+  "media_selection_title": {
+    "message": "选择媒体质量和轨道"
+  },
+  "media_selection_no_defaults": {
+    "message": "没有预选的质量、音轨、直播时长或容器。受保护/DRM 媒体不可用。"
+  },
+  "media_selection_variant": {
+    "message": "变体或质量"
+  },
+  "media_selection_tracks": {
+    "message": "音频和字幕轨道"
+  },
+  "media_selection_no_tracks": {
+    "message": "没有单独的轨道被宣传。"
+  },
+  "media_selection_choose_audio": {
+    "message": "选择一个音频轨道。"
+  },
+  "media_selection_container": {
+    "message": "输出容器"
+  },
+  "media_selection_native_container": {
+    "message": "保持原生容器"
+  },
+  "media_selection_live_duration": {
+    "message": "直播录制时长（秒）"
+  },
+  "media_selection_submitting": {
+    "message": "正在创建加密的桌面媒体评论…"
+  },
+  "media_selection_failed": {
+    "message": "媒体选择失败"
+  },
+  "media_selection_continue": {
+    "message": "继续桌面路由"
+  },
+  "choose": {
+    "message": "选择…"
+  },
+  "undetermined": {
+    "message": "未确定"
+  },
+  "media": {
+    "message": "媒体"
+  },
+  "media_panel_aria": {
+    "message": "检测到可下载媒体"
+  },
+  "media_panel_title_count": {
+    "message": "下载媒体 ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "关闭媒体面板"
+  },
+  "media_panel_detected": {
+    "message": "检测到媒体"
+  },
+  "media_panel_protected": {
+    "message": "受保护的媒体不可用"
+  },
+  "policy_title": {
+    "message": "浏览器集成隐私和权限"
+  },
+  "policy_description": {
+    "message": "STANDARD仅授予明确的、按站点的操作。FULL对于自动拦截、受保护的请求上下文、高级检查或隐私窗口是必需的。"
+  },
+  "policy_mode": {
+    "message": "集成模式"
+  },
+  "policy_automatic": {
+    "message": "自动拦截"
+  },
+  "policy_protected_context": {
+    "message": "发送受保护的头信息、Cookies、主体、引用来源和代理上下文"
+  },
+  "policy_advanced_media": {
+    "message": "高级媒体检测"
+  },
+  "policy_private": {
+    "message": "私密/无痕捕获"
+  },
+  "policy_unavailable": {
+    "message": "桌面浏览器策略不可用；捕获保持禁用状态。"
+  },
+  "policy_update_failed": {
+    "message": "策略更新失败"
+  },
+  "policy_full_not_granted": {
+    "message": "未授予完整浏览器权限；标准模式保持激活。"
+  },
+  "policy_http_sites_only": {
+    "message": "仅支持 HTTP 和 HTTPS 网站"
+  },
+  "policy_site_permission_failed": {
+    "message": "网站权限失败"
+  },
+  "policy_site": {
+    "message": "网站"
+  },
+  "policy_grant_site": {
+    "message": "授予网站权限"
+  },
+  "policy_extensions": {
+    "message": "已捕获扩展"
+  },
+  "policy_mime_types": {
+    "message": "已捕获 MIME 类型"
+  },
+  "policy_exclusions": {
+    "message": "排除的完整地址模式"
+  },
+  "policy_custom_menus": {
+    "message": "自定义菜单操作（id | 标题 | 范围 | 来源类型）"
+  },
+  "policy_media_adapters": {
+    "message": "媒体网站适配器（id | 主机 | URL 正则 | 选择器 ; 分隔 | 属性）"
+  },
+  "policy_force_key": {
+    "message": "强制键"
+  },
+  "policy_bypass_key": {
+    "message": "绕过键"
+  },
+  "policy_private_access": {
+    "message": "浏览器私人访问：$state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "完全权限：$authority$；自动捕获：$capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "已授予的网站：$sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "未授予（$details$）",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "关闭"
+  },
+  "standard": {
+    "message": "标准"
+  },
+  "full": {
+    "message": "完整"
+  },
+  "allowed": {
+    "message": "允许"
+  },
+  "private_not_allowed": {
+    "message": "不允许；在浏览器扩展详情页面启用"
+  },
+  "granted": {
+    "message": "已授予"
+  },
+  "active": {
+    "message": "激活"
+  },
+  "inactive": {
+    "message": "未激活"
+  },
+  "site_access_missing": {
+    "message": "缺少网站访问权限"
+  },
+  "none": {
+    "message": "无"
+  },
+  "recent_downloads_title": {
+    "message": "重新捕获浏览器下载"
+  },
+  "recent_downloads_added": {
+    "message": "已添加到桌面审查"
+  },
+  "recent_downloads_failed": {
+    "message": "无法重新捕获"
+  },
+  "guidance_native_missing": {
+    "message": "本地集成不可用。安装或启动桌面应用程序，然后使用更多设置重新测试连接。"
+  },
+  "guidance_native_old": {
+    "message": "桌面应用程序版本低于此扩展版本。明确下载仍然可用；更新桌面应用程序以启用安全自动集成。"
+  },
+  "guidance_policy_off": {
+    "message": "浏览器集成已关闭。打开更多设置选择标准或完全模式。"
+  },
+  "guidance_permission_missing": {
+    "message": "已选择完全模式，但浏览器权限不完整。打开更多设置并授予所请求的权限。"
+  },
+  "guidance_ready": {
+    "message": "安全浏览器集成已就绪。"
+  },
+  "guidance_desktop_version": {
+    "message": "桌面 $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "忽略的 URL 模式"
+  },
+  "config_custom_no_limit": {
+    "message": "自定义 / 无限制"
+  },
+  "config_custom_value": {
+    "message": "自定义值："
+  },
+  "config_enter_kb": {
+    "message": "输入 KB"
+  },
+  "command_toggle_bypass": {
+    "message": "切换当前标签页的自动捕获绕过"
+  },
+  "command_review_page": {
+    "message": "在 AB 下载管理器中查看当前页面"
+  },
+  "diagnostics_title": {
+    "message": "集成诊断"
+  },
+  "diagnostics_empty": {
+    "message": "没有最近的集成问题。"
+  },
+  "diagnostics_retry": {
+    "message": "重试连接"
+  },
+  "diagnostics_clear": {
+    "message": "清除"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "本机连接已中断。"
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "桌面集成协议比扩展程序旧。"
+  },
+  "diagnostic_native_unavailable": {
+    "message": "本地桌面主机不可用。"
+  },
+  "diagnostic_batch_failed": {
+    "message": "无法准备浏览器链接预览。"
+  },
+  "diagnostic_unknown": {
+    "message": "集成问题：$code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "重试连接；如果仍然失败，请重启或重新安装桌面集成。"
+  },
+  "recovery_open_settings": {
+    "message": "检查浏览器集成设置和权限。"
+  },
+  "recovery_update_desktop": {
+    "message": "更新 AB 下载管理器并重新安装其浏览器集成。"
+  },
+  "recovery_grant_permissions": {
+    "message": "授予所请求的浏览器权限。"
+  }
+}

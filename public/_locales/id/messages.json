@@ -1,0 +1,548 @@
+{
+  "extension_name": {
+    "message": "Integrasi Peramban Pengelola Unduhan AB"
+  },
+  "extension_description": {
+    "message": "Unduh file dengan aplikasi desktop AB Download Manager"
+  },
+  "selection_popup_download_selected": {
+    "message": "Unduh dipilih"
+  },
+  "popup_alert_no_link_detected": {
+    "message": "Tidak ada tautan yang terdeteksi"
+  },
+  "popup_alert_nothing_selected": {
+    "message": "Silakan tentukan pilihannya terlebih dahulu"
+  },
+  "context_menu_download_with_abdm": {
+    "message": "Unduh dengan AB DM"
+  },
+  "context_menu_download_selected_links_with_abdm": {
+    "message": "Unduh tautan yang dipilih dengan AB DM"
+  },
+  "browser_action_popup_title": {
+    "message": "Pengaturan Cepat AB DM"
+  },
+  "option_ui_title": {
+    "message": "Ekstensi Pengelola Unduhan AB"
+  },
+  "connection_connected": {
+    "message": "Terhubung"
+  },
+  "connection_not_connected": {
+    "message": "Tidak terhubung"
+  },
+  "connection_checking": {
+    "message": "Memeriksa"
+  },
+  "config_auto_capture_links": {
+    "message": "Tautan Tangkap Otomatis"
+  },
+  "config_auto_capture_links_description": {
+    "message": "Saat Anda mengklik tautan di browser Anda, tautan itu secara otomatis akan diambil untuk diunduh oleh aplikasi"
+  },
+  "reset_to_default": {
+    "message": "Atur ulang ke default"
+  },
+  "config_auto_capture_links_file_extensions_description": {
+    "message": "Masukkan masing-masing ekstensi file yang ingin ditangkap lalu tekan enter"
+  },
+  "config_blacklisted_urls_description": {
+    "message": "Masukkan URL yang tidak ingin Anda ambil (satu per baris, wildcard (*) didukung)"
+  },
+  "config_silent_add_download": {
+    "message": "Tambahkan unduhan secara diam-diam"
+  },
+  "config_silent_add_download_description": {
+    "message": "Secara otomatis menambahkan unduhan yang diambil ke daftar unduhan tanpa menampilkan jendela \"Tambahkan Unduhan\"."
+  },
+  "config_silent_start_download": {
+    "message": "Mulai unduh secara diam-diam"
+  },
+  "config_silent_start_download_description": {
+    "message": "Secara otomatis memulai unduhan yang diambil tanpa menampilkan jendela \"Tambahkan Unduhan\"."
+  },
+  "config_show_popups": {
+    "message": "Tampilkan popup"
+  },
+  "config_show_popups_description": {
+    "message": "Tampilkan popup pada pilihan yang memiliki link"
+  },
+  "config_native_messaging_host": {
+    "message": "Pesan Asli"
+  },
+  "config_native_messaging_host_description": {
+    "message": "Saat ekstensi menghentikan unduhan baru, ekstensi tersebut akan secara otomatis meluncurkan aplikasi meskipun aplikasi tersebut belum berjalan."
+  },
+  "config_native_messaging_host_reachable": {
+    "message": "Tuan Rumah Dapat Dijangkau"
+  },
+  "config_native_messaging_host_not_reachable": {
+    "message": "Tuan Rumah Tidak Dapat Dijangkau"
+  },
+  "config_port": {
+    "message": "Pelabuhan"
+  },
+  "config_port_description": {
+    "message": "Pastikan port ini dan nilai dalam aplikasi sama jika tidak, ekstensi ini tidak akan berfungsi dengan baik"
+  },
+  "config_api_key": {
+    "message": "Kunci API"
+  },
+  "config_api_key_description": {
+    "message": "Jika Anda mengaktifkan autentikasi kunci API di pengaturan aplikasi, tempelkan kunci API yang dihasilkan di sini."
+  },
+  "config_port_connection_success": {
+    "message": "Sukses\nPort ($port$) Terhubung",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_port_connection_fail": {
+    "message": "Kegagalan\nPort ($port$) tidak terhubung",
+    "placeholders": {
+      "port": {
+        "content": "$1",
+        "example": "15151"
+      }
+    }
+  },
+  "config_send_cookies": {
+    "message": "Kirim Cookie"
+  },
+  "config_send_cookies_descrption": {
+    "message": "Catatan: JANGAN centang ini jika Anda berada di lingkungan yang tidak tepercaya"
+  },
+  "browser_action_more_settings": {
+    "message": "Pengaturan lainnya"
+  },
+  "connection_error_api_error": {
+    "message": "Ada masalah dengan api aplikasi, pastikan untuk memperbarui aplikasi dan ekstensi ke versi terbaru"
+  },
+  "connection_error_network_error": {
+    "message": "Tidak dapat terhubung ke aplikasi, pastikan aplikasi sudah terinstal dan berjalan. Pastikan juga fitur Integrasi Browser dihidupkan di pengaturan aplikasi"
+  },
+  "settings": {
+    "message": "Pengaturan"
+  },
+  "test": {
+    "message": "Tes"
+  },
+  "note_about_app_must_be_installed_first": {
+    "message": "Agar extension ini dapat berfungsi dengan baik, pastikan AB Download Manager sudah terinstall, jika tidak..."
+  },
+  "download_abdm_app": {
+    "message": "Unduh Aplikasinya"
+  },
+  "project_website": {
+    "message": "Situs Proyek"
+  },
+  "support_by_rating": {
+    "message": "Jika Anda menyukai karya ini, jangan lupa untuk mendukung saya dengan komentar/peringkat Anda dan juga membagikannya ke teman-teman Anda"
+  },
+  "project_source_code": {
+    "message": "Kode Sumber Proyek"
+  },
+  "abdm_notification_title": {
+    "message": "Pengelola Unduhan AB"
+  },
+  "abdm_notification_download_captured_silently": {
+    "message": "Unduhan diambil secara diam-diam"
+  },
+  "download_media_title": {
+    "message": "Unduh Dengan ABDM"
+  },
+  "config_capture_file_size_limit_kb": {
+    "message": "Ukuran file capture minimal (KB)"
+  },
+  "config_capture_file_size_limit_kb_description": {
+    "message": "Hanya ambil file dengan ukuran lebih besar atau sama dengan nilai ini dalam kilobyte. Setel 0 untuk menangkap semua ukuran."
+  },
+  "config_bypass_shortcut": {
+    "message": "Lewati Pintasan"
+  },
+  "config_press_a_key": {
+    "message": "Tekan sebuah tombol..."
+  },
+  "config_bypass_shortcut_description": {
+    "message": "Ketika pengambilan otomatis tautan unduhan diaktifkan, menahan tombol pintasan dan mengeklik tautan unduhan akan menggunakan metode pengunduhan browser internal."
+  },
+  "context_menu_download_all_links": {
+    "message": "Unduh semua tautan dengan AB Download Manager"
+  },
+  "context_menu_download_page": {
+    "message": "Unduh halaman saat ini dengan AB Download Manager"
+  },
+  "context_menu_download_frame": {
+    "message": "Unduh bingkai saat ini dengan AB Download Manager"
+  },
+  "context_menu_bypass_tab": {
+    "message": "Lewati pengambilan otomatis di tab ini"
+  },
+  "feedback_no_links": {
+    "message": "Tidak ada tautan unduhan yang ditemukan dalam pilihan atau halaman ini."
+  },
+  "feedback_session_storage_unavailable": {
+    "message": "Browser ini tidak dapat menyimpan tinjauan batch pribadi dengan aman."
+  },
+  "feedback_batch_failed": {
+    "message": "Tinjauan tautan tidak dapat disiapkan. Unduhan milik browser tidak diubah."
+  },
+  "batch_review_loading": {
+    "message": "Memuat ulasan…"
+  },
+  "batch_review_storage_unavailable": {
+    "message": "Penyimpanan tinjauan sesi tidak tersedia."
+  },
+  "batch_review_expired": {
+    "message": "Ulasan ini sudah habis masa berlakunya."
+  },
+  "batch_review_title": {
+    "message": "Tinjau tautan browser"
+  },
+  "batch_review_summary": {
+    "message": "Koleksi $scope$: kandidat unik $count$. Tidak ada tugas desktop hingga tinjauan ini dikirimkan dan diterima.",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "batch_review_filter": {
+    "message": "Saring kandidat"
+  },
+  "batch_review_filter_placeholder": {
+    "message": "Filter URL, deskripsi, atau jenis"
+  },
+  "batch_review_select_shown": {
+    "message": "Pilih ditampilkan"
+  },
+  "batch_review_clear_shown": {
+    "message": "Jelas ditampilkan"
+  },
+  "batch_review_submitting": {
+    "message": "Mengirimkan ulasan desktop terenkripsi…"
+  },
+  "batch_review_ready": {
+    "message": "Tinjauan desktop sudah siap."
+  },
+  "batch_review_submission_failed": {
+    "message": "Pengiriman gagal"
+  },
+  "batch_review_submit_count": {
+    "message": "Kirimkan $count$ untuk tinjauan desktop",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "cancel": {
+    "message": "Batal"
+  },
+  "close": {
+    "message": "Tutup"
+  },
+  "media_selection_loading": {
+    "message": "Memuat pilihan media…"
+  },
+  "media_selection_storage_unavailable": {
+    "message": "Penyimpanan pemilihan sesi yang aman tidak tersedia."
+  },
+  "media_selection_expired": {
+    "message": "Pilihan media ini sudah habis masa berlakunya."
+  },
+  "media_selection_title": {
+    "message": "Pilih kualitas dan trek media"
+  },
+  "media_selection_no_defaults": {
+    "message": "Tidak ada kualitas, trek, durasi tayang, atau wadah yang dipilih sebelumnya. Media yang dilindungi/DRM tidak tersedia."
+  },
+  "media_selection_variant": {
+    "message": "Varian atau kualitas"
+  },
+  "media_selection_tracks": {
+    "message": "Trek audio dan subtitle"
+  },
+  "media_selection_no_tracks": {
+    "message": "Tidak ada trek terpisah yang diiklankan."
+  },
+  "media_selection_choose_audio": {
+    "message": "Pilih satu trek audio."
+  },
+  "media_selection_container": {
+    "message": "Wadah keluaran"
+  },
+  "media_selection_native_container": {
+    "message": "Simpan wadah asli"
+  },
+  "media_selection_live_duration": {
+    "message": "Durasi rekaman langsung (detik)"
+  },
+  "media_selection_submitting": {
+    "message": "Membuat tinjauan media desktop terenkripsi…"
+  },
+  "media_selection_failed": {
+    "message": "Pemilihan media gagal"
+  },
+  "media_selection_continue": {
+    "message": "Lanjutkan ke perutean desktop"
+  },
+  "choose": {
+    "message": "Pilih…"
+  },
+  "undetermined": {
+    "message": "yg tak dpt ditentukan"
+  },
+  "media": {
+    "message": "Media"
+  },
+  "media_panel_aria": {
+    "message": "Media yang dapat diunduh terdeteksi"
+  },
+  "media_panel_title_count": {
+    "message": "Unduh media ($count$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "media_panel_dismiss": {
+    "message": "Tutup panel media"
+  },
+  "media_panel_detected": {
+    "message": "Media yang terdeteksi"
+  },
+  "media_panel_protected": {
+    "message": "Media yang dilindungi tidak tersedia"
+  },
+  "policy_title": {
+    "message": "Privasi dan izin integrasi browser"
+  },
+  "policy_description": {
+    "message": "STANDARD hanya memberikan tindakan eksplisit per situs. LENGKAP diperlukan untuk intersepsi otomatis, konteks permintaan yang dilindungi, pemeriksaan lanjutan, atau jendela pribadi."
+  },
+  "policy_mode": {
+    "message": "Modus integrasi"
+  },
+  "policy_automatic": {
+    "message": "Intersepsi otomatis"
+  },
+  "policy_protected_context": {
+    "message": "Kirim header, cookie, isi, perujuk, dan konteks proksi yang dilindungi"
+  },
+  "policy_advanced_media": {
+    "message": "Inspeksi media tingkat lanjut"
+  },
+  "policy_private": {
+    "message": "Pengambilan pribadi/penyamaran"
+  },
+  "policy_unavailable": {
+    "message": "Kebijakan browser desktop tidak tersedia; penangkapan tetap dinonaktifkan."
+  },
+  "policy_update_failed": {
+    "message": "Pembaruan kebijakan gagal"
+  },
+  "policy_full_not_granted": {
+    "message": "Otoritas browser penuh tidak diberikan; Mode STANDAR tetap aktif."
+  },
+  "policy_http_sites_only": {
+    "message": "Hanya situs HTTP dan HTTPS yang didukung"
+  },
+  "policy_site_permission_failed": {
+    "message": "Izin situs gagal"
+  },
+  "policy_site": {
+    "message": "Lokasi"
+  },
+  "policy_grant_site": {
+    "message": "Situs hibah"
+  },
+  "policy_extensions": {
+    "message": "Ekstensi yang diambil"
+  },
+  "policy_mime_types": {
+    "message": "Jenis MIME yang diambil"
+  },
+  "policy_exclusions": {
+    "message": "Pola alamat lengkap tidak termasuk"
+  },
+  "policy_custom_menus": {
+    "message": "Tindakan menu khusus (id | judul | cakupan | jenis sumber)"
+  },
+  "policy_media_adapters": {
+    "message": "Adaptor situs media (id | host | URL regex | penyeleksi; dipisahkan | atribut)"
+  },
+  "policy_force_key": {
+    "message": "Kunci paksa"
+  },
+  "policy_bypass_key": {
+    "message": "Kunci pintas"
+  },
+  "policy_private_access": {
+    "message": "Akses pribadi peramban: $state$",
+    "placeholders": {
+      "state": {
+        "content": "$1"
+      }
+    }
+  },
+  "policy_authority_status": {
+    "message": "Otoritas penuh: $authority$; pengambilan otomatis: $capture$",
+    "placeholders": {
+      "authority": {
+        "content": "$1"
+      },
+      "capture": {
+        "content": "$2"
+      }
+    }
+  },
+  "policy_granted_sites": {
+    "message": "Situs yang diberikan: $sites$",
+    "placeholders": {
+      "sites": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_granted_details": {
+    "message": "tidak diberikan ($details$)",
+    "placeholders": {
+      "details": {
+        "content": "$1"
+      }
+    }
+  },
+  "off": {
+    "message": "Mati"
+  },
+  "standard": {
+    "message": "Standar"
+  },
+  "full": {
+    "message": "Penuh"
+  },
+  "allowed": {
+    "message": "diizinkan"
+  },
+  "private_not_allowed": {
+    "message": "tidak diperbolehkan; aktifkan di halaman detail ekstensi browser"
+  },
+  "granted": {
+    "message": "diberikan"
+  },
+  "active": {
+    "message": "aktif"
+  },
+  "inactive": {
+    "message": "tidak aktif"
+  },
+  "site_access_missing": {
+    "message": "akses situs hilang"
+  },
+  "none": {
+    "message": "tidak ada"
+  },
+  "recent_downloads_title": {
+    "message": "Ambil kembali unduhan browser"
+  },
+  "recent_downloads_added": {
+    "message": "Ditambahkan ke tinjauan desktop"
+  },
+  "recent_downloads_failed": {
+    "message": "Tidak dapat merebut kembali"
+  },
+  "guidance_native_missing": {
+    "message": "Integrasi asli tidak tersedia. Instal atau mulai aplikasi desktop, lalu gunakan Pengaturan lainnya untuk menguji ulang koneksi."
+  },
+  "guidance_native_old": {
+    "message": "Aplikasi desktop lebih lama dari ekstensi ini. Unduhan eksplisit tetap tersedia; perbarui aplikasi desktop untuk mengaktifkan integrasi otomatis yang aman."
+  },
+  "guidance_policy_off": {
+    "message": "Integrasi browser Tidak Aktif. Buka Pengaturan lainnya untuk memilih mode Standar atau Penuh."
+  },
+  "guidance_permission_missing": {
+    "message": "Mode penuh dipilih tetapi otoritas browser tidak lengkap. Buka Pengaturan lainnya dan berikan izin yang diminta."
+  },
+  "guidance_ready": {
+    "message": "Integrasi browser yang aman sudah siap."
+  },
+  "guidance_desktop_version": {
+    "message": "Desktop $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "config_ignored_url_patterns": {
+    "message": "Pola URL diabaikan"
+  },
+  "config_custom_no_limit": {
+    "message": "Kustom / Tanpa batas"
+  },
+  "config_custom_value": {
+    "message": "Nilai khusus:"
+  },
+  "config_enter_kb": {
+    "message": "Masukkan KB"
+  },
+  "command_toggle_bypass": {
+    "message": "Alihkan bypass pengambilan otomatis untuk tab saat ini"
+  },
+  "command_review_page": {
+    "message": "Tinjau halaman saat ini di AB Download Manager"
+  },
+  "diagnostics_title": {
+    "message": "Diagnostik integrasi"
+  },
+  "diagnostics_empty": {
+    "message": "Tidak ada masalah integrasi baru-baru ini."
+  },
+  "diagnostics_retry": {
+    "message": "Coba lagi koneksi"
+  },
+  "diagnostics_clear": {
+    "message": "Jernih"
+  },
+  "diagnostic_native_disconnected": {
+    "message": "Koneksi asli terputus."
+  },
+  "diagnostic_desktop_legacy": {
+    "message": "Protokol integrasi desktop lebih tua dari ekstensi."
+  },
+  "diagnostic_native_unavailable": {
+    "message": "Host desktop asli tidak tersedia."
+  },
+  "diagnostic_batch_failed": {
+    "message": "Tinjauan tautan browser tidak dapat disiapkan."
+  },
+  "diagnostic_unknown": {
+    "message": "Masalah integrasi: $code$",
+    "placeholders": {
+      "code": {
+        "content": "$1"
+      }
+    }
+  },
+  "recovery_retry": {
+    "message": "Coba lagi koneksinya; jika masih gagal, mulai ulang atau instal ulang integrasi desktop."
+  },
+  "recovery_open_settings": {
+    "message": "Tinjau pengaturan dan izin integrasi browser."
+  },
+  "recovery_update_desktop": {
+    "message": "Perbarui AB Download Manager dan instal ulang integrasi browsernya."
+  },
+  "recovery_grant_permissions": {
+    "message": "Berikan izin browser yang diminta."
+  }
+}

@@ -21,5 +21,5 @@ export const browserParityFeatureFlagsV2: Readonly<BrowserParityFeatureFlagsV2> 
     reviewedBatches: true,
     advancedMediaDiscovery: true,
     adaptiveMediaTransfer: true,
-    uxPolicy: false,
+    uxPolicy: true,
 })

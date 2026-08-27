@@ -25,5 +25,8 @@ declare module "webext-bridge" {
         recapture_browser_download_v2: ProtocolWithReturn<number, boolean>;
         submit_staged_browser_batch_v2: ProtocolWithReturn<{reviewId: string; candidateIds: string[]}, unknown>;
         cancel_staged_browser_batch_v2: ProtocolWithReturn<string, boolean>;
+        get_integration_diagnostics_v2: ProtocolWithReturn<null, unknown>;
+        get_safe_diagnostics_v2: ProtocolWithReturn<null, unknown>;
+        clear_safe_diagnostics_v2: ProtocolWithReturn<null, boolean>;
     }
 }

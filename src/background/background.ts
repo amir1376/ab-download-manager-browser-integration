@@ -17,9 +17,12 @@ import {
 } from "~/permissions/BrowserPermissionPolicyV2";
 import type {BrowserIntegrationPolicyV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
 import {recaptureBrowserDownloadV2} from "~/linkgrabber/v2/HistoricalDownloadCaptureV2";
-import {cancelStagedBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
+import {cancelStagedBatchReviewV2, stageBatchReviewV2, submitStagedBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
 import {MediaCandidateRegistryV2} from "~/media/v2/MediaCandidateRegistryV2";
 import {bootAddressRefreshObserverV2} from "~/addressrefresh/AddressRefreshObserverV2";
+import browser from "webextension-polyfill";
+import {clearSafeDiagnosticsV2, listSafeDiagnosticsV2} from "~/diagnostics/DiagnosticsV2";
+import {reportSafeDiagnosticV2} from "~/diagnostics/DiagnosticsV2";
 
 function receiveMessageFromContentScripts() {
     onMessage(DefinedCommands.ADD_DOWNLOAD, async (msg) => {
@@ -84,6 +87,37 @@ function receiveMessageFromContentScripts() {
         await cancelStagedBatchReviewV2(msg.data)
         return true
     })
+    onMessage(DefinedCommands.GET_INTEGRATION_DIAGNOSTICS_V2, async () => ({
+        nativeConnected: Backend.isNativeMessagingSupported(),
+        compatibilityMode: Backend.getBrowserProtocolCompatibilityMode(),
+        desktopVersion: Backend.getBrowserDesktopVersionV2(),
+        extensionVersion: browser.runtime.getManifest().version,
+        policyMode: Backend.getBrowserPolicyV2()?.mode ?? "UNAVAILABLE",
+        policy: Backend.getBrowserPolicyV2(),
+        fullAuthority: getBrowserPermissionStatusV2().fullAuthority,
+    }))
+    onMessage(DefinedCommands.GET_SAFE_DIAGNOSTICS_V2, async () => await listSafeDiagnosticsV2())
+    onMessage(DefinedCommands.CLEAR_SAFE_DIAGNOSTICS_V2, async () => {
+        await clearSafeDiagnosticsV2(); return true
+    })
+}
+
+function receiveKeyboardCommands() {
+    browser.commands.onCommand.addListener(command => {
+        void browser.tabs.query({active: true, currentWindow: true}).then(async ([tab]) => {
+            if (tab?.id === undefined) return
+            if (command === "toggle-tab-bypass") {
+                await BackgroundSharedState.setTabBypass(tab.id, !BackgroundSharedState.isTabBypassed(tab.id))
+            }
+            if (command === "review-current-page") {
+                await stageBatchReviewV2(tab.id, "PAGE", Boolean(tab.incognito), 0).catch(async () => {
+                    await reportSafeDiagnosticV2("BATCH_REVIEW_PREPARE_FAILED", "ERROR", "OPEN_SETTINGS")
+                    const action = (browser as unknown as {action?: {setBadgeText(details: {text: string}): Promise<void>}}).action
+                    await action?.setBadgeText({text: "!"})
+                })
+            }
+        })
+    })
 }
 
 export default defineExtensionEntry()
@@ -114,6 +148,7 @@ export default defineExtensionEntry()
             Backend.addBrowserPolicyListener(() => void configureAddressRefresh())
             await initializeOptions()
             receiveMessageFromContentScripts()
+            receiveKeyboardCommands()
             console.log("ab dm extension loaded successfully")
         } catch (e) {
             console.log("extension loading fail", e)

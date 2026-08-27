@@ -8,6 +8,8 @@ import {getPermissionRuntimeStateV2} from "~/permissions/PermissionRuntimeStateV
 import * as BackgroundSharedState from "~/background/BackgroundSharedState";
 import {stageBatchReviewV2} from "~/contextmenus/StagedBatchReviewV2";
 import type {BrowserBatchScopeV2, BrowserCandidateSourceV2} from "~/protocol/generated/BrowserIntegrationProtocolV2";
+import {t} from "~/i18n/t";
+import {reportSafeDiagnosticV2} from "~/diagnostics/DiagnosticsV2";
 const optionIds = Object.freeze({
     downloadWithAbDm: "download-with-ab-dm",
     downloadSelectedWithAbDm: "download-selected-with-ab-dm",
@@ -32,17 +34,17 @@ async function createOptions() {
     })
     browser.contextMenus.create({
         id: optionIds.downloadAllWithAbDm,
-        title: "Download all links with AB Download Manager",
+        title: t("context_menu_download_all_links", "Download all links with AB Download Manager"),
         contexts: ["page", "frame", "editable"],
     })
     browser.contextMenus.create({
         id: optionIds.downloadPageWithAbDm,
-        title: "Download current page with AB Download Manager",
+        title: t("context_menu_download_page", "Download current page with AB Download Manager"),
         contexts: ["page", "editable"],
     })
     browser.contextMenus.create({
         id: optionIds.downloadFrameWithAbDm,
-        title: "Download current frame with AB Download Manager",
+        title: t("context_menu_download_frame", "Download current frame with AB Download Manager"),
         contexts: ["frame", "editable"],
     })
     for (const action of policy.customMenuActions ?? []) {
@@ -54,7 +56,7 @@ async function createOptions() {
     }
     browser.contextMenus.create({
         id: optionIds.tabCaptureBypass,
-        title: "Bypass automatic capture in this tab",
+        title: t("context_menu_bypass_tab", "Bypass automatic capture in this tab"),
         contexts: ["page", "link", "audio", "video", "image", "selection"],
         type: "checkbox",
         checked: false,
@@ -147,10 +149,11 @@ async function submitBatch(
         await stageBatchReviewV2(tabId, scope, privateContext, frameId, sourceKinds)
     } catch (failure) {
         console.warn("Browser batch collection failed", failure)
+        void reportSafeDiagnosticV2("BATCH_REVIEW_PREPARE_FAILED", "ERROR", "OPEN_SETTINGS")
         const code = failure instanceof Error ? failure.message : "BROWSER_BATCH_FAILED"
-        const message = code === "NO_LINKS_FOUND" ? "No downloadable links were found in this selection or page." :
-            code === "SESSION_REVIEW_STORAGE_UNAVAILABLE" ? "This browser cannot safely retain a private batch review." :
-                "The link review could not be prepared. Browser-owned downloads were not changed."
+        const message = code === "NO_LINKS_FOUND" ? t("feedback_no_links", "No downloadable links were found in this selection or page.") :
+            code === "SESSION_REVIEW_STORAGE_UNAVAILABLE" ? t("feedback_session_storage_unavailable", "This browser cannot safely retain a private batch review.") :
+                t("feedback_batch_failed", "The link review could not be prepared. Browser-owned downloads were not changed.")
         await browser.tabs.sendMessage(tabId, {action: "browserBatchFeedbackV2", message}).catch(async () => {
             const action = (browser as unknown as {action?: {setBadgeText(details: {text: string}): Promise<void>; setTitle(details: {title: string}): Promise<void>}}).action
             await action?.setBadgeText({text: "!"})

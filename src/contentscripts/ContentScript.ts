@@ -1,6 +1,5 @@
 import {getLinksFromSelection} from "~/utils/LinkExtractor";
 import * as selectionPopup from "~/popup/selection/SelectionPopup";
-import * as MediaPopup from "~/popup/media/MediaSelectionPopup";
 import {debounce} from "~/utils/Debaunce";
 import * as mousePosition from "~/utils/MouseUtil"
 import * as HoldingKeyTracker from "~/utils/HoldingKeyTracker"
@@ -65,20 +64,6 @@ export default defineExtensionEntry()
                 checkAndReportLinks()
             })
             disposable.add(() => selectionPopup.setOnPopupClicked(async () => undefined))
-            MediaPopup.setItemClickListener((media) => {
-                const addDownloadType = media.type
-                addDownloads([
-                    {
-                        link: media.uri,
-                        suggestedName: media.suggestedFullName ?? "",
-                        type: addDownloadType,
-                        downloadPage: location.href,
-                        headers: media.requestHeaders ?? null,
-                        description: null
-                    }
-                ])
-                MediaPopup.toggleList(false)
-            })
 
             const selectionChanged = () => {
                 lastSelectionConsumed = true
@@ -122,10 +107,8 @@ export default defineExtensionEntry()
             disposable.add(() => showPopupDelayed.cancel())
             disposable.add(() => {
                 selectionPopup.closeAddDownloadPopupUi()
-                MediaPopup.toggleList(false)
                 scope.__abdmContentScriptV2 = false
             })
-            disposable.add(() => MediaPopup.setItemClickListener(() => undefined))
 
             const disableListener = (message: unknown) => {
                 const value = message as {action?: unknown; message?: unknown}
@@ -153,9 +136,6 @@ export default defineExtensionEntry()
             }))
             disposable.add(onMessage(DefinedCommands.CHECK_SELECTED_TEXT_FOR_LINKS, () => {
                 checkAndReportLinks()
-            }))
-            disposable.add(onMessage(DefinedCommands.DOWNLOADABLE_MEDIA_DETECTED, (msg) => {
-                MediaPopup.updatePopup(msg.data)
             }))
         } catch (e) {
             console.log("failed to load ab-dm-extension", e)
