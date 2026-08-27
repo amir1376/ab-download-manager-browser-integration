@@ -32,6 +32,9 @@ jobs:
           node scripts/compare-release-directories.mjs dist/release dist/release-second
       - name: Firefox package lint
         run: npx web-ext lint --source-dir dist/firefox --output json
+      - name: Installed Firefox temporary-add-on smoke
+        if: runner.os != 'macOS'
+        run: npm run browser:e2e:firefox
       - name: Installed Microsoft Edge MV3 smoke
         if: runner.os == 'Windows'
         run: npm run browser:e2e:edge

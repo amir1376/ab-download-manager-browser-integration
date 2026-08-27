@@ -234,10 +234,7 @@ export class NativeMessagingTransport {
     ): void => {
 
         if (!isNativeMessagingMessage(message)) {
-            console.warn(
-                "Received invalid native message",
-                message,
-            );
+            console.warn("NATIVE_MESSAGE_INVALID")
             return;
         }
 
@@ -247,7 +244,7 @@ export class NativeMessagingTransport {
                 void this.handleNativeRequest(message)
                 return
             }
-            console.log("Unhandled native message", message,);
+            console.warn("NATIVE_MESSAGE_UNCORRELATED")
             return;
         }
 
@@ -295,10 +292,7 @@ export class NativeMessagingTransport {
             pending.reject(error);
         }
         this.pendingRequests.clear();
-        console.log(
-            "Native messaging disconnected:",
-            message,
-        );
+        console.warn("NATIVE_MESSAGE_DISCONNECTED")
         this.scheduleReconnect();
     };
 
@@ -365,8 +359,8 @@ export class NativeMessagingTransport {
         for (const listener of this.connectionListeners) {
             try {
                 listener(connected)
-            } catch (error) {
-                console.warn("Native connection listener failed", error)
+            } catch {
+                console.warn("NATIVE_CONNECTION_LISTENER_FAILED")
             }
         }
     }

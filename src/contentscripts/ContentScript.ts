@@ -129,7 +129,7 @@ export default defineExtensionEntry()
             disposable.add(() => browser.runtime.onMessage.removeListener(disableListener))
 
             disposable.add(onMessage(DefinedCommands.SHOW_LOG, (msg) => {
-                console.log(...msg.data)
+                console.log(`BACKGROUND_EVENT_${msg.data.length}`)
             }))
             disposable.add(onMessage(DefinedCommands.SHOW_ALERT, (msg) => {
                 alert(createAlertStringForMyExtension(msg.data))
@@ -137,9 +137,9 @@ export default defineExtensionEntry()
             disposable.add(onMessage(DefinedCommands.CHECK_SELECTED_TEXT_FOR_LINKS, () => {
                 checkAndReportLinks()
             }))
-        } catch (e) {
-            console.log("failed to load ab-dm-extension", e)
-            throw e
+        } catch (error) {
+            console.warn("CONTENT_SCRIPT_BOOT_FAILED")
+            throw error
         }
     })
 

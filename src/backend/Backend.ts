@@ -106,8 +106,8 @@ export async function boot() {
             await refreshBrowserHelloV2()
             if (getBrowserHelloV2() === null) throw new Error("Protocol v2 unavailable")
             await refreshBrowserPolicyV2()
-            await migrateLegacyCaptureSettingsToPolicyV2().catch(error => {
-                console.warn("Legacy browser settings migration was deferred", error)
+            await migrateLegacyCaptureSettingsToPolicyV2().catch(() => {
+                console.warn("LEGACY_POLICY_MIGRATION_DEFERRED")
             })
         } catch {
             clearBrowserHelloV2()

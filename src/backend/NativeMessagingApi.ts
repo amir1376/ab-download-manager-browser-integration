@@ -46,11 +46,8 @@ export class NativeMessagingApi implements IAppApi {
             this.transport.connect();
             await this.ping();
             return true;
-        } catch (e) {
-            console.error(
-                "Cannot connect to native messaging host",
-                e,
-            );
+        } catch {
+            console.warn("NATIVE_HOST_CONNECT_FAILED")
             return false;
         }
     }

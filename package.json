@@ -26,6 +26,7 @@
     "release:package": "node scripts/build-release-candidate.mjs",
     "release:rc": "npm run generate:locales && npm run verify:protocol && npm run typecheck && npm test && npm run build && npm run release:package",
     "browser:e2e:edge": "node tests/browser-e2e/edge-extension-smoke.mjs",
+    "browser:e2e:firefox": "node tests/browser-e2e/firefox-extension-smoke.mjs",
     "serve:firefox": "web-ext run --firefox-profile default-release --start-url \"about:debugging#/runtime/this-firefox\"  --source-dir ./dist/firefox --devtools",
     "serve:chrome": "web-ext run -t chromium --start-url \"https://example.com\" --source-dir ./dist/chrome"
   },

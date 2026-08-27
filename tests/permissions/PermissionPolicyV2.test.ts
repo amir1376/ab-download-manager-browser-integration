@@ -1,5 +1,6 @@
 // Test-only permission fixtures are kept outside the production source tree.
 import {beforeEach, describe, expect, it, vi} from "vitest"
+import crypto from "node:crypto"
 
 const mocks = vi.hoisted(() => ({
     storage: new Map<string, unknown>(),
@@ -15,7 +16,7 @@ vi.mock("webextension-polyfill", () => ({default: {
     tabs: {onRemoved: {addListener: (listener: (tabId: number) => void) => mocks.removedListeners.push(listener)}},
 }}))
 
-import {getManifestForChrome} from "~/manifest/manifest.chrome"
+import {CHROME_WEB_STORE_PUBLIC_KEY, getManifestForChrome} from "~/manifest/manifest.chrome"
 import {getManifestForFirefox} from "~/manifest/manifest.firefox"
 
 describe("privacy-first permission policy", () => {
@@ -45,6 +46,15 @@ describe("privacy-first permission policy", () => {
             required: ["none"],
             optional: ["browsingActivity", "websiteContent", "authenticationInfo"],
         })
+    })
+
+    it("keeps unpacked Chromium validation on the native-host-authorized store identity", () => {
+        const digest = crypto.createHash("sha256").update(Buffer.from(CHROME_WEB_STORE_PUBLIC_KEY, "base64")).digest().subarray(0, 16)
+        const extensionId = [...digest].flatMap(value => [value >> 4, value & 0x0f])
+            .map(value => String.fromCharCode("a".charCodeAt(0) + value)).join("")
+
+        expect(extensionId).toBe("bbobopahenonfdgjgaleledndnnfhooj")
+        expect((getManifestForChrome() as any).key).toBe(CHROME_WEB_STORE_PUBLIC_KEY)
     })
 
     it("restores modifier and per-tab bypass state after an MV3 worker restart", async () => {

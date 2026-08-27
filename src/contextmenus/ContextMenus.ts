@@ -148,7 +148,7 @@ async function submitBatch(
     try {
         await stageBatchReviewV2(tabId, scope, privateContext, frameId, sourceKinds)
     } catch (failure) {
-        console.warn("Browser batch collection failed", failure)
+        console.warn("BROWSER_BATCH_COLLECTION_FAILED")
         void reportSafeDiagnosticV2("BATCH_REVIEW_PREPARE_FAILED", "ERROR", "OPEN_SETTINGS")
         const code = failure instanceof Error ? failure.message : "BROWSER_BATCH_FAILED"
         const message = code === "NO_LINKS_FOUND" ? t("feedback_no_links", "No downloadable links were found in this selection or page.") :

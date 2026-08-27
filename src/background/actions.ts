@@ -56,8 +56,8 @@ export async function getHeadersForUrl(
         headers["Host"] = new URL(url).host
         headers["User-Agent"] = navigator.userAgent
         return headers
-    } catch (e) {
-        console.log(e)
+    } catch {
+        console.warn("PROTECTED_HEADER_QUERY_FAILED")
         return null
     }
 }
@@ -77,7 +77,7 @@ async function usingBackend<T>(block: () => T) {
                 browser.i18n.getMessage("connection_error_network_error")
             )
         }
-        console.log("Error when using backend api", e)
+        console.warn("BACKEND_API_OPERATION_FAILED")
     }
 }
 

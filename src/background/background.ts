@@ -38,7 +38,7 @@ function receiveMessageFromContentScripts() {
         return await backend.isAppReachable()
     })
     onMessage(DefinedCommands.SHOW_LOG, (msg) => {
-        console.log(...msg.data)
+        console.log(`CONTENT_EVENT_${msg.data.length}`)
     })
     onMessage(DefinedCommands.GET_HEADERS, async (msg) => {
         return await getHeadersForUrls(msg.data)
