@@ -27,8 +27,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 3. FTP/FTPS browser intake | COMPLETE_LOCAL |
 | 4. Permissions, policy, lifecycle | COMPLETE_LOCAL |
 | 5. Context menus and reviewed batches | COMPLETE_LOCAL |
-| 6. Media discovery and panel | IN_PROGRESS |
-| 7. Media selection and renewal | NOT_STARTED |
+| 6. Media discovery and panel | COMPLETE_LOCAL |
+| 7. Media selection and renewal | IN_PROGRESS |
 | 8. UX, migration, localization, accessibility | NOT_STARTED |
 | 9. Packaging and browser E2E | NOT_STARTED |
 
@@ -155,6 +155,23 @@ schema copies and generated TypeScript types whose hashes are locked by
   `eefa6d2ed41dbc534df48e733ede8a2a5de30602`.
 - Actual cross-origin frames, selection geometry, maximum batches, menus, and review
   dialogs remain Phase 9 installed-browser gates.
+
+## Phase 6 local completion
+
+- Added DOM/mutation/performance/response/page-world Fetch/XHR/stream/blob discovery
+  for progressive, HLS, DASH, TS, and fMP4 media across frames and open shadow DOM.
+- Added bounded direct-URL adapters for YouTube, Meta/Instagram, and Vimeo plus
+  revisioned native site adapters with regex/selector failure containment. Cipher
+  and DRM paths remain unsupported and are never circumvented.
+- Added frame/element/source-aware candidate identity, expiry, caps, rate limits,
+  session restoration, SPA generations, and an untrusted page-message validator.
+- Added one top-frame accessible closed-shadow media panel with safe text rendering,
+  rich metadata, protected-media disabling, geometry/occlusion/viewport tracking,
+  and fullscreen/SPA continuity.
+- Final local receipt: TypeScript; 36/36 tests; Chrome/Firefox builds; protocol v2.3
+  lock. Checkpoint: `127c057f22f33c27015d08f1c3f328b239a6c904`.
+- Live players, CSP, blobs/MSE, cross-origin frames, adversarial inputs, and layout
+  churn remain Phase 9 browser/stress gates.
 
 ## Resume instructions
 
