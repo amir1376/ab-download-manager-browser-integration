@@ -7,6 +7,15 @@ const mocks = vi.hoisted(() => ({
     erase: vi.fn(async () => []),
     removeFile: vi.fn(async () => undefined),
     storage: new Map<string, unknown>(),
+    bypassed: false,
+    pressedKey: null as string | null,
+    privateAllowed: false,
+    policy: {
+        schemaVersion: 2, revision: 1, mode: "FULL", automaticInterception: true,
+        advancedMediaInspection: false, privateBrowsing: false, sendProtectedContext: true,
+        registeredFileTypes: ["bin"], registeredMimeTypes: [] as string[], excludedUrls: [] as string[],
+        forceShortcut: "Insert", bypassShortcut: "Delete",
+    },
 }))
 
 vi.mock("webextension-polyfill", () => ({
@@ -31,16 +40,11 @@ vi.mock("~/configs/Config", () => ({
     }),
 }))
 vi.mock("~/background/BackgroundSharedState", () => ({
-    isTabBypassed: () => false,
-    isShortcutPressed: () => false,
+    isTabBypassed: () => mocks.bypassed,
+    isShortcutPressed: (_tabId: number, shortcut: string) => mocks.pressedKey === shortcut,
 }))
 vi.mock("~/backend/Backend", () => ({
-    getBrowserPolicyV2: () => ({
-        schemaVersion: 2, revision: 1, mode: "FULL", automaticInterception: true,
-        advancedMediaInspection: false, privateBrowsing: false, sendProtectedContext: true,
-        registeredFileTypes: ["bin"], registeredMimeTypes: [], excludedUrls: [],
-        forceShortcut: "Insert", bypassShortcut: "Delete",
-    }),
+    getBrowserPolicyV2: () => mocks.policy,
     registerNativeBrowserRequestHandler: () => () => undefined,
     prepareCaptureV2: vi.fn(),
     markBrowserReleasedV2: vi.fn(),
@@ -48,7 +52,7 @@ vi.mock("~/backend/Backend", () => ({
     listPreparedCapturesV2: vi.fn(),
 }))
 vi.mock("~/permissions/PermissionRuntimeStateV2", () => ({
-    getPermissionRuntimeStateV2: () => ({fullAuthority: true, privateAllowed: false, grantedOrigins: ["https://*/*"]}),
+    getPermissionRuntimeStateV2: () => ({fullAuthority: true, privateAllowed: mocks.privateAllowed, grantedOrigins: ["https://*/*"]}),
 }))
 vi.mock("~/utils/ExtensionInfo", () => ({
     BrowserTarget: {chrome: "chrome", firefox: "firefox"},
@@ -65,6 +69,13 @@ describe("CaptureCoordinatorV2", () => {
         mocks.resume.mockResolvedValue(undefined)
         mocks.cancel.mockResolvedValue(undefined)
         mocks.storage.clear()
+        mocks.bypassed = false
+        mocks.pressedKey = null
+        mocks.privateAllowed = false
+        Object.assign(mocks.policy, {
+            mode: "FULL", automaticInterception: true, privateBrowsing: false,
+            registeredFileTypes: ["bin"], registeredMimeTypes: [], excludedUrls: [],
+        })
     })
 
     it("cancels browser ownership only after durable preparation and commits a review", async () => {
@@ -112,6 +123,44 @@ describe("CaptureCoordinatorV2", () => {
     it("does nothing when request correlation is ambiguous", async () => {
         const registry: any = {matchDownload: () => ({kind: "AMBIGUOUS"})}
         const bridge: any = {}
+        await new CaptureCoordinatorV2(registry, bridge).capture(download())
+        expect(mocks.pause).not.toHaveBeenCalled()
+    })
+
+    it("fails open for tab bypass and private downloads without both consents", async () => {
+        const registry: any = {
+            matchDownload: () => ({kind: "MATCHED", record: {requestId: "r1", createdAtEpochMs: 1_000, tabId: 1}}),
+            canCapture: () => true,
+        }
+        mocks.bypassed = true
+        await new CaptureCoordinatorV2(registry, {} as any).capture(download())
+        expect(mocks.pause).not.toHaveBeenCalled()
+
+        mocks.bypassed = false
+        await new CaptureCoordinatorV2(registry, {} as any).capture({...download(), incognito: true})
+        expect(mocks.pause).not.toHaveBeenCalled()
+    })
+
+    it("uses immediate force and bypass keys with force overriding file and exclusion rules", async () => {
+        const registry: any = {
+            matchDownload: () => ({kind: "MATCHED", record: {requestId: "r1", createdAtEpochMs: 1_000, tabId: 1}}),
+            canCapture: () => true,
+            createContext: async () => context(), forget: vi.fn(),
+        }
+        const bridge: any = {
+            prepare: async (proposal: any) => ({captureId: proposal.captureId, contextRef: "x", state: "PREPARED", expiresAtEpochMs: Date.now() + 1000}),
+            released: async (captureId: string) => ({captureId, contextRef: "x", state: "COMMITTED_REVIEW", expiresAtEpochMs: Date.now() + 1000}),
+            abort: vi.fn(), list: async () => [],
+        }
+        mocks.policy.automaticInterception = false
+        mocks.policy.registeredFileTypes = []
+        mocks.policy.excludedUrls = ["*://example.invalid/*"]
+        mocks.pressedKey = "Insert"
+        await new CaptureCoordinatorV2(registry, bridge).capture(download())
+        expect(mocks.pause).toHaveBeenCalledWith(4)
+
+        mocks.pause.mockClear()
+        mocks.pressedKey = "Delete"
         await new CaptureCoordinatorV2(registry, bridge).capture(download())
         expect(mocks.pause).not.toHaveBeenCalled()
     })

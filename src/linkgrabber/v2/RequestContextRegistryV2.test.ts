@@ -82,6 +82,8 @@ describe("RequestContextRegistryV2", () => {
             requestBody: {raw: [{bytes: new TextEncoder().encode("secret-body").buffer}]},
         } as any)
         const fullSnapshot = first.exportSnapshot()
+        expect(JSON.stringify(fullSnapshot)).not.toContain("requestBodyBytes")
+        expect(JSON.stringify(fullSnapshot)).not.toContain("secret-body")
         const restored = new RequestContextRegistryV2(() => 2_001)
         expect(restored.restoreSnapshot(fullSnapshot)).toBe(1)
         const matched = restored.matchDownload({url: "https://example.invalid/export", startTime: new Date(1_001).toISOString()} as any)

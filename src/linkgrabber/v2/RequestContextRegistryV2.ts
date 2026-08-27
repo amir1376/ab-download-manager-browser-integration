@@ -149,6 +149,12 @@ export class RequestContextRegistryV2 {
         const records: RequestRecordSnapshotV2[] = []
         const newest = [...this.byRequestId.values()].sort((a, b) => b.createdAtEpochMs - a.createdAtEpochMs)
         for (const record of newest) {
+            const {
+                requestBodyBytes,
+                withheldFields: _withheldFields,
+                incompleteFields: _incompleteFields,
+                ...safeRecord
+            } = record
             const withheld = new Set(record.withheldFields)
             let body: string | null = null
             if (record.requestBodyBytes) {
@@ -161,7 +167,7 @@ export class RequestContextRegistryV2 {
                 }
             }
             records.push({
-                ...record,
+                ...safeRecord,
                 requestBodyBase64: body,
                 withheldFields: [...withheld],
                 incompleteFields: [...record.incompleteFields],
@@ -175,14 +181,16 @@ export class RequestContextRegistryV2 {
         if (!isSnapshot(value)) return 0
         let restored = 0
         for (const snapshot of value.records) {
+            if (!isRecordSnapshot(snapshot)) continue
             if (this.byRequestId.has(snapshot.requestId) || snapshot.createdAtEpochMs < this.now() - REQUEST_TTL_MS) continue
             const {requestBodyBase64, withheldFields, incompleteFields, ...safe} = snapshot
-            const record: RequestRecordV2 = {
+            const record = runCatchingSnapshot((): RequestRecordV2 => ({
                 ...safe,
                 requestBodyBytes: requestBodyBase64 ? base64ToBytes(requestBodyBase64) : null,
                 withheldFields: new Set(withheldFields),
                 incompleteFields: new Set(incompleteFields),
-            }
+            }))
+            if (!record) continue
             this.replace(record)
             restored++
         }
@@ -335,6 +343,24 @@ function isSnapshot(value: unknown): value is RequestRegistrySnapshotV2 {
     if (typeof value !== "object" || value === null) return false
     const snapshot = value as Partial<RequestRegistrySnapshotV2>
     return snapshot.schemaVersion === 2 && Array.isArray(snapshot.records) && snapshot.records.length <= MAX_GLOBAL_REQUESTS
+}
+
+function isRecordSnapshot(value: unknown): value is RequestRecordSnapshotV2 {
+    if (typeof value !== "object" || value === null) return false
+    const record = value as Partial<RequestRecordSnapshotV2>
+    return typeof record.requestId === "string" && record.requestId.length <= 256 &&
+        typeof record.originalUrl === "string" && typeof record.finalUrl === "string" &&
+        typeof record.method === "string" && typeof record.tabId === "number" &&
+        typeof record.frameId === "number" && typeof record.createdAtEpochMs === "number" &&
+        (record.requestBodyBase64 === null ||
+            (typeof record.requestBodyBase64 === "string" && record.requestBodyBase64.length <= 5_592_408)) &&
+        Array.isArray(record.requestHeaders) && Array.isArray(record.responseHeaders) &&
+        Array.isArray(record.redirects) && Array.isArray(record.withheldFields) &&
+        Array.isArray(record.incompleteFields)
+}
+
+function runCatchingSnapshot<T>(block: () => T): T | null {
+    try { return block() } catch { return null }
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
