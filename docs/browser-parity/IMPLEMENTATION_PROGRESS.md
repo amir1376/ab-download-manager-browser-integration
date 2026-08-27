@@ -190,6 +190,16 @@ schema copies and generated TypeScript types whose hashes are locked by
 - Exact IDM native naming remains blocked on licensed black-box evidence; real
   authenticated/live/expiry streams and packaged FFmpeg remain Phase 9 gates.
 
+## Test layout correction
+
+- Every extension test now lives under the top-level `tests` tree, organized to
+  mirror its production domain. No `*.test.ts` or `*.test.tsx` remains under
+  `src`.
+- TypeScript checks `src` and `tests`; Vitest discovers only `tests`. A dedicated
+  layout test prevents future colocated tests.
+- Validation: TypeScript passed; 39/39 tests across 17 test files; layout checkpoint
+  `493378b9aec0f0652728962cf8051a27165f8730`.
+
 ## Resume instructions
 
 1. Verify both repositories' branches and worktree states.
