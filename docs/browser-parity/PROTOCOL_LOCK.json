@@ -2,15 +2,15 @@
   "schemaFamily": "abdm-browser-integration",
   "protocolVersion": {
     "major": 2,
-    "minor": 0
+    "minor": 1
   },
   "canonicalRepository": "ab-download-manager",
-  "canonicalCommit": "e05130d134afc7b7e6fa27c65c30b5d9df4455eb",
+  "canonicalCommit": "33945a775bfcae23709103f344264e29b3696bde",
   "canonicalSchema": "integration/server/src/main/resources/protocol/browser-integration-v2.schema.json",
-  "schemaSha256": "35469f0ca41ae5971e237362cd059824c067cb96b628cfd8b2804cdb5bbe3fde",
+  "schemaSha256": "6f16addaed825b7e0b893a15f4a6cc9a09e839ee7790d6781930ef13d591b4eb",
   "vendoredSchema": "src/protocol/browser-integration-v2.schema.json",
   "generatedTypescript": "src/protocol/generated/BrowserIntegrationProtocolV2.ts",
-  "generatedKotlinSha256": "1368fb624f05838a374cde61007aa50263c1b127e65c9bd09c840cf33b90d8de",
-  "generatedTypescriptSha256": "98ddc8e3bb21bee3c3320c005f412396c54437ae464689a47b70b03414ef0de5",
-  "state": "PHASE_0_FROZEN"
+  "generatedKotlinSha256": "e1993fde874c5543243c35e20f0027af7d406eda62c4982b611bacc0cae82733",
+  "generatedTypescriptSha256": "c6285a306876d1acf1c81ea55267c990d91af8b4191123854abfd0754dea8da4",
+  "state": "PHASE_4_POLICY_REVISION"
 }
