@@ -29,8 +29,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 5. Context menus and reviewed batches | COMPLETE_LOCAL |
 | 6. Media discovery and panel | COMPLETE_LOCAL |
 | 7. Media selection and renewal | COMPLETE_LOCAL |
-| 8. UX, migration, localization, accessibility | IN_PROGRESS |
-| 9. Packaging and browser E2E | NOT_STARTED |
+| 8. UX, migration, localization, accessibility | COMPLETE_LOCAL |
+| 9. Packaging and browser E2E | IN_PROGRESS |
 
 ## Phase 0 checklist
 
@@ -199,6 +199,33 @@ schema copies and generated TypeScript types whose hashes are locked by
   layout test prevents future colocated tests.
 - Validation: TypeScript passed; 39/39 tests across 17 test files; layout checkpoint
   `493378b9aec0f0652728962cf8051a27165f8730`.
+
+## Phase 8 local completion
+
+- Added versioned storage migrations and a one-time, privacy-preserving bridge from
+  safe legacy settings into revisioned desktop policy. Future schemas are rejected
+  without overwriting stored values.
+- Added native/compatibility/policy diagnostics, bounded code-only diagnostic
+  history, actionable recovery guidance, and authoritative toolbar capture state.
+- Selection and media controls use closed shadow roots; the legacy direct media
+  popup was removed. Toolbar controls use native button/checkbox semantics and two
+  localized manifest commands provide keyboard access.
+- Added Firefox 140 built-in data-transfer consent declarations and optional
+  user-gesture requests; Firefox package lint reports 0 errors and 0 notices.
+- Added 17 complete 161-key locale catalogs plus key, placeholder, and greater-than
+  90-percent localization coverage gates. Catalog translations are machine
+  generated and still require human linguistic QA.
+- Final local receipt: protocol lock; TypeScript; 47/47 tests across 21 files;
+  zero tests under `src`; Chrome/Firefox builds; 17 locale directories in each
+  build; Firefox lint 0 errors/0 notices/2 React-runtime warnings. Desktop Java 25
+  compilation also passed. Checkpoints: desktop
+  `56bcc2109c686d4a082673b2cdc87e3ec8f07484`; extension
+  `18db25063015771da7e6fbebf517971a5fb841dc`.
+
+## Phase 9 started
+
+- Beginning deterministic release-candidate archives, packaged-browser/native E2E,
+  cross-platform evidence reconciliation, and final ledger/attestation closure.
 
 ## Resume instructions
 
