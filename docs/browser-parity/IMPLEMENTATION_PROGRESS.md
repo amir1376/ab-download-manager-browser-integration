@@ -26,8 +26,8 @@ schema copies and generated TypeScript types whose hashes are locked by
 | 2. Request context and takeover | COMPLETE_LOCAL |
 | 3. FTP/FTPS browser intake | COMPLETE_LOCAL |
 | 4. Permissions, policy, lifecycle | COMPLETE_LOCAL |
-| 5. Context menus and reviewed batches | IN_PROGRESS |
-| 6. Media discovery and panel | NOT_STARTED |
+| 5. Context menus and reviewed batches | COMPLETE_LOCAL |
+| 6. Media discovery and panel | IN_PROGRESS |
 | 7. Media selection and renewal | NOT_STARTED |
 | 8. UX, migration, localization, accessibility | NOT_STARTED |
 | 9. Packaging and browser E2E | NOT_STARTED |
@@ -137,6 +137,24 @@ schema copies and generated TypeScript types whose hashes are locked by
   `0dc01ad4bb1ab0ba4900fef702144a92780e242b`.
 - Actual permission prompts, private windows, worker suspension, restart, shelf, and
   revocation scenarios remain Phase 9 installed-browser gates.
+
+## Phase 5 local completion
+
+- Added current page/frame, selected, all-link, editable-context, and
+  native-configured custom actions alongside link/image/audio/video capture.
+- Cross-frame collection covers anchors, images/srcset, media/source, frames,
+  scripts, selected/plain/input text, with URL validation, dedupe, and bounded
+  5,000/1,000/100-candidate plus 220 KiB chunk limits.
+- Selected and all-link candidates stay in `storage.session` for filter/select
+  confirmation before transport. Desktop receives only the chosen set, encrypts
+  URLs behind opaque refs, and opens its normal multi-download routing/start UI.
+- No task is created before both review stages. Empty/no-link failures use an
+  in-page alert or action badge without requiring notification permission.
+- Final local receipt: TypeScript; 33/33 tests; Chrome/Firefox production builds;
+  protocol v2.2 lock. Checkpoints: `f99d00ff5f2b4f51d0f97f73765784ace8c12e6f`,
+  `eefa6d2ed41dbc534df48e733ede8a2a5de30602`.
+- Actual cross-origin frames, selection geometry, maximum batches, menus, and review
+  dialogs remain Phase 9 installed-browser gates.
 
 ## Resume instructions
 
