@@ -214,8 +214,43 @@ export abstract class DownloadLinkInterceptor {
     }
 
 
+    // One download must produce exactly one add request.
+    //
+    // A download can be observed more than once: by browser.webRequest.onHeadersReceived
+    // and by browser.downloads.onCreated (and in MV3 the response cannot be blocked -
+    // canBlockResponse() is false - so the browser always creates the download item as
+    // well). The handledOnWebRequest flag only covers one direction: it is written by the
+    // onHeadersReceived listener, read only by downloads.onCreated, and it lives on a
+    // single request record - so a second record for the same file (a second
+    // frame/navigation, a page retry after the browser download is cancelled, a resumed
+    // request) is handed over again.
+    //
+    // Remember the links that were handed over, so a repeat is a no-op. A failed
+    // hand-over releases the link again, so the sibling listener (or the browser's own
+    // download, when allowPassDownloadIfAppNotRespond is on) can still take over.
     protected async requestAddDownload(item: DownloadRequestItem) {
+        const link = item.link
+        const now = Date.now()
+        const dedupeWindowMs = 4_000
+        const recentlyAddRequested = (this.recentlyAddRequestedLinks ??= new Map<string, number>())
+        for (const [requestedLink, requestedAt] of recentlyAddRequested) {
+            if (now - requestedAt > dedupeWindowMs) {
+                recentlyAddRequested.delete(requestedLink)
+            }
+        }
+        if (link && recentlyAddRequested.has(link)) {
+            // the sibling listener already handed this download over to the app
+            return true
+        }
+        if (link) {
+            recentlyAddRequested.set(link, now)
+        }
         const result = await addDownload([item])
+        if (!result && link) {
+            // the app could not take it, so let the sibling listener (or the
+            // browser itself, if that is allowed) have another go
+            recentlyAddRequested.delete(link)
+        }
         if (getLatestConfig().allowPassDownloadIfAppNotRespond) {
             return result
         }
