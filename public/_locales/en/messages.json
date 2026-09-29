@@ -159,7 +159,10 @@
     "message": "Bypass Shortcut"
   },
   "config_press_a_key": {
-    "message": "Press a key..."
+    "message": "Press a key or a combination..."
+  },
+  "config_bypass_shortcut_control_mac_warning": {
+    "message": "On macOS, Control + click is the secondary click, so the click never reaches the page. Pick another key."
   },
   "config_bypass_shortcut_description": {
     "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
