@@ -28,7 +28,7 @@ async function createOptions() {
 }
 
 function createOnCLickHandlers() {
-    browser.contextMenus.onClicked.addListener(async (args) => {
+    browser.contextMenus.onClicked.addListener(async (args, clickedTab) => {
         switch (args.menuItemId) {
             case optionIds.downloadWithAbDm:
                 const link = args.linkUrl || args.srcUrl
@@ -54,8 +54,10 @@ function createOnCLickHandlers() {
                 // backgroundReceiveMessage(addDownloadCommand([downloadRequest]))
                 break
             case optionIds.downloadSelectedWithAbDm:
-                const [tab] = (await browser.tabs.query({active: true}))
-                const tabId = tab?.id
+                // the tab has to come from the click itself, tabs.query({active:true})
+                // returns the active tab of every window and the first one is rarely ours
+                const tabId = clickedTab?.id
+                    ?? (await browser.tabs.query({active: true, currentWindow: true}))[0]?.id
                 if (tabId === undefined) {
                     break
                 }

@@ -10,7 +10,7 @@ import {onMessage} from "webext-bridge/content-script"
 import browser from "webextension-polyfill";
 import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 import {addDownloads} from "~/contentscripts/AddDownloads";
-import {sendMessage} from "webext-bridge/options";
+import {sendMessage} from "webext-bridge/content-script";
 import {DefinedCommands} from "~/message/Commands";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
 import ContentScriptEntryType from "~/utils/EntryPointTypes/ContentScript/ContentScriptEntryType";
