@@ -1,5 +1,5 @@
 import {DownloadRequestHeaders, DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
-import {sendMessage} from "webext-bridge/options";
+import {sendMessage} from "webext-bridge/content-script";
 import * as Configs from "~/configs/Config"
 import {DefinedCommands} from "~/message/Commands";
 
