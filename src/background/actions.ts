@@ -54,6 +54,44 @@ export async function requestYtDlpVideoDownload(
     }) ?? false
 }
 
+export interface YtDlpPanelFetchInfoData {
+    pageUrl: string
+}
+
+/**
+ * IDM-style download panel: fetch video info (title + formats) from the
+ * desktop app without opening any dialog.
+ */
+export async function requestYtDlpPanelFetchInfo(
+    data: YtDlpPanelFetchInfoData,
+) {
+    return await usingBackend(async () => {
+        return await backend.ytdlpFetchInfo({url: data.pageUrl})
+    })
+}
+
+export interface YtDlpPanelDownloadData {
+    pageUrl: string
+    formatId: string
+    title?: string
+}
+
+/**
+ * IDM-style download panel: start the download in the app background
+ * (no dialog opened).
+ */
+export async function requestYtDlpPanelDownload(
+    data: YtDlpPanelDownloadData,
+): Promise<boolean> {
+    return await usingBackend(async () => {
+        return await backend.ytdlpPanelDownload({
+            url: data.pageUrl,
+            formatId: data.formatId,
+            title: data.title,
+        })
+    }) ?? false
+}
+
 export async function getHeadersForUrls(urls: string[]) {
     return Promise.all(urls.map(async url => {
         return await getHeadersForUrl(url)

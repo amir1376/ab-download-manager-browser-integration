@@ -1,7 +1,6 @@
-import {sendMessage} from "webext-bridge/content-script";
-import {DefinedCommands} from "~/message/Commands";
 import * as Configs from "~/configs/Config";
 import browser from "webextension-polyfill";
+import {toggleVideoDownloadPanel} from "~/contentscripts/VideoDownloadPanel";
 
 /**
  * IDM-style floating "Download video" button.
@@ -165,30 +164,12 @@ function cancelHide() {
 async function onButtonClick(e: MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    const video = currentVideo;
-    let videoSrc: string | undefined;
-    try {
-        const src = video?.currentSrc || video?.src || "";
-        if (src && !src.startsWith("blob:")) {
-            videoSrc = src;
-        }
-    } catch {
-        videoSrc = undefined;
-    }
+    // anchor the IDM-style panel near the button
+    const rect = btn?.getBoundingClientRect();
+    const x = rect ? rect.left + rect.width / 2 : e.clientX;
+    const y = rect ? rect.bottom : e.clientY;
     hideButton();
-    try {
-        await sendMessage(
-            DefinedCommands.YTDLP_VIDEO_DOWNLOAD,
-            {
-                pageUrl: location.href,
-                pageTitle: document.title || "",
-                videoSrc,
-            },
-            "background",
-        );
-    } catch (err) {
-        console.log("abdm: failed to request video download", err);
-    }
+    toggleVideoDownloadPanel(location.href, x, y);
 }
 
 function attachVideo(v: HTMLVideoElement) {
