@@ -1,6 +1,15 @@
+import {sendMessage} from "webext-bridge/content-script";
+import {DefinedCommands} from "~/message/Commands";
 import * as Configs from "~/configs/Config";
 import browser from "webextension-polyfill";
-import {toggleVideoDownloadPanel} from "~/contentscripts/VideoDownloadPanel";
+import {
+    closePanel,
+    isPanelOpenFor,
+    openPanelWithError,
+    openPanelWithInfo,
+    panelErrorMessage,
+} from "~/contentscripts/VideoDownloadPanel";
+import type {YtDlpPanelInfo} from "~/backend/NativeMessagingApi";
 
 /**
  * IDM-style floating "Download video" button.
@@ -19,9 +28,32 @@ const MIN_HEIGHT = 140;
 const HIDE_DELAY_MS = 350;
 
 let btn: HTMLDivElement | null = null;
+let buttonLabel: HTMLSpanElement | null = null;
 let currentVideo: HTMLVideoElement | null = null;
 let hideTimer: number | null = null;
 let positionRaf: number | null = null;
+
+/**
+ * Prefetched video info per page URL. Fetching starts on hover (see showFor)
+ * so that when the button is clicked the panel can open already populated —
+ * no loading state inside the panel itself.
+ */
+const prefetchCache = new Map<string, Promise<YtDlpPanelInfo | null>>();
+
+function prefetchInfo(pageUrl: string): Promise<YtDlpPanelInfo | null> {
+    let pending = prefetchCache.get(pageUrl);
+    if (!pending) {
+        pending = sendMessage(
+            DefinedCommands.YTDLP_PANEL_FETCH_INFO,
+            {pageUrl},
+            "background",
+        );
+        prefetchCache.set(pageUrl, pending);
+        // a failed prefetch must not poison the cache — a later click retries
+        pending.catch(() => prefetchCache.delete(pageUrl));
+    }
+    return pending;
+}
 
 function isEnabled(): boolean {
     try {
@@ -90,6 +122,7 @@ function ensureButton(): HTMLDivElement {
     text.textContent = label;
     el.appendChild(icon);
     el.appendChild(text);
+    buttonLabel = text;
     el.addEventListener("mouseenter", cancelHide);
     el.addEventListener("mouseleave", scheduleHide);
     el.addEventListener("click", onButtonClick);
@@ -132,6 +165,12 @@ function showFor(video: HTMLVideoElement) {
     if (positionRaf == null) {
         positionRaf = requestAnimationFrame(tickPosition);
     }
+    // start fetching in the background so the panel opens already populated
+    try {
+        void prefetchInfo(location.href);
+    } catch {
+        // fetch errors are reported when the button is clicked
+    }
 }
 
 function hideButton() {
@@ -164,12 +203,48 @@ function cancelHide() {
 async function onButtonClick(e: MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    // anchor the IDM-style panel near the button
+    const pageUrl = location.href;
+    // toggle: clicking while the panel is open closes it
+    if (isPanelOpenFor(pageUrl)) {
+        closePanel();
+        return;
+    }
+    // anchor the panel near the button
     const rect = btn?.getBoundingClientRect();
     const x = rect ? rect.left + rect.width / 2 : e.clientX;
     const y = rect ? rect.bottom : e.clientY;
-    hideButton();
-    toggleVideoDownloadPanel(location.href, x, y);
+    // the panel only opens once the info is fetched — show progress on the button
+    const originalLabel = buttonLabel?.textContent ?? "";
+    const loadingLabel = "⏳ " + (
+        browser.i18n.getMessage("video_panel_loading") || "Mengambil info video…"
+    );
+    if (buttonLabel) {
+        buttonLabel.textContent = loadingLabel;
+    }
+    try {
+        const info = await prefetchInfo(pageUrl);
+        hideButton();
+        if (buttonLabel) {
+            buttonLabel.textContent = originalLabel;
+        }
+        if (info && info.formats && info.formats.length > 0) {
+            openPanelWithInfo(pageUrl, x, y, info);
+        } else {
+            openPanelWithError(
+                pageUrl,
+                x,
+                y,
+                browser.i18n.getMessage("video_panel_no_formats") || "Tidak ada format tersedia",
+            );
+        }
+    } catch (err) {
+        console.log("abdm: panel fetch info failed", err);
+        hideButton();
+        if (buttonLabel) {
+            buttonLabel.textContent = originalLabel;
+        }
+        openPanelWithError(pageUrl, x, y, panelErrorMessage(err));
+    }
 }
 
 function attachVideo(v: HTMLVideoElement) {

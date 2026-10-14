@@ -238,7 +238,7 @@ async function onFormatClick(format: YtDlpPanelFormat, row: HTMLElement) {
         window.setTimeout(closePanel, 2500);
     } catch (err) {
         console.log("abdm: panel download failed", err);
-        setStatus(friendlyError(err), true);
+        setStatus(panelErrorMessage(err), true);
         row.style.opacity = "1";
     }
 }
@@ -248,7 +248,7 @@ async function onFormatClick(format: YtDlpPanelFormat, row: HTMLElement) {
  * "Extension context invalidated" is the classic symptom of a tab that still
  * runs the previous extension version after the extension was reloaded.
  */
-function friendlyError(err: unknown): string {
+export function panelErrorMessage(err: unknown): string {
     const raw = err instanceof Error ? err.message : String(err);
     if (raw.includes("Extension context invalidated")) {
         return t(
@@ -259,24 +259,8 @@ function friendlyError(err: unknown): string {
     return `${t("video_panel_error", "Gagal")}: ${raw}`;
 }
 
-async function fetchAndPopulate(pageUrl: string) {
-    setStatus(t("video_panel_loading", "Mengambil info video…"));
-    let info: YtDlpPanelInfo | null = null;
-    try {
-        info = await sendMessage(
-            DefinedCommands.YTDLP_PANEL_FETCH_INFO,
-            {pageUrl},
-            "background",
-        );
-    } catch (err) {
-        console.log("abdm: panel fetch info failed", err);
-        setStatus(friendlyError(err), true);
-        return;
-    }
-    if (!info || !info.formats || info.formats.length === 0) {
-        setStatus(t("video_panel_no_formats", "Tidak ada format tersedia"), true);
-        return;
-    }
+/** Fill the open panel's format list. The panel must already be in the DOM. */
+function populatePanel(info: YtDlpPanelInfo) {
     const titleEl = document.getElementById("abdm-vp-title");
     const listEl = document.getElementById("abdm-vp-format-list");
     const hint = document.getElementById("abdm-vp-hint");
@@ -318,15 +302,7 @@ async function fetchAndPopulate(pageUrl: string) {
     setStatus("");
 }
 
-/**
- * Toggle the panel for the given page URL, anchored near (x, y).
- * Clicking the floating button while the panel is open closes it.
- */
-export function toggleVideoDownloadPanel(pageUrl: string, x: number, y: number) {
-    if (panel && currentPageUrl === pageUrl) {
-        closePanel();
-        return;
-    }
+function createPanelAt(pageUrl: string, x: number, y: number) {
     closePanel();
     currentPageUrl = pageUrl;
     panel = buildPanel();
@@ -336,7 +312,22 @@ export function toggleVideoDownloadPanel(pageUrl: string, x: number, y: number) 
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
     document.documentElement.appendChild(panel);
-    void fetchAndPopulate(pageUrl);
+}
+
+/**
+ * Open the panel with the video info already fetched — no loading state.
+ */
+export function openPanelWithInfo(pageUrl: string, x: number, y: number, info: YtDlpPanelInfo) {
+    createPanelAt(pageUrl, x, y);
+    populatePanel(info);
+}
+
+/**
+ * Open the panel showing an error (e.g. the fetch failed).
+ */
+export function openPanelWithError(pageUrl: string, x: number, y: number, message: string) {
+    createPanelAt(pageUrl, x, y);
+    setStatus(message, true);
 }
 
 export function closePanel() {
@@ -348,6 +339,6 @@ export function closePanel() {
     }
 }
 
-export function isPanelOpen(): boolean {
-    return panel != null;
+export function isPanelOpenFor(pageUrl: string): boolean {
+    return panel != null && currentPageUrl === pageUrl;
 }
