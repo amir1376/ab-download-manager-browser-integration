@@ -37,5 +37,8 @@
   },
   "video_panel_hint": {
     "message": "File disimpan ke folder default di pengaturan aplikasi."
+  },
+  "video_panel_context_invalidated": {
+    "message": "Extension diperbarui — refresh halaman ini (F5) lalu coba lagi."
   }
 }

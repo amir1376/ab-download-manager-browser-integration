@@ -269,16 +269,29 @@ async function onDownloadClick() {
         window.setTimeout(closePanel, 2500);
     } catch (err) {
         console.log("abdm: panel download failed", err);
-        setStatus(
-            `${t("video_panel_error", "Gagal")}: ${err instanceof Error ? err.message : String(err)}`,
-            true,
-        );
+        setStatus(friendlyError(err), true);
         if (downloadBtn) {
             downloadBtn.disabled = false;
             downloadBtn.style.opacity = "1";
             downloadBtn.style.cursor = "pointer";
         }
     }
+}
+
+/**
+ * Translate technical failures into actionable messages.
+ * "Extension context invalidated" is the classic symptom of a tab that still
+ * runs the previous extension version after the extension was reloaded.
+ */
+function friendlyError(err: unknown): string {
+    const raw = err instanceof Error ? err.message : String(err);
+    if (raw.includes("Extension context invalidated")) {
+        return t(
+            "video_panel_context_invalidated",
+            "Extension diperbarui — refresh halaman ini (F5) lalu coba lagi.",
+        );
+    }
+    return `${t("video_panel_error", "Gagal")}: ${raw}`;
 }
 
 async function fetchAndPopulate(pageUrl: string) {
@@ -292,10 +305,7 @@ async function fetchAndPopulate(pageUrl: string) {
         );
     } catch (err) {
         console.log("abdm: panel fetch info failed", err);
-        setStatus(
-            `${t("video_panel_error", "Gagal")}: ${err instanceof Error ? err.message : String(err)}`,
-            true,
-        );
+        setStatus(friendlyError(err), true);
         return;
     }
     if (!info || !info.formats || info.formats.length === 0) {

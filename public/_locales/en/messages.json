@@ -205,5 +205,8 @@
   },
   "video_panel_hint": {
     "message": "Saved to the default folder in the app settings."
+  },
+  "video_panel_context_invalidated": {
+    "message": "Extension was updated — refresh this page (F5) and try again."
   }
 }
