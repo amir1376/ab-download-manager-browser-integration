@@ -318,14 +318,17 @@ function qualityTag(resolution: string): string {
 
 /**
  * One row of the format list, e.g.
- * "1. Judul Video, MP4 file, quality 1080p HD • 42 MB".
+ * "1. Judul Video…, MP4 file, quality 1080p HD • 42 MB".
+ * The title is truncated so the quality info stays readable.
  * Clicking it downloads that format immediately (IDM-style).
  */
 function formatRowLabel(title: string, f: YtDlpPanelFormat, index: number): string {
     const ext = (f.ext || "?").toUpperCase();
     const tag = qualityTag(f.resolution);
     const quality = tag ? `${f.resolution} ${tag}` : f.resolution;
-    const parts = [`${index + 1}. ${title}, ${ext} file, quality ${quality}`];
+    const short = title.trim();
+    const displayTitle = short.length > 30 ? short.slice(0, 29).trimEnd() + "…" : short;
+    const parts = [`${index + 1}. ${displayTitle}, ${ext} file, quality ${quality}`];
     const size = formatSize(f.sizeBytes);
     if (size !== "?") {
         parts.push(size);
