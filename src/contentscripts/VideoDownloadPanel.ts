@@ -20,6 +20,8 @@ const PANEL_WIDTH = 340;
 
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
+/** Best format from the last fetch — used directly by "Download Now". */
+let bestFormat: YtDlpPanelFormat | null = null;
 let dragState: {offsetX: number; offsetY: number} | null = null;
 
 function t(key: string, fallback: string): string {
@@ -137,23 +139,17 @@ function buildPanel(): HTMLDivElement {
         "white-space:nowrap",
     ].join(";");
 
-    const select = document.createElement("select");
-    select.id = "abdm-vp-format";
-    select.style.cssText = [
+    const formatInfo = document.createElement("div");
+    formatInfo.id = "abdm-vp-format-info";
+    formatInfo.style.cssText = [
         "display:none",
-        "width:100%",
-        "padding:7px 8px",
-        "border-radius:8px",
-        "border:1px solid rgba(255,255,255,0.2)",
-        "background:#1e2027",
-        "color:#e8e8e8",
-        "font-size:13px",
-        "outline:none",
+        "color:#9fb3c8",
+        "font-size:12px",
     ].join(";");
 
     const downloadBtn = document.createElement("button");
     downloadBtn.id = "abdm-vp-download";
-    downloadBtn.textContent = t("video_panel_download", "Download");
+    downloadBtn.textContent = t("video_panel_download_now", "Download Now");
     downloadBtn.style.cssText = [
         "display:none",
         "width:100%",
@@ -184,7 +180,7 @@ function buildPanel(): HTMLDivElement {
 
     body.appendChild(status);
     body.appendChild(videoTitle);
-    body.appendChild(select);
+    body.appendChild(formatInfo);
     body.appendChild(downloadBtn);
     body.appendChild(hint);
     el.appendChild(header);
@@ -245,13 +241,12 @@ function setStatus(text: string, isError = false) {
 }
 
 async function onDownloadClick() {
-    const select = document.getElementById("abdm-vp-format") as HTMLSelectElement | null;
     const downloadBtn = document.getElementById("abdm-vp-download") as HTMLButtonElement | null;
     const titleEl = document.getElementById("abdm-vp-title");
-    if (!select || !currentPageUrl) {
+    if (!currentPageUrl || !bestFormat) {
         return;
     }
-    const formatId = select.value;
+    const formatId = bestFormat.formatId;
     const title = titleEl?.textContent ?? "";
     if (downloadBtn) {
         downloadBtn.disabled = true;
@@ -313,23 +308,18 @@ async function fetchAndPopulate(pageUrl: string) {
         return;
     }
     const titleEl = document.getElementById("abdm-vp-title");
-    const select = document.getElementById("abdm-vp-format") as HTMLSelectElement | null;
+    const formatInfoEl = document.getElementById("abdm-vp-format-info");
     const downloadBtn = document.getElementById("abdm-vp-download") as HTMLButtonElement | null;
     const hint = document.getElementById("abdm-vp-hint");
+    bestFormat = info.formats[0];
     if (titleEl) {
         titleEl.textContent = info.title;
         titleEl.style.display = "block";
         titleEl.title = info.title;
     }
-    if (select) {
-        select.innerHTML = "";
-        for (const f of info.formats) {
-            const opt = document.createElement("option");
-            opt.value = f.formatId;
-            opt.textContent = formatLabel(f);
-            select.appendChild(opt);
-        }
-        select.style.display = "block";
+    if (formatInfoEl) {
+        formatInfoEl.textContent = formatLabel(bestFormat);
+        formatInfoEl.style.display = "block";
     }
     if (downloadBtn) {
         downloadBtn.style.display = "block";
@@ -363,6 +353,7 @@ export function toggleVideoDownloadPanel(pageUrl: string, x: number, y: number) 
 
 export function closePanel() {
     currentPageUrl = null;
+    bestFormat = null;
     dragState = null;
     if (panel) {
         panel.remove();

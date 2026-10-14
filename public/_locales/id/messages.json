@@ -40,5 +40,8 @@
   },
   "video_panel_context_invalidated": {
     "message": "Extension diperbarui — refresh halaman ini (F5) lalu coba lagi."
+  },
+  "video_panel_download_now": {
+    "message": "Download Sekarang"
   }
 }

@@ -208,5 +208,8 @@
   },
   "video_panel_context_invalidated": {
     "message": "Extension was updated — refresh this page (F5) and try again."
+  },
+  "video_panel_download_now": {
+    "message": "Download Now"
   }
 }
