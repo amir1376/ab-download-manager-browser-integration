@@ -16,7 +16,7 @@ import type {YtDlpPanelFormat, YtDlpPanelInfo} from "~/backend/NativeMessagingAp
  */
 
 const PANEL_ID = "abdm-video-panel";
-const PANEL_WIDTH = 470;
+const PANEL_WIDTH = 640;
 
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
@@ -114,19 +114,6 @@ function buildPanel(): HTMLDivElement {
     thisWrap.id = "abdm-vp-this-wrap";
     thisWrap.style.cssText = "display:flex;flex-direction:column;gap:10px;";
 
-    // video title shown once at the top (wraps to max 2 lines)
-    const videoTitle = document.createElement("div");
-    videoTitle.id = "abdm-vp-title";
-    videoTitle.style.cssText = [
-        "font-weight:600",
-        "font-size:15px",
-        "display:none",
-        "overflow:hidden",
-        "text-overflow:ellipsis",
-        "-webkit-line-clamp:2",
-        "-webkit-box-orient:vertical",
-    ].join(";");
-
     const formatList = document.createElement("div");
     formatList.id = "abdm-vp-format-list";
     formatList.style.cssText = [
@@ -145,7 +132,6 @@ function buildPanel(): HTMLDivElement {
         "File disimpan ke folder default di pengaturan aplikasi.",
     );
 
-    thisWrap.appendChild(videoTitle);
     thisWrap.appendChild(formatList);
     thisWrap.appendChild(hint);
 
@@ -331,16 +317,19 @@ function qualityTag(resolution: string): string {
 }
 
 /**
- * One row of the format list, e.g. "1. MP4 file, quality 1080p HD • 42 MB".
- * The video title is shown once at the top of the panel, so rows stay
- * short and nothing gets cut off.
+ * One row of the format list, e.g.
+ * "1. SPEED GOES PRO, EPISODE 4_ KEVIN DURANT, MP4 file, quality 1080p HD • 42 MB".
+ * The full title is shown like the reference UI; only absurdly long titles
+ * are capped so the quality info stays visible.
  * Clicking a row downloads that format immediately (IDM-style).
  */
-function formatRowLabel(f: YtDlpPanelFormat, index: number): string {
+function formatRowLabel(title: string, f: YtDlpPanelFormat, index: number): string {
     const ext = (f.ext || "?").toUpperCase();
     const tag = qualityTag(f.resolution);
     const quality = tag ? `${f.resolution} ${tag}` : f.resolution;
-    const parts = [`${index + 1}. ${ext} file, quality ${quality}`];
+    const clean = title.trim();
+    const displayTitle = clean.length > 60 ? clean.slice(0, 59).trimEnd() + "…" : clean;
+    const parts = [`${index + 1}. ${displayTitle}, ${ext} file, quality ${quality}`];
     const size = formatSize(f.sizeBytes);
     if (size !== "?") {
         parts.push(size);
@@ -388,19 +377,13 @@ export function panelErrorMessage(err: unknown): string {
 /** Fill the open panel's format list. The panel must already be in the DOM. */
 function populatePanel(info: YtDlpPanelInfo) {
     currentTitle = info.title;
-    const titleEl = document.getElementById("abdm-vp-title");
     const listEl = document.getElementById("abdm-vp-format-list");
     const hint = document.getElementById("abdm-vp-hint");
-    if (titleEl) {
-        titleEl.textContent = info.title;
-        titleEl.title = info.title;
-        (titleEl.style as CSSStyleDeclaration).display = "-webkit-box";
-    }
     if (listEl) {
         listEl.innerHTML = "";
         info.formats.forEach((f, i) => {
             const row = document.createElement("div");
-            row.textContent = formatRowLabel(f, i);
+            row.textContent = formatRowLabel(info.title, f, i);
             row.title = t("video_panel_download_now", "Download Now");
             row.style.cssText = rowStyle();
             row.addEventListener("mouseenter", () => {
