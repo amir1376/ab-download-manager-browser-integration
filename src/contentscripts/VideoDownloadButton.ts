@@ -29,9 +29,21 @@ const HIDE_DELAY_MS = 350;
 
 let btn: HTMLDivElement | null = null;
 let buttonLabel: HTMLSpanElement | null = null;
+let closeBadge: HTMLSpanElement | null = null;
 let currentVideo: HTMLVideoElement | null = null;
 let hideTimer: number | null = null;
 let positionRaf: number | null = null;
+/** Set when the user drags the button — auto-anchoring to the video pauses. */
+let buttonPinned = false;
+let buttonDrag: {
+    startX: number;
+    startY: number;
+    baseLeft: number;
+    baseTop: number;
+    moved: boolean;
+} | null = null;
+/** Videos whose button was dismissed via ✕ — re-shown on next hover. */
+const dismissedVideos = new WeakSet<HTMLVideoElement>();
 
 /**
  * Prefetched video info per page URL. Fetching starts on hover (see showFor)
@@ -111,28 +123,133 @@ function ensureButton(): HTMLDivElement {
         "font-family:\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif",
         "font-size:12px",
         "line-height:1",
-        "cursor:pointer",
+        "cursor:move",
         "user-select:none",
         "white-space:nowrap",
+        "touch-action:none",
     ].join(";");
     const icon = document.createElement("span");
     icon.textContent = "⬇";
-    icon.style.cssText = "font-size:13px;line-height:1;";
+    icon.style.cssText = "font-size:13px;line-height:1;pointer-events:none;";
     const text = document.createElement("span");
     text.textContent = label;
+    text.style.cssText = "pointer-events:none;";
+    const badge = document.createElement("span");
+    badge.textContent = "✕";
+    badge.title = browser.i18n.getMessage("video_download_button_dismiss") || "Sembunyikan tombol";
+    badge.style.cssText = [
+        "display:none",
+        "position:absolute",
+        "top:-9px",
+        "right:-9px",
+        "width:18px",
+        "height:18px",
+        "border-radius:50%",
+        "background:#e11d48",
+        "color:#fff",
+        "font-size:10px",
+        "line-height:18px",
+        "text-align:center",
+        "cursor:pointer",
+        "box-shadow:0 1px 4px rgba(0,0,0,0.4)",
+    ].join(";");
+    badge.addEventListener("pointerdown", (e) => e.stopPropagation());
+    badge.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (currentVideo) {
+            dismissedVideos.add(currentVideo);
+        }
+        hideButton();
+    });
     el.appendChild(icon);
     el.appendChild(text);
+    el.appendChild(badge);
     buttonLabel = text;
-    el.addEventListener("mouseenter", cancelHide);
-    el.addEventListener("mouseleave", scheduleHide);
-    el.addEventListener("click", onButtonClick);
+    closeBadge = badge;
+    el.addEventListener("mouseenter", () => {
+        cancelHide();
+        if (closeBadge) {
+            closeBadge.style.display = "block";
+        }
+    });
+    el.addEventListener("mouseleave", () => {
+        if (closeBadge) {
+            closeBadge.style.display = "none";
+        }
+        scheduleHide();
+    });
+    el.addEventListener("pointerdown", onBtnPointerDown);
     document.documentElement.appendChild(el);
     btn = el;
     return el;
 }
 
+function onBtnPointerDown(e: PointerEvent) {
+    if (e.button !== 0 || !btn) {
+        return;
+    }
+    cancelHide();
+    const left = parseFloat(btn.style.left || "0");
+    const top = parseFloat(btn.style.top || "0");
+    buttonDrag = {
+        startX: e.clientX,
+        startY: e.clientY,
+        baseLeft: Number.isFinite(left) ? left : 0,
+        baseTop: Number.isFinite(top) ? top : 0,
+        moved: false,
+    };
+    try {
+        btn.setPointerCapture(e.pointerId);
+    } catch {
+        // pointer capture is best-effort
+    }
+    btn.addEventListener("pointermove", onBtnPointerMove);
+    btn.addEventListener("pointerup", onBtnPointerUp, {once: true});
+    btn.addEventListener("pointercancel", onBtnPointerCancel, {once: true});
+}
+
+function onBtnPointerMove(e: PointerEvent) {
+    if (!buttonDrag || !btn) {
+        return;
+    }
+    const dx = e.clientX - buttonDrag.startX;
+    const dy = e.clientY - buttonDrag.startY;
+    if (!buttonDrag.moved && Math.hypot(dx, dy) > 6) {
+        buttonDrag.moved = true;
+        buttonPinned = true;
+        btn.style.cursor = "grabbing";
+    }
+    if (buttonDrag.moved) {
+        const left = Math.max(0, Math.min(window.innerWidth - btn.offsetWidth, buttonDrag.baseLeft + dx));
+        const top = Math.max(0, Math.min(window.innerHeight - btn.offsetHeight, buttonDrag.baseTop + dy));
+        btn.style.left = `${left}px`;
+        btn.style.top = `${top}px`;
+    }
+}
+
+function endBtnDrag() {
+    if (btn) {
+        btn.removeEventListener("pointermove", onBtnPointerMove);
+        btn.style.cursor = "move";
+    }
+    buttonDrag = null;
+}
+
+function onBtnPointerUp(e: PointerEvent) {
+    const wasDrag = buttonDrag?.moved ?? false;
+    endBtnDrag();
+    if (!wasDrag) {
+        void onButtonClick(e);
+    }
+}
+
+function onBtnPointerCancel() {
+    endBtnDrag();
+}
+
 function placeButton() {
-    if (!btn || !currentVideo) {
+    if (!btn || !currentVideo || buttonPinned) {
         return;
     }
     const rect = currentVideo.getBoundingClientRect();
@@ -154,10 +271,14 @@ function tickPosition() {
 }
 
 function showFor(video: HTMLVideoElement) {
-    if (!isEnabled() || !isSignificantVideo(video)) {
+    if (!isEnabled() || !isSignificantVideo(video) || dismissedVideos.has(video)) {
         return;
     }
     cancelHide();
+    if (video !== currentVideo) {
+        // a newly hovered video gets the button anchored to it again
+        buttonPinned = false;
+    }
     currentVideo = video;
     const el = ensureButton();
     el.style.display = "flex";
@@ -183,6 +304,7 @@ function hideButton() {
         positionRaf = null;
     }
     currentVideo = null;
+    buttonPinned = false;
     if (btn) {
         btn.style.display = "none";
     }
@@ -253,7 +375,11 @@ function attachVideo(v: HTMLVideoElement) {
     }
     v.setAttribute(PROCESSED_ATTR, "1");
     v.addEventListener("mouseenter", () => showFor(v));
-    v.addEventListener("mouseleave", scheduleHide);
+    v.addEventListener("mouseleave", () => {
+        // a dismissed button comes back on the next hover
+        dismissedVideos.delete(v);
+        scheduleHide();
+    });
 }
 
 function scan(root: ParentNode) {

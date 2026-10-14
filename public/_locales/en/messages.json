@@ -211,5 +211,14 @@
   },
   "video_panel_download_now": {
     "message": "Download Now"
+  },
+  "video_panel_tab_all": {
+    "message": "Download all"
+  },
+  "video_panel_tab_this": {
+    "message": "Download this video"
+  },
+  "video_download_button_dismiss": {
+    "message": "Hide button"
   }
 }

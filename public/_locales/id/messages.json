@@ -43,5 +43,14 @@
   },
   "video_panel_download_now": {
     "message": "Download Sekarang"
+  },
+  "video_panel_tab_all": {
+    "message": "Download semua"
+  },
+  "video_panel_tab_this": {
+    "message": "Download video ini"
+  },
+  "video_download_button_dismiss": {
+    "message": "Sembunyikan tombol"
   }
 }

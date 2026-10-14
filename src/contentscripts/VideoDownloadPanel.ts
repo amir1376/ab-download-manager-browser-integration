@@ -21,6 +21,8 @@ const PANEL_WIDTH = 340;
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
 let dragState: {offsetX: number; offsetY: number} | null = null;
+let activeTab: "this" | "all" = "this";
+let allTabBuilt = false;
 
 function t(key: string, fallback: string): string {
     try {
@@ -70,19 +72,32 @@ function buildPanel(): HTMLDivElement {
     el.setAttribute("data-abdm-ui", "1");
     el.style.cssText = baseStyle();
 
-    // header (drag handle + close)
+    // header (tabs + close; the header background is the drag handle)
     const header = document.createElement("div");
     header.style.cssText = [
         "display:flex",
         "align-items:center",
-        "gap:8px",
+        "gap:6px",
         "padding:8px 10px",
         "border-bottom:1px solid rgba(255,255,255,0.12)",
         "cursor:grab",
     ].join(";");
-    const title = document.createElement("span");
-    title.textContent = `⬇ ${t("video_panel_title", "Download video")}`;
-    title.style.cssText = "font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;";
+    const tabAll = document.createElement("button");
+    tabAll.setAttribute("data-tab", "all");
+    tabAll.textContent = t("video_panel_tab_all", "Download all");
+    tabAll.style.cssText = tabStyle(false);
+    tabAll.addEventListener("click", (e) => {
+        e.stopPropagation();
+        switchTab("all");
+    });
+    const tabThis = document.createElement("button");
+    tabThis.setAttribute("data-tab", "this");
+    tabThis.textContent = `▶ ${t("video_panel_tab_this", "Download this video")}`;
+    tabThis.style.cssText = tabStyle(true);
+    tabThis.addEventListener("click", (e) => {
+        e.stopPropagation();
+        switchTab("this");
+    });
     const closeBtn = document.createElement("span");
     closeBtn.id = "abdm-vp-close";
     closeBtn.textContent = "✕";
@@ -106,7 +121,8 @@ function buildPanel(): HTMLDivElement {
         e.stopPropagation();
         closePanel();
     });
-    header.appendChild(title);
+    header.appendChild(tabAll);
+    header.appendChild(tabThis);
     header.appendChild(closeBtn);
     header.addEventListener("pointerdown", onDragStart);
 
@@ -117,6 +133,11 @@ function buildPanel(): HTMLDivElement {
     const status = document.createElement("div");
     status.id = "abdm-vp-status";
     status.style.cssText = "color:#9fb3c8;font-size:12px;";
+
+    // "Download this video" tab content
+    const thisWrap = document.createElement("div");
+    thisWrap.id = "abdm-vp-this-wrap";
+    thisWrap.style.cssText = "display:flex;flex-direction:column;gap:8px;";
 
     const videoTitle = document.createElement("div");
     videoTitle.id = "abdm-vp-title";
@@ -146,18 +167,171 @@ function buildPanel(): HTMLDivElement {
         "File disimpan ke folder default di pengaturan aplikasi.",
     );
 
+    thisWrap.appendChild(videoTitle);
+    thisWrap.appendChild(formatList);
+    thisWrap.appendChild(hint);
+
+    // "Download all" tab content — built lazily on first open
+    const allWrap = document.createElement("div");
+    allWrap.id = "abdm-vp-all-wrap";
+    allWrap.style.cssText = "display:none;flex-direction:column;gap:4px;max-height:260px;overflow-y:auto;";
+
     body.appendChild(status);
-    body.appendChild(videoTitle);
-    body.appendChild(formatList);
-    body.appendChild(hint);
+    body.appendChild(thisWrap);
+    body.appendChild(allWrap);
     el.appendChild(header);
     el.appendChild(body);
     return el;
 }
 
+function tabStyle(active: boolean): string {
+    return [
+        `background:${active ? "rgba(59,130,246,0.35)" : "transparent"}`,
+        "border:none",
+        `color:${active ? "#fff" : "#9fb3c8"}`,
+        "font-size:12px",
+        `font-weight:${active ? "600" : "400"}`,
+        "padding:4px 8px",
+        "border-radius:6px",
+        "cursor:pointer",
+        "white-space:nowrap",
+    ].join(";");
+}
+
+function switchTab(which: "this" | "all") {
+    activeTab = which;
+    if (!panel) {
+        return;
+    }
+    const tabAll = panel.querySelector('[data-tab="all"]') as HTMLButtonElement | null;
+    const tabThis = panel.querySelector('[data-tab="this"]') as HTMLButtonElement | null;
+    const thisWrap = document.getElementById("abdm-vp-this-wrap");
+    const allWrap = document.getElementById("abdm-vp-all-wrap");
+    if (tabAll) {
+        tabAll.style.cssText = tabStyle(which === "all");
+    }
+    if (tabThis) {
+        tabThis.style.cssText = tabStyle(which === "this");
+    }
+    if (thisWrap) {
+        thisWrap.style.display = which === "this" ? "flex" : "none";
+    }
+    if (allWrap) {
+        allWrap.style.display = which === "all" ? "flex" : "none";
+        if (which === "all" && !allTabBuilt) {
+            buildAllVideosList();
+            allTabBuilt = true;
+        }
+    }
+}
+
+interface PageVideoEntry {
+    url: string;
+    label: string;
+}
+
+/** Every <video> on the page, deduplicated by download URL. */
+function pageVideoEntries(): PageVideoEntry[] {
+    const seen = new Set<string>();
+    const entries: PageVideoEntry[] = [];
+    document.querySelectorAll("video").forEach((v) => {
+        let url = v.currentSrc || v.src || "";
+        if (!url) {
+            const srcEl = v.querySelector("source[src]");
+            if (srcEl) {
+                url = srcEl.getAttribute("src") || "";
+            }
+        }
+        if (!url || url.startsWith("blob:") || url.startsWith("data:")) {
+            url = location.href;
+        }
+        if (seen.has(url)) {
+            return;
+        }
+        seen.add(url);
+        let host = "";
+        try {
+            host = new URL(url, location.href).hostname;
+        } catch {
+            // keep label without host
+        }
+        entries.push({
+            url,
+            label: `Video ${entries.length + 1}${host ? " • " + host : ""}`,
+        });
+    });
+    return entries;
+}
+
+function buildAllVideosList() {
+    const allWrap = document.getElementById("abdm-vp-all-wrap");
+    if (!allWrap) {
+        return;
+    }
+    allWrap.innerHTML = "";
+    const entries = pageVideoEntries();
+    entries.forEach((entry, i) => {
+        const row = document.createElement("div");
+        row.textContent = `${i + 1}. ${entry.label}`;
+        row.title = entry.url;
+        row.style.cssText = rowStyle();
+        row.addEventListener("mouseenter", () => {
+            row.style.background = "rgba(59,130,246,0.35)";
+        });
+        row.addEventListener("mouseleave", () => {
+            row.style.background = "rgba(255,255,255,0.06)";
+        });
+        row.addEventListener("click", () => onAllVideoClick(entry, row));
+        allWrap.appendChild(row);
+    });
+}
+
+/** "Download all": clicking a video downloads its best quality immediately. */
+async function onAllVideoClick(entry: PageVideoEntry, row: HTMLElement) {
+    const original = row.textContent ?? "";
+    row.style.opacity = "0.6";
+    row.textContent = `⏳ ${original}`;
+    try {
+        const info = await sendMessage(
+            DefinedCommands.YTDLP_PANEL_FETCH_INFO,
+            {pageUrl: entry.url},
+            "background",
+        );
+        const best = info?.formats?.[0];
+        if (!best) {
+            throw new Error(t("video_panel_no_formats", "Tidak ada format tersedia"));
+        }
+        await sendMessage(
+            DefinedCommands.YTDLP_PANEL_DOWNLOAD,
+            {pageUrl: entry.url, formatId: best.formatId, title: info.title},
+            "background",
+        );
+        row.textContent = `✓ ${original}`;
+        row.style.opacity = "1";
+    } catch (err) {
+        console.log("abdm: download-all failed", err);
+        setStatus(panelErrorMessage(err), true);
+        row.textContent = original;
+        row.style.opacity = "1";
+    }
+}
+
+function rowStyle(): string {
+    return [
+        "padding:7px 10px",
+        "border-radius:8px",
+        "background:rgba(255,255,255,0.06)",
+        "cursor:pointer",
+        "font-size:12px",
+        "white-space:nowrap",
+        "overflow:hidden",
+        "text-overflow:ellipsis",
+    ].join(";");
+}
+
 function onDragStart(e: PointerEvent) {
-    // let the close button handle its own events
-    if ((e.target as HTMLElement).closest("#abdm-vp-close")) {
+    // let the close button and the tabs handle their own events
+    if ((e.target as HTMLElement).closest("#abdm-vp-close,[data-tab]")) {
         return;
     }
     if (!panel) {
@@ -275,16 +449,7 @@ function populatePanel(info: YtDlpPanelInfo) {
             const row = document.createElement("div");
             row.textContent = formatRowLabel(f, i);
             row.title = t("video_panel_download_now", "Download Now");
-            row.style.cssText = [
-                "padding:7px 10px",
-                "border-radius:8px",
-                "background:rgba(255,255,255,0.06)",
-                "cursor:pointer",
-                "font-size:12px",
-                "white-space:nowrap",
-                "overflow:hidden",
-                "text-overflow:ellipsis",
-            ].join(";");
+            row.style.cssText = rowStyle();
             row.addEventListener("mouseenter", () => {
                 row.style.background = "rgba(59,130,246,0.35)";
             });
@@ -305,6 +470,7 @@ function populatePanel(info: YtDlpPanelInfo) {
 function createPanelAt(pageUrl: string, x: number, y: number) {
     closePanel();
     currentPageUrl = pageUrl;
+    allTabBuilt = false;
     panel = buildPanel();
     // anchor below the click point, clamped to viewport
     const left = Math.max(8, Math.min(window.innerWidth - PANEL_WIDTH - 8, x - PANEL_WIDTH / 2));
@@ -312,6 +478,7 @@ function createPanelAt(pageUrl: string, x: number, y: number) {
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
     document.documentElement.appendChild(panel);
+    switchTab("this");
 }
 
 /**
