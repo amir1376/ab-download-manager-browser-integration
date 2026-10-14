@@ -73,8 +73,7 @@ function buildPanel(): HTMLDivElement {
     el.setAttribute("data-abdm-ui", "1");
     el.style.cssText = baseStyle();
 
-    // header (tabs + close) — the panel itself stays where it opens;
-    // only the floating button is draggable
+    // header: tabs only — the panel closes by clicking anywhere outside it
     const header = document.createElement("div");
     header.style.cssText = [
         "display:flex",
@@ -99,32 +98,8 @@ function buildPanel(): HTMLDivElement {
         e.stopPropagation();
         switchTab("this");
     });
-    const closeBtn = document.createElement("span");
-    closeBtn.id = "abdm-vp-close";
-    closeBtn.textContent = "✕";
-    closeBtn.title = t("video_panel_close", "Close");
-    closeBtn.style.cssText = [
-        "cursor:pointer",
-        "padding:2px 6px",
-        "border-radius:6px",
-        "color:#aaa",
-        "font-size:13px",
-    ].join(";");
-    closeBtn.addEventListener("mouseenter", () => {
-        closeBtn.style.background = "rgba(255,255,255,0.12)";
-        closeBtn.style.color = "#fff";
-    });
-    closeBtn.addEventListener("mouseleave", () => {
-        closeBtn.style.background = "transparent";
-        closeBtn.style.color = "#aaa";
-    });
-    closeBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        closePanel();
-    });
     header.appendChild(tabAll);
     header.appendChild(tabThis);
-    header.appendChild(closeBtn);
 
     // body
     const body = document.createElement("div");
