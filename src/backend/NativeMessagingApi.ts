@@ -62,4 +62,13 @@ export class NativeMessagingApi implements IAppApi {
         );
         return true;
     }
+
+    async ytdlpVideoDownload(
+        request: { url: string },
+    ): Promise<boolean> {
+        return await this.transport.requestTyped<boolean>(
+            "ytdlp_video",
+            request,
+        );
+    }
 }

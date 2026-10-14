@@ -36,6 +36,24 @@ export async function addDownload(
     return response
 }
 
+export interface YtDlpVideoDownloadData {
+    pageUrl: string
+    pageTitle?: string
+    videoSrc?: string
+}
+
+/**
+ * Handles the IDM-style "Download video" button click from the content script:
+ * opens the yt-dlp dialog in the desktop app with the page URL prefilled.
+ */
+export async function requestYtDlpVideoDownload(
+    data: YtDlpVideoDownloadData,
+): Promise<boolean> {
+    return await usingBackend(async () => {
+        return await backend.ytdlpVideoDownload(data.pageUrl)
+    }) ?? false
+}
+
 export async function getHeadersForUrls(urls: string[]) {
     return Promise.all(urls.map(async url => {
         return await getHeadersForUrl(url)

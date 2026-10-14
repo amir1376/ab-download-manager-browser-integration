@@ -166,5 +166,17 @@
   },
   "config_bypass_shortcut_description": {
     "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
+  },
+  "video_download_button_label": {
+    "message": "Download video"
+  },
+  "video_download_button_title": {
+    "message": "Download this video with AB Download Manager"
+  },
+  "config_video_button": {
+    "message": "Show video download button"
+  },
+  "config_video_button_description": {
+    "message": "Show a floating \"Download video\" button near videos playing in the page. Clicking it opens the yt-dlp download dialog in AB Download Manager."
   }
 }

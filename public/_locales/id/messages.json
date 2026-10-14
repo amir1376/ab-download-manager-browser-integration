@@ -1,0 +1,14 @@
+{
+  "video_download_button_label": {
+    "message": "Download video"
+  },
+  "video_download_button_title": {
+    "message": "Download video ini dengan AB Download Manager"
+  },
+  "config_video_button": {
+    "message": "Tampilkan tombol download video"
+  },
+  "config_video_button_description": {
+    "message": "Tampilkan tombol \"Download video\" melayang di dekat video yang diputar di halaman. Mengkliknya akan membuka dialog download yt-dlp di AB Download Manager."
+  }
+}

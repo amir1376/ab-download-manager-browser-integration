@@ -1,4 +1,5 @@
 import {createHttpApiClient, HttpApi} from "~/backend/HttpApi";
+import {NetworkError} from "~/backend/BackendError";
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config"
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
@@ -117,6 +118,20 @@ export async function httpPing(port: number | null = null) {
     } catch (e) {
         return false
     }
+}
+
+/**
+ * Ask the desktop app to open the yt-dlp video download dialog with the given
+ * page URL prefilled. Goes through native messaging directly (not the HTTP
+ * API) because native messaging can launch the app when it is not running.
+ */
+export async function ytdlpVideoDownload(url: string): Promise<boolean> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpVideoDownload({url})
 }
 
 export async function nativeMessagingPing() {
