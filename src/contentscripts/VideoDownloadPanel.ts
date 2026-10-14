@@ -20,7 +20,8 @@ const PANEL_WIDTH = 340;
 
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
-let dragState: {offsetX: number; offsetY: number} | null = null;
+/** Title of the video shown in the "Download this video" tab. */
+let currentTitle = "";
 let activeTab: "this" | "all" = "this";
 let allTabBuilt = false;
 
@@ -72,7 +73,8 @@ function buildPanel(): HTMLDivElement {
     el.setAttribute("data-abdm-ui", "1");
     el.style.cssText = baseStyle();
 
-    // header (tabs + close; the header background is the drag handle)
+    // header (tabs + close) — the panel itself stays where it opens;
+    // only the floating button is draggable
     const header = document.createElement("div");
     header.style.cssText = [
         "display:flex",
@@ -80,7 +82,6 @@ function buildPanel(): HTMLDivElement {
         "gap:6px",
         "padding:8px 10px",
         "border-bottom:1px solid rgba(255,255,255,0.12)",
-        "cursor:grab",
     ].join(";");
     const tabAll = document.createElement("button");
     tabAll.setAttribute("data-tab", "all");
@@ -124,7 +125,6 @@ function buildPanel(): HTMLDivElement {
     header.appendChild(tabAll);
     header.appendChild(tabThis);
     header.appendChild(closeBtn);
-    header.addEventListener("pointerdown", onDragStart);
 
     // body
     const body = document.createElement("div");
@@ -138,16 +138,6 @@ function buildPanel(): HTMLDivElement {
     const thisWrap = document.createElement("div");
     thisWrap.id = "abdm-vp-this-wrap";
     thisWrap.style.cssText = "display:flex;flex-direction:column;gap:8px;";
-
-    const videoTitle = document.createElement("div");
-    videoTitle.id = "abdm-vp-title";
-    videoTitle.style.cssText = [
-        "font-weight:600",
-        "display:none",
-        "overflow:hidden",
-        "text-overflow:ellipsis",
-        "white-space:nowrap",
-    ].join(";");
 
     const formatList = document.createElement("div");
     formatList.id = "abdm-vp-format-list";
@@ -167,7 +157,6 @@ function buildPanel(): HTMLDivElement {
         "File disimpan ke folder default di pengaturan aplikasi.",
     );
 
-    thisWrap.appendChild(videoTitle);
     thisWrap.appendChild(formatList);
     thisWrap.appendChild(hint);
 
@@ -329,50 +318,6 @@ function rowStyle(): string {
     ].join(";");
 }
 
-function onDragStart(e: PointerEvent) {
-    // let the close button and the tabs handle their own events
-    if ((e.target as HTMLElement).closest("#abdm-vp-close,[data-tab]")) {
-        return;
-    }
-    if (!panel) {
-        return;
-    }
-    e.preventDefault();
-    const header = e.currentTarget as HTMLElement;
-    try {
-        header.setPointerCapture(e.pointerId);
-    } catch {
-        // not critical; drag still works via bubbled pointermove
-    }
-    const rect = panel.getBoundingClientRect();
-    dragState = {
-        offsetX: e.clientX - rect.left,
-        offsetY: e.clientY - rect.top,
-    };
-    header.addEventListener("pointermove", onDragMove);
-    header.addEventListener("pointerup", onDragEnd, {once: true});
-    header.addEventListener("pointercancel", onDragEnd, {once: true});
-}
-
-function onDragMove(e: PointerEvent) {
-    if (!panel || !dragState) {
-        return;
-    }
-    const left = Math.max(
-        8,
-        Math.min(window.innerWidth - PANEL_WIDTH - 8, e.clientX - dragState.offsetX),
-    );
-    const top = Math.max(8, Math.min(window.innerHeight - 60, e.clientY - dragState.offsetY));
-    panel.style.left = `${left}px`;
-    panel.style.top = `${top}px`;
-}
-
-function onDragEnd(e: PointerEvent) {
-    dragState = null;
-    const header = e.currentTarget as HTMLElement | null;
-    header?.removeEventListener("pointermove", onDragMove);
-}
-
 function setStatus(text: string, isError = false) {
     const status = document.getElementById("abdm-vp-status");
     if (status) {
@@ -381,13 +326,31 @@ function setStatus(text: string, isError = false) {
     }
 }
 
+/** "HD"/"4K" tag like the reference list ("1080p HD", "2160p 4K"). */
+function qualityTag(resolution: string): string {
+    const m = resolution.match(/(\d+)\s*p/i);
+    if (m) {
+        const h = parseInt(m[1], 10);
+        if (h >= 2160) {
+            return "4K";
+        }
+        if (h >= 720) {
+            return "HD";
+        }
+    }
+    return "";
+}
+
 /**
- * One row of the format list, e.g. "MP4 file, quality 1080p HD • 42 MB".
+ * One row of the format list, e.g.
+ * "1. Judul Video, MP4 file, quality 1080p HD • 42 MB".
  * Clicking it downloads that format immediately (IDM-style).
  */
-function formatRowLabel(f: YtDlpPanelFormat, index: number): string {
+function formatRowLabel(title: string, f: YtDlpPanelFormat, index: number): string {
     const ext = (f.ext || "?").toUpperCase();
-    const parts = [`${index + 1}. ${ext} file, quality ${f.resolution}`];
+    const tag = qualityTag(f.resolution);
+    const quality = tag ? `${f.resolution} ${tag}` : f.resolution;
+    const parts = [`${index + 1}. ${title}, ${ext} file, quality ${quality}`];
     const size = formatSize(f.sizeBytes);
     if (size !== "?") {
         parts.push(size);
@@ -402,10 +365,9 @@ async function onFormatClick(format: YtDlpPanelFormat, row: HTMLElement) {
     row.style.opacity = "0.6";
     setStatus(t("video_panel_starting", "Memulai download…"));
     try {
-        const titleEl = document.getElementById("abdm-vp-title");
         await sendMessage(
             DefinedCommands.YTDLP_PANEL_DOWNLOAD,
-            {pageUrl: currentPageUrl, formatId: format.formatId, title: titleEl?.textContent ?? ""},
+            {pageUrl: currentPageUrl, formatId: format.formatId, title: currentTitle},
             "background",
         );
         setStatus(t("video_panel_started", "Download dimulai ✓"));
@@ -435,19 +397,14 @@ export function panelErrorMessage(err: unknown): string {
 
 /** Fill the open panel's format list. The panel must already be in the DOM. */
 function populatePanel(info: YtDlpPanelInfo) {
-    const titleEl = document.getElementById("abdm-vp-title");
+    currentTitle = info.title;
     const listEl = document.getElementById("abdm-vp-format-list");
     const hint = document.getElementById("abdm-vp-hint");
-    if (titleEl) {
-        titleEl.textContent = info.title;
-        titleEl.style.display = "block";
-        titleEl.title = info.title;
-    }
     if (listEl) {
         listEl.innerHTML = "";
         info.formats.forEach((f, i) => {
             const row = document.createElement("div");
-            row.textContent = formatRowLabel(f, i);
+            row.textContent = formatRowLabel(info.title, f, i);
             row.title = t("video_panel_download_now", "Download Now");
             row.style.cssText = rowStyle();
             row.addEventListener("mouseenter", () => {
@@ -478,7 +435,29 @@ function createPanelAt(pageUrl: string, x: number, y: number) {
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
     document.documentElement.appendChild(panel);
+    // clicking anywhere outside the panel (or the floating button) closes it
+    document.addEventListener("pointerdown", onDocumentPointerDown, true);
     switchTab("this");
+}
+
+/**
+ * Close the panel when the user clicks anywhere that is not the panel
+ * itself or the floating download button (capture phase, so pages
+ * cannot swallow it).
+ */
+function onDocumentPointerDown(e: PointerEvent) {
+    if (!panel) {
+        return;
+    }
+    const target = e.target as HTMLElement | null;
+    if (!target || typeof target.closest !== "function") {
+        closePanel();
+        return;
+    }
+    if (target.closest(`#${PANEL_ID}`) || target.closest("#abdm-video-download-btn")) {
+        return;
+    }
+    closePanel();
 }
 
 /**
@@ -499,7 +478,7 @@ export function openPanelWithError(pageUrl: string, x: number, y: number, messag
 
 export function closePanel() {
     currentPageUrl = null;
-    dragState = null;
+    document.removeEventListener("pointerdown", onDocumentPointerDown, true);
     if (panel) {
         panel.remove();
         panel = null;
