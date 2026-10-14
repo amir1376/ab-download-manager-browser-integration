@@ -114,14 +114,14 @@ function ensureButton(): HTMLDivElement {
         "display:none",
         "align-items:center",
         "gap:6px",
-        "padding:6px 12px",
+        "padding:10px 18px",
         "border-radius:999px",
         "background:linear-gradient(to bottom right,#2E3038,#171820)",
         "border:1px solid rgba(255,255,255,0.25)",
         "box-shadow:0 2px 8px rgba(0,0,0,0.35)",
         "color:#e8e8e8",
         "font-family:\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif",
-        "font-size:12px",
+        "font-size:15px",
         "line-height:1",
         "cursor:move",
         "user-select:none",
@@ -130,7 +130,7 @@ function ensureButton(): HTMLDivElement {
     ].join(";");
     const icon = document.createElement("span");
     icon.textContent = "⬇";
-    icon.style.cssText = "font-size:13px;line-height:1;pointer-events:none;";
+    icon.style.cssText = "font-size:16px;line-height:1;pointer-events:none;";
     const text = document.createElement("span");
     text.textContent = label;
     text.style.cssText = "pointer-events:none;";
@@ -142,13 +142,13 @@ function ensureButton(): HTMLDivElement {
         "position:absolute",
         "top:-9px",
         "right:-9px",
-        "width:18px",
-        "height:18px",
+        "width:22px",
+        "height:22px",
         "border-radius:50%",
         "background:#e11d48",
         "color:#fff",
-        "font-size:10px",
-        "line-height:18px",
+        "font-size:12px",
+        "line-height:22px",
         "text-align:center",
         "cursor:pointer",
         "box-shadow:0 1px 4px rgba(0,0,0,0.4)",

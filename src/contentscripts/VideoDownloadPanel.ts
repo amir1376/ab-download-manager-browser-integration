@@ -16,7 +16,7 @@ import type {YtDlpPanelFormat, YtDlpPanelInfo} from "~/backend/NativeMessagingAp
  */
 
 const PANEL_ID = "abdm-video-panel";
-const PANEL_WIDTH = 340;
+const PANEL_WIDTH = 470;
 
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
@@ -61,7 +61,7 @@ function baseStyle(): string {
         "box-shadow:0 8px 28px rgba(0,0,0,0.5)",
         "color:#e8e8e8",
         "font-family:\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif",
-        "font-size:13px",
+        "font-size:16px",
         "line-height:1.4",
         "user-select:none",
     ].join(";");
@@ -79,7 +79,7 @@ function buildPanel(): HTMLDivElement {
         "display:flex",
         "align-items:center",
         "gap:6px",
-        "padding:8px 10px",
+        "padding:10px 14px",
         "border-bottom:1px solid rgba(255,255,255,0.12)",
     ].join(";");
     const tabAll = document.createElement("button");
@@ -103,16 +103,16 @@ function buildPanel(): HTMLDivElement {
 
     // body
     const body = document.createElement("div");
-    body.style.cssText = "padding:10px;display:flex;flex-direction:column;gap:8px;";
+    body.style.cssText = "padding:14px;display:flex;flex-direction:column;gap:10px;";
 
     const status = document.createElement("div");
     status.id = "abdm-vp-status";
-    status.style.cssText = "color:#9fb3c8;font-size:12px;";
+    status.style.cssText = "color:#9fb3c8;font-size:14px;";
 
     // "Download this video" tab content
     const thisWrap = document.createElement("div");
     thisWrap.id = "abdm-vp-this-wrap";
-    thisWrap.style.cssText = "display:flex;flex-direction:column;gap:8px;";
+    thisWrap.style.cssText = "display:flex;flex-direction:column;gap:10px;";
 
     const formatList = document.createElement("div");
     formatList.id = "abdm-vp-format-list";
@@ -120,13 +120,13 @@ function buildPanel(): HTMLDivElement {
         "display:none",
         "flex-direction:column",
         "gap:4px",
-        "max-height:260px",
+        "max-height:360px",
         "overflow-y:auto",
     ].join(";");
 
     const hint = document.createElement("div");
     hint.id = "abdm-vp-hint";
-    hint.style.cssText = "display:none;color:#8a8f98;font-size:11px;";
+    hint.style.cssText = "display:none;color:#8a8f98;font-size:13px;";
     hint.textContent = t(
         "video_panel_hint",
         "File disimpan ke folder default di pengaturan aplikasi.",
@@ -138,7 +138,7 @@ function buildPanel(): HTMLDivElement {
     // "Download all" tab content — built lazily on first open
     const allWrap = document.createElement("div");
     allWrap.id = "abdm-vp-all-wrap";
-    allWrap.style.cssText = "display:none;flex-direction:column;gap:4px;max-height:260px;overflow-y:auto;";
+    allWrap.style.cssText = "display:none;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;";
 
     body.appendChild(status);
     body.appendChild(thisWrap);
@@ -153,7 +153,7 @@ function tabStyle(active: boolean): string {
         `background:${active ? "rgba(59,130,246,0.35)" : "transparent"}`,
         "border:none",
         `color:${active ? "#fff" : "#9fb3c8"}`,
-        "font-size:12px",
+        "font-size:15px",
         `font-weight:${active ? "600" : "400"}`,
         "padding:4px 8px",
         "border-radius:6px",
@@ -282,11 +282,11 @@ async function onAllVideoClick(entry: PageVideoEntry, row: HTMLElement) {
 
 function rowStyle(): string {
     return [
-        "padding:7px 10px",
+        "padding:10px 12px",
         "border-radius:8px",
         "background:rgba(255,255,255,0.06)",
         "cursor:pointer",
-        "font-size:12px",
+        "font-size:15px",
         "white-space:nowrap",
         "overflow:hidden",
         "text-overflow:ellipsis",
