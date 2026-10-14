@@ -20,8 +20,6 @@ const PANEL_WIDTH = 340;
 
 let panel: HTMLDivElement | null = null;
 let currentPageUrl: string | null = null;
-/** Best format from the last fetch — used directly by "Download Now". */
-let bestFormat: YtDlpPanelFormat | null = null;
 let dragState: {offsetX: number; offsetY: number} | null = null;
 
 function t(key: string, fallback: string): string {
@@ -47,15 +45,6 @@ function formatSize(bytes: number | null): string {
         value /= 1024;
     }
     return `${value.toFixed(value >= 100 ? 0 : 1)} ${unit}`;
-}
-
-function formatLabel(f: YtDlpPanelFormat): string {
-    const parts = [f.resolution];
-    if (f.ext) {
-        parts.push(f.ext);
-    }
-    parts.push(formatSize(f.sizeBytes));
-    return parts.join(" • ");
 }
 
 function baseStyle(): string {
@@ -139,36 +128,15 @@ function buildPanel(): HTMLDivElement {
         "white-space:nowrap",
     ].join(";");
 
-    const formatInfo = document.createElement("div");
-    formatInfo.id = "abdm-vp-format-info";
-    formatInfo.style.cssText = [
+    const formatList = document.createElement("div");
+    formatList.id = "abdm-vp-format-list";
+    formatList.style.cssText = [
         "display:none",
-        "color:#9fb3c8",
-        "font-size:12px",
+        "flex-direction:column",
+        "gap:4px",
+        "max-height:260px",
+        "overflow-y:auto",
     ].join(";");
-
-    const downloadBtn = document.createElement("button");
-    downloadBtn.id = "abdm-vp-download";
-    downloadBtn.textContent = t("video_panel_download_now", "Download Now");
-    downloadBtn.style.cssText = [
-        "display:none",
-        "width:100%",
-        "padding:8px",
-        "border:none",
-        "border-radius:8px",
-        "background:#3b82f6",
-        "color:#fff",
-        "font-size:13px",
-        "font-weight:600",
-        "cursor:pointer",
-    ].join(";");
-    downloadBtn.addEventListener("mouseenter", () => {
-        downloadBtn.style.background = "#2563eb";
-    });
-    downloadBtn.addEventListener("mouseleave", () => {
-        downloadBtn.style.background = "#3b82f6";
-    });
-    downloadBtn.addEventListener("click", onDownloadClick);
 
     const hint = document.createElement("div");
     hint.id = "abdm-vp-hint";
@@ -180,8 +148,7 @@ function buildPanel(): HTMLDivElement {
 
     body.appendChild(status);
     body.appendChild(videoTitle);
-    body.appendChild(formatInfo);
-    body.appendChild(downloadBtn);
+    body.appendChild(formatList);
     body.appendChild(hint);
     el.appendChild(header);
     el.appendChild(body);
@@ -240,24 +207,31 @@ function setStatus(text: string, isError = false) {
     }
 }
 
-async function onDownloadClick() {
-    const downloadBtn = document.getElementById("abdm-vp-download") as HTMLButtonElement | null;
-    const titleEl = document.getElementById("abdm-vp-title");
-    if (!currentPageUrl || !bestFormat) {
+/**
+ * One row of the format list, e.g. "MP4 file, quality 1080p HD • 42 MB".
+ * Clicking it downloads that format immediately (IDM-style).
+ */
+function formatRowLabel(f: YtDlpPanelFormat, index: number): string {
+    const ext = (f.ext || "?").toUpperCase();
+    const parts = [`${index + 1}. ${ext} file, quality ${f.resolution}`];
+    const size = formatSize(f.sizeBytes);
+    if (size !== "?") {
+        parts.push(size);
+    }
+    return parts.join(" • ");
+}
+
+async function onFormatClick(format: YtDlpPanelFormat, row: HTMLElement) {
+    if (!currentPageUrl) {
         return;
     }
-    const formatId = bestFormat.formatId;
-    const title = titleEl?.textContent ?? "";
-    if (downloadBtn) {
-        downloadBtn.disabled = true;
-        downloadBtn.style.opacity = "0.6";
-        downloadBtn.style.cursor = "default";
-    }
+    row.style.opacity = "0.6";
     setStatus(t("video_panel_starting", "Memulai download…"));
     try {
+        const titleEl = document.getElementById("abdm-vp-title");
         await sendMessage(
             DefinedCommands.YTDLP_PANEL_DOWNLOAD,
-            {pageUrl: currentPageUrl, formatId, title},
+            {pageUrl: currentPageUrl, formatId: format.formatId, title: titleEl?.textContent ?? ""},
             "background",
         );
         setStatus(t("video_panel_started", "Download dimulai ✓"));
@@ -265,11 +239,7 @@ async function onDownloadClick() {
     } catch (err) {
         console.log("abdm: panel download failed", err);
         setStatus(friendlyError(err), true);
-        if (downloadBtn) {
-            downloadBtn.disabled = false;
-            downloadBtn.style.opacity = "1";
-            downloadBtn.style.cursor = "pointer";
-        }
+        row.style.opacity = "1";
     }
 }
 
@@ -308,21 +278,39 @@ async function fetchAndPopulate(pageUrl: string) {
         return;
     }
     const titleEl = document.getElementById("abdm-vp-title");
-    const formatInfoEl = document.getElementById("abdm-vp-format-info");
-    const downloadBtn = document.getElementById("abdm-vp-download") as HTMLButtonElement | null;
+    const listEl = document.getElementById("abdm-vp-format-list");
     const hint = document.getElementById("abdm-vp-hint");
-    bestFormat = info.formats[0];
     if (titleEl) {
         titleEl.textContent = info.title;
         titleEl.style.display = "block";
         titleEl.title = info.title;
     }
-    if (formatInfoEl) {
-        formatInfoEl.textContent = formatLabel(bestFormat);
-        formatInfoEl.style.display = "block";
-    }
-    if (downloadBtn) {
-        downloadBtn.style.display = "block";
+    if (listEl) {
+        listEl.innerHTML = "";
+        info.formats.forEach((f, i) => {
+            const row = document.createElement("div");
+            row.textContent = formatRowLabel(f, i);
+            row.title = t("video_panel_download_now", "Download Now");
+            row.style.cssText = [
+                "padding:7px 10px",
+                "border-radius:8px",
+                "background:rgba(255,255,255,0.06)",
+                "cursor:pointer",
+                "font-size:12px",
+                "white-space:nowrap",
+                "overflow:hidden",
+                "text-overflow:ellipsis",
+            ].join(";");
+            row.addEventListener("mouseenter", () => {
+                row.style.background = "rgba(59,130,246,0.35)";
+            });
+            row.addEventListener("mouseleave", () => {
+                row.style.background = "rgba(255,255,255,0.06)";
+            });
+            row.addEventListener("click", () => onFormatClick(f, row));
+            listEl.appendChild(row);
+        });
+        (listEl.style as CSSStyleDeclaration).display = "flex";
     }
     if (hint) {
         hint.style.display = "block";
@@ -353,7 +341,6 @@ export function toggleVideoDownloadPanel(pageUrl: string, x: number, y: number) 
 
 export function closePanel() {
     currentPageUrl = null;
-    bestFormat = null;
     dragState = null;
     if (panel) {
         panel.remove();
