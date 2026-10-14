@@ -61,13 +61,14 @@ export interface YtDlpPanelFetchInfoData {
 /**
  * IDM-style download panel: fetch video info (title + formats) from the
  * desktop app without opening any dialog.
+ *
+ * NOTE: intentionally NOT wrapped in usingBackend() — that helper swallows
+ * errors and the panel needs the real failure reason to display it.
  */
 export async function requestYtDlpPanelFetchInfo(
     data: YtDlpPanelFetchInfoData,
 ) {
-    return await usingBackend(async () => {
-        return await backend.ytdlpFetchInfo({url: data.pageUrl})
-    })
+    return await backend.ytdlpFetchInfo(data.pageUrl)
 }
 
 export interface YtDlpPanelDownloadData {
@@ -83,13 +84,8 @@ export interface YtDlpPanelDownloadData {
 export async function requestYtDlpPanelDownload(
     data: YtDlpPanelDownloadData,
 ): Promise<boolean> {
-    return await usingBackend(async () => {
-        return await backend.ytdlpPanelDownload({
-            url: data.pageUrl,
-            formatId: data.formatId,
-            title: data.title,
-        })
-    }) ?? false
+    return await backend.ytdlpPanelDownload(data.pageUrl, data.formatId, data.title)
+        .catch(() => false)
 }
 
 export async function getHeadersForUrls(urls: string[]) {

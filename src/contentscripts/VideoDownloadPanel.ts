@@ -93,6 +93,7 @@ function buildPanel(): HTMLDivElement {
     title.textContent = `⬇ ${t("video_panel_title", "Download video")}`;
     title.style.cssText = "font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;";
     const closeBtn = document.createElement("span");
+    closeBtn.id = "abdm-vp-close";
     closeBtn.textContent = "✕";
     closeBtn.title = t("video_panel_close", "Close");
     closeBtn.style.cssText = [
@@ -116,7 +117,7 @@ function buildPanel(): HTMLDivElement {
     });
     header.appendChild(title);
     header.appendChild(closeBtn);
-    header.addEventListener("mousedown", onDragStart);
+    header.addEventListener("pointerdown", onDragStart);
 
     // body
     const body = document.createElement("div");
@@ -191,20 +192,32 @@ function buildPanel(): HTMLDivElement {
     return el;
 }
 
-function onDragStart(e: MouseEvent) {
-    if (!panel || (e.target as HTMLElement).textContent === "✕") {
+function onDragStart(e: PointerEvent) {
+    // let the close button handle its own events
+    if ((e.target as HTMLElement).closest("#abdm-vp-close")) {
+        return;
+    }
+    if (!panel) {
         return;
     }
     e.preventDefault();
+    const header = e.currentTarget as HTMLElement;
+    try {
+        header.setPointerCapture(e.pointerId);
+    } catch {
+        // not critical; drag still works via bubbled pointermove
+    }
+    const rect = panel.getBoundingClientRect();
     dragState = {
-        offsetX: e.clientX - panel.getBoundingClientRect().left,
-        offsetY: e.clientY - panel.getBoundingClientRect().top,
+        offsetX: e.clientX - rect.left,
+        offsetY: e.clientY - rect.top,
     };
-    document.addEventListener("mousemove", onDragMove);
-    document.addEventListener("mouseup", onDragEnd, {once: true});
+    header.addEventListener("pointermove", onDragMove);
+    header.addEventListener("pointerup", onDragEnd, {once: true});
+    header.addEventListener("pointercancel", onDragEnd, {once: true});
 }
 
-function onDragMove(e: MouseEvent) {
+function onDragMove(e: PointerEvent) {
     if (!panel || !dragState) {
         return;
     }
@@ -217,9 +230,10 @@ function onDragMove(e: MouseEvent) {
     panel.style.top = `${top}px`;
 }
 
-function onDragEnd() {
+function onDragEnd(e: PointerEvent) {
     dragState = null;
-    document.removeEventListener("mousemove", onDragMove);
+    const header = e.currentTarget as HTMLElement | null;
+    header?.removeEventListener("pointermove", onDragMove);
 }
 
 function setStatus(text: string, isError = false) {
@@ -340,7 +354,6 @@ export function toggleVideoDownloadPanel(pageUrl: string, x: number, y: number) 
 export function closePanel() {
     currentPageUrl = null;
     dragState = null;
-    document.removeEventListener("mousemove", onDragMove);
     if (panel) {
         panel.remove();
         panel = null;

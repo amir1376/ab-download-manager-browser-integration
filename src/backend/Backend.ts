@@ -6,7 +6,7 @@ import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {DownloadRequestOptions} from "~/interfaces/DownloadRequestOptions";
 import Constants from "~/utils/Constants";
 import {IAppApi} from "~/backend/IAppApi";
-import {NativeMessagingApi} from "~/backend/NativeMessagingApi";
+import {NativeMessagingApi, YtDlpPanelInfo} from "~/backend/NativeMessagingApi";
 import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport";
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
 
@@ -132,6 +132,36 @@ export async function ytdlpVideoDownload(url: string): Promise<boolean> {
         throw new NetworkError("Cannot connect to native messaging host")
     }
     return await api.ytdlpVideoDownload({url})
+}
+
+/**
+ * IDM-style panel: fetch video info (title + formats) without opening the app
+ * dialog. Goes through native messaging directly (not the HTTP API).
+ */
+export async function ytdlpFetchInfo(url: string): Promise<YtDlpPanelInfo> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpFetchInfo({url})
+}
+
+/**
+ * IDM-style panel: start the download in the app background
+ * (no dialog opened).
+ */
+export async function ytdlpPanelDownload(
+    url: string,
+    formatId: string,
+    title?: string,
+): Promise<boolean> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpPanelDownload({url, formatId, title})
 }
 
 export async function nativeMessagingPing() {
