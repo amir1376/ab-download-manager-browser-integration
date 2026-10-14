@@ -9,6 +9,33 @@
     "message": "Tampilkan tombol download video"
   },
   "config_video_button_description": {
-    "message": "Tampilkan tombol \"Download video\" melayang di dekat video yang diputar di halaman. Mengkliknya akan membuka dialog download yt-dlp di AB Download Manager."
+    "message": "Tampilkan panel download melayang di dekat video yang diputar di halaman. Klik untuk memilih kualitas lalu download langsung tanpa membuka aplikasi."
+  },
+  "video_panel_title": {
+    "message": "Download video"
+  },
+  "video_panel_close": {
+    "message": "Tutup"
+  },
+  "video_panel_loading": {
+    "message": "Mengambil info video…"
+  },
+  "video_panel_download": {
+    "message": "Download"
+  },
+  "video_panel_starting": {
+    "message": "Memulai download…"
+  },
+  "video_panel_started": {
+    "message": "Download dimulai ✓"
+  },
+  "video_panel_error": {
+    "message": "Gagal"
+  },
+  "video_panel_no_formats": {
+    "message": "Tidak ada format tersedia"
+  },
+  "video_panel_hint": {
+    "message": "File disimpan ke folder default di pengaturan aplikasi."
   }
 }

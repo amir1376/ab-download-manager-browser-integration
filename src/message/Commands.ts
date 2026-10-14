@@ -11,4 +11,6 @@ export const DefinedCommands = Object.freeze({
     GET_PLATFORM: "get_platform",
     DOWNLOADABLE_MEDIA_DETECTED: "downloadable_media_detected",
     YTDLP_VIDEO_DOWNLOAD: "ytdlp_video_download",
+    YTDLP_PANEL_FETCH_INFO: "ytdlp_panel_fetch_info",
+    YTDLP_PANEL_DOWNLOAD: "ytdlp_panel_download",
 })

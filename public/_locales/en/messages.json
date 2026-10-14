@@ -177,6 +177,33 @@
     "message": "Show video download button"
   },
   "config_video_button_description": {
-    "message": "Show a floating \"Download video\" button near videos playing in the page. Clicking it opens the yt-dlp download dialog in AB Download Manager."
+    "message": "Show a floating download panel near videos playing in the page. Click it to pick a quality and download directly without opening the app."
+  },
+  "video_panel_title": {
+    "message": "Download video"
+  },
+  "video_panel_close": {
+    "message": "Close"
+  },
+  "video_panel_loading": {
+    "message": "Fetching video info…"
+  },
+  "video_panel_download": {
+    "message": "Download"
+  },
+  "video_panel_starting": {
+    "message": "Starting download…"
+  },
+  "video_panel_started": {
+    "message": "Download started ✓"
+  },
+  "video_panel_error": {
+    "message": "Failed"
+  },
+  "video_panel_no_formats": {
+    "message": "No formats available"
+  },
+  "video_panel_hint": {
+    "message": "Saved to the default folder in the app settings."
   }
 }
