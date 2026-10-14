@@ -282,14 +282,15 @@ async function onAllVideoClick(entry: PageVideoEntry, row: HTMLElement) {
 
 function rowStyle(): string {
     return [
+        "display:flex",
+        "flex-direction:column",
+        "gap:2px",
         "padding:10px 12px",
         "border-radius:8px",
         "background:rgba(255,255,255,0.06)",
         "cursor:pointer",
         "font-size:13px",
-        "white-space:nowrap",
         "overflow:hidden",
-        "text-overflow:ellipsis",
     ].join(";");
 }
 
@@ -317,24 +318,21 @@ function qualityTag(resolution: string): string {
 }
 
 /**
- * One row of the format list, e.g.
- * "1. SPEED GOES PRO, EPISODE 4_ KEVIN DURANT, MP4 file, quality 1080p HD • 42 MB".
- * The full title is shown like the reference UI; only absurdly long titles
- * are capped so the quality info stays visible.
+ * One row of the format list, two lines:
+ *   1. SPEED GOES PRO, EPISODE 4_ KEVIN DURANT
+ *   MP4 file • quality 1080p HD • 42 MB
+ * The title gets its own line so the quality info is never cut off.
  * Clicking a row downloads that format immediately (IDM-style).
  */
-function formatRowLabel(title: string, f: YtDlpPanelFormat, index: number): string {
+function formatRowLabel(title: string, f: YtDlpPanelFormat, index: number): {title: string; detail: string} {
     const ext = (f.ext || "?").toUpperCase();
     const tag = qualityTag(f.resolution);
     const quality = tag ? `${f.resolution} ${tag}` : f.resolution;
-    const clean = title.trim();
-    const displayTitle = clean.length > 60 ? clean.slice(0, 59).trimEnd() + "…" : clean;
-    const parts = [`${index + 1}. ${displayTitle}, ${ext} file, quality ${quality}`];
     const size = formatSize(f.sizeBytes);
-    if (size !== "?") {
-        parts.push(size);
-    }
-    return parts.join(" • ");
+    return {
+        title: `${index + 1}. ${title.trim()}`,
+        detail: `${ext} file • quality ${quality}${size !== "?" ? " • " + size : ""}`,
+    };
 }
 
 async function onFormatClick(format: YtDlpPanelFormat, row: HTMLElement) {
@@ -383,7 +381,20 @@ function populatePanel(info: YtDlpPanelInfo) {
         listEl.innerHTML = "";
         info.formats.forEach((f, i) => {
             const row = document.createElement("div");
-            row.textContent = formatRowLabel(info.title, f, i);
+            const label = formatRowLabel(info.title, f, i);
+            const line1 = document.createElement("div");
+            line1.textContent = label.title;
+            line1.style.cssText = [
+                "font-weight:600",
+                "white-space:nowrap",
+                "overflow:hidden",
+                "text-overflow:ellipsis",
+            ].join(";");
+            const line2 = document.createElement("div");
+            line2.textContent = label.detail;
+            line2.style.cssText = "color:#9fb3c8;font-size:12px;";
+            row.appendChild(line1);
+            row.appendChild(line2);
             row.title = t("video_panel_download_now", "Download Now");
             row.style.cssText = rowStyle();
             row.addEventListener("mouseenter", () => {
