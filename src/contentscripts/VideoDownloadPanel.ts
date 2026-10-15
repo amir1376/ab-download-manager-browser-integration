@@ -283,8 +283,8 @@ async function onAllVideoClick(entry: PageVideoEntry, row: HTMLElement) {
 function rowStyle(): string {
     return [
         "display:flex",
-        "align-items:center",
-        "gap:8px",
+        "flex-direction:column",
+        "gap:2px",
         "padding:10px 12px",
         "border-radius:8px",
         "background:rgba(255,255,255,0.06)",
@@ -318,20 +318,21 @@ function qualityTag(resolution: string): string {
 }
 
 /**
- * Parts of one format row, single line like the "Download all" tab:
- *   1. SPEED GOES PRO, EPISODE 4_ KEVIN DURANT …   MP4 • 1080p HD • 42 MB
- * The title shrinks with ellipsis; the quality info is pinned right and
- * never gets cut off.
+ * Parts of one format row, two lines (like before):
+ *   1. SPEED GOES PRO, EPISODE 4_ KEVIN DURANT
+ *   MP4 file • quality 1080p HD • 42 MB
+ * Both lines are 13px like the "Download all" tab rows, so the detail
+ * line is never smaller than the other tab's rows.
+ * Clicking a row downloads that format immediately (IDM-style).
  */
-function formatRowParts(title: string, f: YtDlpPanelFormat, index: number): {num: string; title: string; meta: string} {
+function formatRowParts(title: string, f: YtDlpPanelFormat, index: number): {title: string; detail: string} {
     const ext = (f.ext || "?").toUpperCase();
     const tag = qualityTag(f.resolution);
     const quality = tag ? `${f.resolution} ${tag}` : f.resolution;
     const size = formatSize(f.sizeBytes);
     return {
-        num: `${index + 1}.`,
-        title: title.trim(),
-        meta: `${ext} • ${quality}${size !== "?" ? " • " + size : ""}`,
+        title: `${index + 1}. ${title.trim()}`,
+        detail: `${ext} file • quality ${quality}${size !== "?" ? " • " + size : ""}`,
     };
 }
 
@@ -382,24 +383,19 @@ function populatePanel(info: YtDlpPanelInfo) {
         info.formats.forEach((f, i) => {
             const row = document.createElement("div");
             const parts = formatRowParts(info.title, f, i);
-            const numEl = document.createElement("span");
-            numEl.textContent = parts.num;
-            numEl.style.cssText = "flex-shrink:0;font-weight:600;";
-            const titleEl = document.createElement("span");
-            titleEl.textContent = parts.title;
-            titleEl.style.cssText = [
-                "flex:1 1 auto",
-                "min-width:0",
+            const line1 = document.createElement("div");
+            line1.textContent = parts.title;
+            line1.style.cssText = [
+                "font-weight:600",
                 "white-space:nowrap",
                 "overflow:hidden",
                 "text-overflow:ellipsis",
             ].join(";");
-            const metaEl = document.createElement("span");
-            metaEl.textContent = parts.meta;
-            metaEl.style.cssText = "flex-shrink:0;color:#9fb3c8;font-size:12px;white-space:nowrap;";
-            row.appendChild(numEl);
-            row.appendChild(titleEl);
-            row.appendChild(metaEl);
+            const line2 = document.createElement("div");
+            line2.textContent = parts.detail;
+            line2.style.cssText = "font-size:13px;";
+            row.appendChild(line1);
+            row.appendChild(line2);
             row.title = t("video_panel_download_now", "Download Now");
             row.style.cssText = rowStyle();
             row.addEventListener("mouseenter", () => {
