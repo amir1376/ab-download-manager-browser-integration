@@ -120,25 +120,14 @@ function buildPanel(): HTMLDivElement {
         "display:none",
         "flex-direction:column",
         "gap:4px",
-        "max-height:360px",
-        "overflow-y:auto",
     ].join(";");
 
-    const hint = document.createElement("div");
-    hint.id = "abdm-vp-hint";
-    hint.style.cssText = "display:none;color:#8a8f98;font-size:13px;";
-    hint.textContent = t(
-        "video_panel_hint",
-        "File disimpan ke folder default di pengaturan aplikasi.",
-    );
-
     thisWrap.appendChild(formatList);
-    thisWrap.appendChild(hint);
 
     // "Download all" tab content — built lazily on first open
     const allWrap = document.createElement("div");
     allWrap.id = "abdm-vp-all-wrap";
-    allWrap.style.cssText = "display:none;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;";
+    allWrap.style.cssText = "display:none;flex-direction:column;gap:6px;";
 
     body.appendChild(status);
     body.appendChild(thisWrap);
@@ -248,6 +237,7 @@ function buildAllVideosList() {
         row.addEventListener("click", () => onAllVideoClick(entry, row));
         allWrap.appendChild(row);
     });
+    clampPanelToViewport();
 }
 
 /** "Download all": clicking a video downloads its best quality immediately. */
@@ -374,7 +364,6 @@ export function panelErrorMessage(err: unknown): string {
 function populatePanel(info: YtDlpPanelInfo) {
     currentTitle = info.title;
     const listEl = document.getElementById("abdm-vp-format-list");
-    const hint = document.getElementById("abdm-vp-hint");
     if (listEl) {
         listEl.innerHTML = "";
         info.formats.forEach((f, i) => {
@@ -393,10 +382,8 @@ function populatePanel(info: YtDlpPanelInfo) {
         });
         (listEl.style as CSSStyleDeclaration).display = "flex";
     }
-    if (hint) {
-        hint.style.display = "block";
-    }
     setStatus("");
+    clampPanelToViewport();
 }
 
 function createPanelAt(pageUrl: string, x: number, y: number) {
@@ -413,6 +400,28 @@ function createPanelAt(pageUrl: string, x: number, y: number) {
     // clicking anywhere outside the panel (or the floating button) closes it
     document.addEventListener("pointerdown", onDocumentPointerDown, true);
     switchTab("this");
+    clampPanelToViewport();
+}
+
+/**
+ * The format list no longer scrolls, so a tall panel is pulled up as
+ * needed to stay fully inside the viewport.
+ */
+function clampPanelToViewport() {
+    if (!panel) {
+        return;
+    }
+    const h = panel.offsetHeight;
+    const w = panel.offsetWidth;
+    if (h <= 0 || w <= 0) {
+        return;
+    }
+    const curLeft = parseInt(panel.style.left || "0", 10) || 0;
+    const curTop = parseInt(panel.style.top || "0", 10) || 0;
+    const left = Math.max(8, Math.min(window.innerWidth - w - 8, curLeft));
+    const top = Math.max(8, Math.min(window.innerHeight - h - 8, curTop));
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
 }
 
 /**
