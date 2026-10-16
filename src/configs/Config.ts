@@ -51,6 +51,7 @@ export const MAX_ALLOWED_PORT = 65535
 const ConfigType = z.object({
     autoCaptureLinks: z.boolean().catch(true),
     popupEnabled: z.boolean().catch(true),
+    videoDownloadButtonEnabled: z.boolean().catch(true),
     port: z.int()
         .min(MIN_ALLOWED_PORT)
         .max(MAX_ALLOWED_PORT)

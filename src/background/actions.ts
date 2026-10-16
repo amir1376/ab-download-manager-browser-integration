@@ -36,6 +36,58 @@ export async function addDownload(
     return response
 }
 
+export interface YtDlpVideoDownloadData {
+    pageUrl: string
+    pageTitle?: string
+    videoSrc?: string
+}
+
+/**
+ * Handles the IDM-style "Download video" button click from the content script:
+ * opens the yt-dlp dialog in the desktop app with the page URL prefilled.
+ */
+export async function requestYtDlpVideoDownload(
+    data: YtDlpVideoDownloadData,
+): Promise<boolean> {
+    return await usingBackend(async () => {
+        return await backend.ytdlpVideoDownload(data.pageUrl)
+    }) ?? false
+}
+
+export interface YtDlpPanelFetchInfoData {
+    pageUrl: string
+}
+
+/**
+ * IDM-style download panel: fetch video info (title + formats) from the
+ * desktop app without opening any dialog.
+ *
+ * NOTE: intentionally NOT wrapped in usingBackend() — that helper swallows
+ * errors and the panel needs the real failure reason to display it.
+ */
+export async function requestYtDlpPanelFetchInfo(
+    data: YtDlpPanelFetchInfoData,
+) {
+    return await backend.ytdlpFetchInfo(data.pageUrl)
+}
+
+export interface YtDlpPanelDownloadData {
+    pageUrl: string
+    formatId: string
+    title?: string
+}
+
+/**
+ * IDM-style download panel: start the download in the app background
+ * (no dialog opened).
+ */
+export async function requestYtDlpPanelDownload(
+    data: YtDlpPanelDownloadData,
+): Promise<boolean> {
+    return await backend.ytdlpPanelDownload(data.pageUrl, data.formatId, data.title)
+        .catch(() => false)
+}
+
 export async function getHeadersForUrls(urls: string[]) {
     return Promise.all(urls.map(async url => {
         return await getHeadersForUrl(url)

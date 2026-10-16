@@ -70,6 +70,8 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     @observable
     popupEnabled!: boolean
     @observable
+    videoDownloadButtonEnabled!: boolean
+    @observable
     autoCaptureLinks!: boolean
 
     @observable
@@ -126,6 +128,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setPopupEnabled(value: boolean) {
         Configs.setConfigItem("popupEnabled", value)
+    }
+
+    setVideoDownloadButtonEnabled(value: boolean) {
+        Configs.setConfigItem("videoDownloadButtonEnabled", value)
     }
 
     setSilentAddDownload(value: boolean) {
@@ -274,6 +280,9 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
             <Divider/>
+            <VideoButtonSection value={vm.videoDownloadButtonEnabled}
+                               toggle={(v) => vm.setVideoDownloadButtonEnabled(v)}/>
+            <Divider/>
             <SilentDownloadSection
                 silentAddEnabled={vm.silentAddDownload}
                 setSilentAddEnabled={(v) => vm.setSilentAddDownload(v)}
@@ -348,6 +357,26 @@ function ShowPopupSection(
         }
         description={
             <div>{browser.i18n.getMessage("config_show_popups_description")}</div>
+        }
+    />
+}
+
+function VideoButtonSection(
+    props: {
+        value: boolean,
+        toggle: (v: boolean) => void
+    }
+) {
+    return <OptionItem
+        title={
+            <div>{browser.i18n.getMessage("config_video_button")}</div>
+        }
+        toggle={
+            <input checked={props.value} onChange={event => props.toggle(event.target.checked)} type="checkbox"
+                   className="checkbox"/>
+        }
+        description={
+            <div>{browser.i18n.getMessage("config_video_button_description")}</div>
         }
     />
 }

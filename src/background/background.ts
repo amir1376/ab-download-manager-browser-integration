@@ -3,7 +3,7 @@ import * as backend from "~/backend/Backend"
 import * as Backend from "~/backend/Backend"
 import {redirectDownloadLinksToMe} from "~/linkgrabber/LinkGrabber";
 import {onMessage} from "webext-bridge/background";
-import {addDownload, getHeadersForUrls} from "~/background/actions";
+import {addDownload, getHeadersForUrls, requestYtDlpPanelDownload, requestYtDlpPanelFetchInfo, requestYtDlpVideoDownload} from "~/background/actions";
 import {keepListeningToEvents} from "~/utils/extension-api";
 import {IS_MV3} from "~/utils/ManifestUtil";
 import {setHoldingKey} from "~/background/BackgroundSharedState";
@@ -36,6 +36,15 @@ function receiveMessageFromContentScripts() {
     })
     onMessage(DefinedCommands.GET_PLATFORM, async () => {
         return await platformInfoProvider.getPlatformInfo()
+    })
+    onMessage(DefinedCommands.YTDLP_VIDEO_DOWNLOAD, async (msg) => {
+        return await requestYtDlpVideoDownload(msg.data)
+    })
+    onMessage(DefinedCommands.YTDLP_PANEL_FETCH_INFO, async (msg) => {
+        return await requestYtDlpPanelFetchInfo(msg.data)
+    })
+    onMessage(DefinedCommands.YTDLP_PANEL_DOWNLOAD, async (msg) => {
+        return await requestYtDlpPanelDownload(msg.data)
     })
 }
 

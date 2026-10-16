@@ -70,11 +70,13 @@ export class NativeMessagingTransport {
     async requestTyped<T>(
         action: string,
         payload: unknown,
+        timeoutMs?: number,
     ): Promise<T> {
 
         const response = await this.requestRaw(
             action,
             JSON.stringify(payload),
+            timeoutMs,
         );
 
         try {
@@ -92,6 +94,7 @@ export class NativeMessagingTransport {
     private async requestRaw(
         action: string,
         payload: string,
+        timeoutMs?: number,
     ): Promise<NativeMessagingMessageContent> {
 
         const message = this.createMessage(
@@ -105,7 +108,7 @@ export class NativeMessagingTransport {
             return await this.sendOneShot(message);
         }
 
-        return await this.sendUsingConnectedPort(port, message);
+        return await this.sendUsingConnectedPort(port, message, timeoutMs);
     }
 
 
@@ -129,6 +132,7 @@ export class NativeMessagingTransport {
     private sendUsingConnectedPort(
         port: Runtime.Port,
         message: NativeMessagingMessage,
+        timeoutMs?: number,
     ): Promise<NativeMessagingMessageContent> {
 
         return new Promise(
@@ -142,7 +146,7 @@ export class NativeMessagingTransport {
                             )
                         );
                     },
-                    this.requestTimeout,
+                    timeoutMs ?? this.requestTimeout,
                 );
 
                 this.pendingRequests.set(

@@ -1,11 +1,12 @@
 import {createHttpApiClient, HttpApi} from "~/backend/HttpApi";
+import {NetworkError} from "~/backend/BackendError";
 import {run} from "~/utils/ScopeFunctions";
 import * as Configs from "~/configs/Config"
 import {DownloadRequestItem} from "~/interfaces/DownloadRequestItem";
 import {DownloadRequestOptions} from "~/interfaces/DownloadRequestOptions";
 import Constants from "~/utils/Constants";
 import {IAppApi} from "~/backend/IAppApi";
-import {NativeMessagingApi} from "~/backend/NativeMessagingApi";
+import {NativeMessagingApi, YtDlpPanelInfo} from "~/backend/NativeMessagingApi";
 import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport";
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
 
@@ -117,6 +118,50 @@ export async function httpPing(port: number | null = null) {
     } catch (e) {
         return false
     }
+}
+
+/**
+ * Ask the desktop app to open the yt-dlp video download dialog with the given
+ * page URL prefilled. Goes through native messaging directly (not the HTTP
+ * API) because native messaging can launch the app when it is not running.
+ */
+export async function ytdlpVideoDownload(url: string): Promise<boolean> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpVideoDownload({url})
+}
+
+/**
+ * IDM-style panel: fetch video info (title + formats) without opening the app
+ * dialog. Goes through native messaging directly (not the HTTP API).
+ */
+export async function ytdlpFetchInfo(url: string): Promise<YtDlpPanelInfo> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpFetchInfo({url})
+}
+
+/**
+ * IDM-style panel: start the download in the app background
+ * (no dialog opened).
+ */
+export async function ytdlpPanelDownload(
+    url: string,
+    formatId: string,
+    title?: string,
+): Promise<boolean> {
+    const api = getOrInitNativeMessagingApi()
+    const connected = await api.connectAndTest()
+    if (!connected) {
+        throw new NetworkError("Cannot connect to native messaging host")
+    }
+    return await api.ytdlpPanelDownload({url, formatId, title})
 }
 
 export async function nativeMessagingPing() {

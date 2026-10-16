@@ -166,5 +166,59 @@
   },
   "config_bypass_shortcut_description": {
     "message": "When auto-capture of download links is enabled, holding down the shortcut key and clicking on the download link uses the internal browser download method."
+  },
+  "video_download_button_label": {
+    "message": "Download video"
+  },
+  "video_download_button_title": {
+    "message": "Download this video with AB Download Manager"
+  },
+  "config_video_button": {
+    "message": "Show video download button"
+  },
+  "config_video_button_description": {
+    "message": "Show a floating download panel near videos playing in the page. Click it to pick a quality and download directly without opening the app."
+  },
+  "video_panel_title": {
+    "message": "Download video"
+  },
+  "video_panel_close": {
+    "message": "Close"
+  },
+  "video_panel_loading": {
+    "message": "Fetching video info…"
+  },
+  "video_panel_download": {
+    "message": "Download"
+  },
+  "video_panel_starting": {
+    "message": "Starting download…"
+  },
+  "video_panel_started": {
+    "message": "Download started ✓"
+  },
+  "video_panel_error": {
+    "message": "Failed"
+  },
+  "video_panel_no_formats": {
+    "message": "No formats available"
+  },
+  "video_panel_hint": {
+    "message": "Saved to the default folder in the app settings."
+  },
+  "video_panel_context_invalidated": {
+    "message": "Extension was updated — refresh this page (F5) and try again."
+  },
+  "video_panel_download_now": {
+    "message": "Download Now"
+  },
+  "video_panel_tab_all": {
+    "message": "Download all"
+  },
+  "video_panel_tab_this": {
+    "message": "Download this video"
+  },
+  "video_download_button_dismiss": {
+    "message": "Hide button"
   }
 }

@@ -10,6 +10,7 @@ import {onMessage} from "webext-bridge/content-script"
 import browser from "webextension-polyfill";
 import {createAlertStringForMyExtension} from "~/utils/AlertMessageCreator";
 import {addDownloads} from "~/contentscripts/AddDownloads";
+import {bootVideoDownloadButton} from "~/contentscripts/VideoDownloadButton";
 import {sendMessage} from "webext-bridge/content-script";
 import {DefinedCommands} from "~/message/Commands";
 import {defineExtensionEntry} from "~/utils/DefineExtensionEntry";
@@ -43,6 +44,7 @@ export default defineExtensionEntry()
         try {
             mousePosition.boot()
             HoldingKeyTracker.boot()
+            bootVideoDownloadButton()
             selectionPopup.setOnPopupClicked(async () => {
                 checkAndReportLinks()
             })

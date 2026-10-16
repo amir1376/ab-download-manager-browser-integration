@@ -1,0 +1,56 @@
+{
+  "video_download_button_label": {
+    "message": "Download video"
+  },
+  "video_download_button_title": {
+    "message": "Download video ini dengan AB Download Manager"
+  },
+  "config_video_button": {
+    "message": "Tampilkan tombol download video"
+  },
+  "config_video_button_description": {
+    "message": "Tampilkan panel download melayang di dekat video yang diputar di halaman. Klik untuk memilih kualitas lalu download langsung tanpa membuka aplikasi."
+  },
+  "video_panel_title": {
+    "message": "Download video"
+  },
+  "video_panel_close": {
+    "message": "Tutup"
+  },
+  "video_panel_loading": {
+    "message": "Mengambil info video…"
+  },
+  "video_panel_download": {
+    "message": "Download"
+  },
+  "video_panel_starting": {
+    "message": "Memulai download…"
+  },
+  "video_panel_started": {
+    "message": "Download dimulai ✓"
+  },
+  "video_panel_error": {
+    "message": "Gagal"
+  },
+  "video_panel_no_formats": {
+    "message": "Tidak ada format tersedia"
+  },
+  "video_panel_hint": {
+    "message": "File disimpan ke folder default di pengaturan aplikasi."
+  },
+  "video_panel_context_invalidated": {
+    "message": "Extension diperbarui — refresh halaman ini (F5) lalu coba lagi."
+  },
+  "video_panel_download_now": {
+    "message": "Download Sekarang"
+  },
+  "video_panel_tab_all": {
+    "message": "Download semua"
+  },
+  "video_panel_tab_this": {
+    "message": "Download video ini"
+  },
+  "video_download_button_dismiss": {
+    "message": "Sembunyikan tombol"
+  }
+}
