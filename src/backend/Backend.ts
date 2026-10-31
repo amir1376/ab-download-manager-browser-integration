@@ -8,6 +8,7 @@ import {IAppApi} from "~/backend/IAppApi";
 import {NativeMessagingApi} from "~/backend/NativeMessagingApi";
 import {NativeMessagingTransport} from "~/backend/nativemessaging/NativeMessagingTransport";
 import {CompositeAppApi} from "~/backend/CompositeAppApi";
+import {distinctUntilChanged, map} from "rxjs";
 
 const nativeMessagingTransport = new NativeMessagingTransport(Constants.packageName)
 
@@ -43,12 +44,14 @@ export async function boot() {
         console.log("Native messaging is not available!")
     }
 
-    Configs.onChanged.addEventListener((event) => {
-        run(async () => {
-            const port = (event.port)
-            httpApi = createHttpApiClient(port)
+    Configs.getOnChanged()
+        .pipe(map((config) => config.port))
+        .pipe(distinctUntilChanged())
+        .subscribe((port) => {
+            run(async () => {
+                httpApi = createHttpApiClient(port)
+            })
         })
-    })
 }
 
 export function isNativeMessagingSupported(): boolean {

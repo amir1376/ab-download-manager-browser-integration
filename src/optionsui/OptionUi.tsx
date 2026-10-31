@@ -59,7 +59,7 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
     }
 
     protected setUp() {
-        Configs.onChanged.addEventListener((config) => {
+        Configs.getOnChanged().subscribe((config) => {
             configKeys.forEach((k) => {
                 this.setConfigItem(k, config[k])
             })
@@ -69,6 +69,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     @observable
     popupEnabled!: boolean
+
+    @observable
+    contextMenuEnabled!: boolean
+
     @observable
     autoCaptureLinks!: boolean
 
@@ -126,6 +130,10 @@ class ToolsViewModel extends EventAwareViewModel<ToolsViewModelEvent> implements
 
     setPopupEnabled(value: boolean) {
         Configs.setConfigItem("popupEnabled", value)
+    }
+
+    setContextMenuEnabled(value: boolean) {
+        Configs.setConfigItem("contextMenuEnabled", value)
     }
 
     setSilentAddDownload(value: boolean) {
@@ -274,6 +282,8 @@ const SettingsSection: React.FC<{ vm: ToolsViewModel }> = observer((props) => {
             <Divider/>
             <ShowPopupSection value={vm.popupEnabled} toggle={(v) => vm.setPopupEnabled(v)}/>
             <Divider/>
+            <ContextMenuEnabledSection value={vm.contextMenuEnabled} toggle={(v) => vm.setContextMenuEnabled(v)}/>
+            <Divider/>
             <SilentDownloadSection
                 silentAddEnabled={vm.silentAddDownload}
                 setSilentAddEnabled={(v) => vm.setSilentAddDownload(v)}
@@ -348,6 +358,26 @@ function ShowPopupSection(
         }
         description={
             <div>{browser.i18n.getMessage("config_show_popups_description")}</div>
+        }
+    />
+}
+
+function ContextMenuEnabledSection(
+    props: {
+        value: boolean,
+        toggle: (v: boolean) => void
+    }
+) {
+    return <OptionItem
+        title={
+            <div>{browser.i18n.getMessage("config_context_menu")}</div>
+        }
+        toggle={
+            <input checked={props.value} onChange={event => props.toggle(event.target.checked)} type="checkbox"
+                   className="checkbox"/>
+        }
+        description={
+            <div>{browser.i18n.getMessage("config_context_menu_description")}</div>
         }
     />
 }

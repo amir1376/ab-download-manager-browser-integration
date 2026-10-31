@@ -1,19 +1,23 @@
 import browser from "webextension-polyfill";
 import {run} from "~/utils/ScopeFunctions";
-import {EventListener} from "~/base/EventListener";
 import Constants from "~/utils/Constants";
 import {z} from "~/utils/Zod";
 import {lazy} from "~/utils/Lazy";
 import {isMac} from "~/utils/platform/Platform";
+import {BehaviorSubject, Observable} from "rxjs";
 
 let _currentConfig: Config | null = null
 
-export const onChanged = new EventListener<Config>()
+let _onChanged: BehaviorSubject<Config> | null = null
 
 function setCurrentConfig(config: Config) {
     const parsedConfig: Config = ConfigType.parse(config);
     _currentConfig = parsedConfig
-    onChanged.onEvent(parsedConfig)
+    if (_onChanged == null) {
+        _onChanged = new BehaviorSubject(parsedConfig)
+    } else {
+        _onChanged.next(parsedConfig)
+    }
 }
 
 export async function setConfigItem<K extends keyof Config>(key: K, value: Config[K]) {
@@ -41,6 +45,13 @@ export function getLatestConfig() {
     return _currentConfig
 }
 
+export function getOnChanged(): Observable<Config> {
+    if (_onChanged == null) {
+        throw new Error("Please first call boot config")
+    }
+    return _onChanged
+}
+
 export const MIN_ALLOWED_PORT = 1024
 export const MAX_ALLOWED_PORT = 65535
 
@@ -51,6 +62,7 @@ export const MAX_ALLOWED_PORT = 65535
 const ConfigType = z.object({
     autoCaptureLinks: z.boolean().catch(true),
     popupEnabled: z.boolean().catch(true),
+    contextMenuEnabled: z.boolean().catch(true),
     port: z.int()
         .min(MIN_ALLOWED_PORT)
         .max(MAX_ALLOWED_PORT)

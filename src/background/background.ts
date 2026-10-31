@@ -48,7 +48,7 @@ export default defineExtensionEntry()
                 disposable.add(keepListeningToEvents())
             }
             await Backend.boot()
-            await initializeOptions()
+            disposable.add(initializeOptions())
             redirectDownloadLinksToMe()
             receiveMessageFromContentScripts()
             console.log("ab dm extension loaded successfully")
