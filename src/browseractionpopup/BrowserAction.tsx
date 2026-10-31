@@ -28,7 +28,7 @@ class BrowserActionViewModel extends BaseViewModel {
     }
 
     protected setUp() {
-        Configs.onChanged.addEventListener((config) => {
+        Configs.getOnChanged().subscribe((config) => {
             this.autoCaptureLinks = config.autoCaptureLinks
             this.popupEnabled = config.popupEnabled
             this.silentAddDownload = config.silentAddDownload
